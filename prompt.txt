@@ -1,0 +1,107 @@
+Project: AI-OS Companion Website & User Portal
+Objective:
+Develop a modern, responsive website to serve as the public face for the AI-OS application. The website will handle user authentication (signup/login), provide information about the AI-OS desktop app, offer download links for the application, and potentially manage user subscriptions in the future. The tech stack will be Next.js (or another suitable Vercel-friendly framework), Supabase for backend services (Auth, Database, Storage), and Vercel for hosting.
+Key Features to Implement:
+Landing Page / Homepage:
+Compelling introduction to AI-OS.
+Highlight key features and benefits.
+Screenshots/GIFs of the AI-OS desktop app in action.
+Clear Call-to-Actions (CTAs) for "Sign Up" and "Download App".
+User Authentication (Supabase Auth):
+Sign Up Page: Fields for email, password. Handle Supabase email confirmation.
+Login Page: Fields for email, password.
+Password Reset Flow: "Forgot Password" link, email-based reset.
+(Optional) Social Logins (e.g., Google, GitHub via Supabase).
+User Dashboard (After Login):
+Basic profile information display (can be expanded later).
+Download Section: Prominent links to download the latest version of the AI-OS Electron application for different platforms (Windows, macOS, Linux). These links would point to assets you host (e.g., GitHub Releases, or a simple storage solution).
+Logout button.
+Application Download Management:
+A simple system (could be manual initially) to update download links when new versions of the Electron app are released.
+(Future) Subscription Management Page:
+Display subscription plans.
+Integrate with Stripe (or another payment provider) for checkout.
+Allow users to manage their current subscription (upgrade, downgrade, cancel).
+Link subscription status to the user's Supabase profile.
+Static Pages:
+About Us/Features (more detailed).
+Pricing (if applicable).
+Contact/Support.
+Privacy Policy.
+Terms of Service.
+Tech Stack:
+Frontend Framework: Next.js (Recommended for Vercel) or SvelteKit/Nuxt.js.
+Styling: Tailwind CSS (Recommended for rapid UI development), CSS Modules, or Styled Components.
+Backend-as-a-Service (BaaS): Supabase
+Authentication: Supabase Auth
+Database: Supabase PostgreSQL (for user profiles, subscription info, etc.)
+Hosting: Vercel
+Version Control: Git (GitHub repository connected to Vercel).
+Supabase Configuration (Using your provided keys):
+Project URL: https://vpluyoknbywuhahcnlfx.supabase.co
+Anon (Public) API Key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwbHV5b2tuYnl3dWhhaGNubGZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcwNjMwMDEsImV4cCI6MjA2MjYzOTAwMX0.7o8ICrbVdndxi_gLafKf9aqyDgkqNrisZvrJT3XEUfA
+These will be used in your Next.js (or chosen framework) frontend to initialize the Supabase JS client. Store them as environment variables in Vercel (e.g., NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY).
+Step-by-Step Implementation Plan:
+Phase 1: Project Setup & Basic Structure
+Initialize Next.js Project (or chosen framework):
+npx create-next-app@latest aios-website --typescript # (Optional: --tailwind)
+cd aios-website
+Use code with caution.
+Bash
+Install Supabase JS Client:
+npm install @supabase/supabase-js
+Use code with caution.
+Bash
+Setup Supabase Client Utility:
+Create a utility file (e.g., lib/supabaseClient.js or utils/supabase.ts) to initialize and export the Supabase client using your environment variables.
+Environment Variables in Vercel:
+Connect your GitHub repository for aios-website to Vercel.
+In Vercel project settings, add environment variables:
+NEXT_PUBLIC_SUPABASE_URL = https://vpluyoknbywuhahcnlfx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY = your_anon_key
+Basic Layout & Navigation:
+Create a main layout component (header, footer, main content area).
+Implement basic navigation links (Home, Login, Sign Up).
+Create Pages:
+Stub out basic pages: index.js (Home), auth/login.js, auth/signup.js, dashboard.js.
+Phase 2: User Authentication
+Sign Up Page (auth/signup.js):
+Create a form with email and password fields.
+On submit, call supabase.auth.signUp() from your Supabase client utility.
+Handle success (e.g., show message "Check your email for confirmation") and errors.
+Redirect to login or a confirmation page.
+Login Page (auth/login.js):
+Create a form with email and password fields.
+On submit, call supabase.auth.signInWithPassword().
+Handle success (store session, redirect to dashboard) and errors (show error message).
+Session Management & Protected Routes:
+Use Next.js Context API or a state management library (like Zustand or Jotai) to manage user session state globally.
+Create a higher-order component (HOC) or use middleware to protect routes that require authentication (e.g., /dashboard). Redirect to login if no active session.
+Listen to Supabase onAuthStateChange to update session state.
+Logout Functionality:
+Implement a logout button (e.g., in the header or dashboard).
+Call supabase.auth.signOut().
+Clear local session state and redirect to homepage or login page.
+Password Reset Flow:
+Create a "Forgot Password" page.
+Form to input email. Call supabase.auth.resetPasswordForEmail().
+Users will receive an email. You'll need a page (e.g., auth/update-password) for them to enter their new password, using supabase.auth.updateUser().
+Phase 3: User Dashboard & App Download
+Dashboard Page (dashboard.js - Protected Route):
+Display a welcome message to the logged-in user.
+Fetch and display basic user profile info if available from Supabase (e.g., email).
+Download Section:
+Design a section for download links.
+How to host download files:
+GitHub Releases (Recommended for Simplicity): When you build your Electron app (npm run dist), it creates installer files. Create a "Release" on your AI-OS desktop app's GitHub repository and upload these installer files (.exe, .dmg, .AppImage) as release assets.
+Your website's download buttons will then link directly to these GitHub Release asset URLs.
+This is easy to manage and free.
+Provide clear links/buttons for Windows, macOS, and Linux versions.
+Phase 4: Static Content & Styling
+Homepage Content: Flesh out the landing page with marketing copy, feature descriptions, and visuals.
+Other Static Pages: Create content for About, Contact, Privacy, Terms.
+Styling: Apply consistent styling (e.g., using Tailwind CSS) across all pages to make it look professional and match your AI-OS brand. Ensure responsiveness for different screen sizes.
+Phase 5: Deployment to Vercel
+Push to GitHub: Ensure your Next.js website code is pushed to the GitHub repository connected to your Vercel project.
+Vercel Deployment: Vercel should automatically build and deploy your Next.js application whenever you push to the main branch.
+Custom Domain (Optional): Configure a custom domain for your website in Vercel settings.

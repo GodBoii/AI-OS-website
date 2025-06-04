@@ -1,0 +1,49 @@
+# Node dependencies
+node_modules/
+
+# Build output
+.next/
+out/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment files
+.env*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Installer and binaries
+public/downloads
+public/downloads/**/*.exe
+public/downloads/**/*.dll
+public/downloads/**/*.pak
+public/downloads/**/*.bin
+public/downloads/**/*.yml
+public/downloads/**/*.asar
+public/downloads/**/*.dat
+public/downloads/**/*.json
+public/downloads/**/*.html
+public/downloads/**/*.txt
+
+# Misc
+*.pem
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

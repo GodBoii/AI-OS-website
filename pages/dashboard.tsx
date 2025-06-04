@@ -1,0 +1,161 @@
+import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { supabase, User } from '../lib/supabaseClient';
+
+export default function Dashboard() {
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function getUser() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return router.push('/auth/login');
+      setUser(session.user);
+      setLoading(false);
+    }
+    getUser();
+  }, [router]);
+
+  if (loading) return (
+    <div className="flex items-center justify-center min-h-screen hero-pattern">
+      <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
+
+  const platforms = [
+    { 
+      name: 'Windows', 
+      emoji: '🪟', 
+      desc: '64-bit installer',
+      filename: 'AI-OS Setup 1.0.0.exe',
+      path: '/downloads/windows/AI-OS-windows/AI-OS%20Setup%201.0.0.exe',
+      available: true
+    },
+    { 
+      name: 'macOS', 
+      emoji: '🍎', 
+      desc: 'Universal (Intel/Apple Silicon)',
+      filename: '',
+      path: '',
+      available: false
+    },
+    { 
+      name: 'Linux', 
+      emoji: '🐧', 
+      desc: 'AppImage',
+      filename: '',
+      path: '',
+      available: false
+    }
+  ];
+
+  const handleDownload = (platform: typeof platforms[0]) => {
+    if (!platform.available) return;
+    
+    // Create a temporary anchor element
+    const link = document.createElement('a');
+    link.href = platform.path;
+    link.download = platform.filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  return (
+    <>
+      <Head><title>Dashboard - AI-OS</title></Head>
+      <div className="pt-20 min-h-screen hero-pattern">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold mb-2">Welcome to your Dashboard</h1>
+            <p className="text-gray-400">Manage your AI-OS experience</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Profile Card */}
+            <div className="glass-effect rounded-xl p-6">
+              <h3 className="text-xl font-semibold mb-4">Profile Information</h3>
+              <div className="space-y-4">
+                <div>
+                  <span className="text-gray-400">Email:</span>
+                  <p className="font-medium">{user?.email}</p>
+                </div>
+                <div>
+                  <span className="text-gray-400">Account ID:</span>
+                  <p className="text-sm font-mono truncate">{user?.id}</p>
+                </div>
+                <div>
+                  <span className="text-gray-400">Plan:</span>
+                  <p className="text-green-400 font-medium">Free</p>
+                </div>
+                <div>
+                  <span className="text-gray-400">Joined:</span>
+                  <p>{new Date(user?.created_at || '').toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    year: 'numeric' 
+                  })}</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Download Card */}
+            <div className="glass-effect rounded-xl p-6">
+              <h3 className="text-xl font-semibold mb-4">Download AI-OS</h3>
+              <p className="text-gray-400 mb-4">Latest version: v1.0.0</p>
+              <div className="space-y-3">
+                {platforms.map((platform) => (
+                  <button 
+                    key={platform.name} 
+                    onClick={() => handleDownload(platform)}
+                    className={`w-full py-2 ${platform.available ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-600 cursor-not-allowed'} rounded-lg transition-colors transform hover:scale-105 flex items-center justify-center`}
+                  >
+                    <span className="mr-2">{platform.emoji}</span>
+                    <span>
+                      {platform.available 
+                        ? `Download for ${platform.name}` 
+                        : `${platform.name} - Coming Soon`}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Subscription Card */}
+            <div className="glass-effect rounded-xl p-6">
+              <h3 className="text-xl font-semibold mb-4">Subscription</h3>
+              <p className="text-gray-400 mb-4">Upgrade to unlock premium features</p>
+              <div className="space-y-4">
+                <div className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-semibold">Pro</span>
+                    <span className="text-blue-400">$19/month</span>
+                  </div>
+                  <ul className="text-sm text-gray-300 space-y-1 mb-4">
+                    <li>✓ Advanced AI capabilities</li>
+                    <li>✓ Priority support</li>
+                    <li>✓ Custom workflows</li>
+                  </ul>
+                  <button className="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors transform hover:scale-105">
+                    Upgrade to Pro
+                  </button>
+                </div>
+                
+                <div className="bg-gradient-to-r from-purple-500/20 to-pink-600/20 rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-semibold">Enterprise</span>
+                    <span className="text-purple-400">Custom pricing</span>
+                  </div>
+                  <button className="w-full py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors transform hover:scale-105">
+                    Contact Sales
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+} 
