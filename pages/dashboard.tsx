@@ -30,7 +30,7 @@ export default function Dashboard() {
       emoji: '🪟', 
       desc: '64-bit installer',
       filename: 'AI-OS Setup 1.0.0.exe',
-      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.0.0/AI-OS.Setup.1.0.0.exe',
+      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.0.1/AI-OS.Setup.1.0.0.exe',
       available: true
     },
     { 
