@@ -27,7 +27,10 @@ export default function Login() {
 
   return (
     <>
-      <Head><title>Login - AI-OS</title></Head>
+      <Head>
+        <title>Login - AI-OS</title>
+        <link rel="icon" href="/icon.ico" />
+      </Head>
       <div className="min-h-screen flex flex-col justify-center py-12 px-4 hero-pattern">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <div className="text-center">
@@ -83,4 +86,4 @@ export default function Login() {
       </div>
     </>
   );
-} 
+}

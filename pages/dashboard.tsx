@@ -65,7 +65,10 @@ export default function Dashboard() {
 
   return (
     <>
-      <Head><title>Dashboard - AI-OS</title></Head>
+      <Head>
+        <title>Dashboard - AI-OS</title>
+        <link rel="icon" href="/icon.ico" />
+      </Head>
       <div className="pt-20 min-h-screen hero-pattern">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="mb-8">
@@ -79,12 +82,12 @@ export default function Dashboard() {
               <h3 className="text-xl font-semibold mb-4">Profile Information</h3>
               <div className="space-y-4">
                 <div>
-                  <span className="text-gray-400">Email:</span>
-                  <p className="font-medium">{user?.email}</p>
+                  <span className="text-gray-400">Name:</span>
+                  <p className="font-medium">{user?.user_metadata?.name || 'Not provided'}</p>
                 </div>
                 <div>
-                  <span className="text-gray-400">Account ID:</span>
-                  <p className="text-sm font-mono truncate">{user?.id}</p>
+                  <span className="text-gray-400">Email:</span>
+                  <p className="font-medium">{user?.email}</p>
                 </div>
                 <div>
                   <span className="text-gray-400">Plan:</span>
@@ -158,4 +161,4 @@ export default function Dashboard() {
       </div>
     </>
   );
-} 
+}

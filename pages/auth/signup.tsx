@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { supabase } from '../../lib/supabaseClient';
 
 export default function SignUp() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -14,7 +15,15 @@ export default function SignUp() {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signUp({ email, password });
+      const { error } = await supabase.auth.signUp({ 
+        email, 
+        password,
+        options: {
+          data: {
+            name: name
+          }
+        }
+      });
       if (error) throw error;
       setMessage('Check your email for the confirmation link');
     } catch (err: any) {
@@ -26,7 +35,10 @@ export default function SignUp() {
 
   return (
     <>
-      <Head><title>Sign Up - AI-OS</title></Head>
+      <Head>
+        <title>Sign Up - AI-OS</title>
+        <link rel="icon" href="/icon.ico" />
+      </Head>
       <div className="min-h-screen flex flex-col justify-center py-12 px-4 hero-pattern">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <div className="text-center">
@@ -46,6 +58,18 @@ export default function SignUp() {
             {message && <div className="bg-green-900/20 border border-green-500/50 text-green-400 px-4 py-3 rounded mb-4">{message}</div>}
             
             <form className="space-y-6" onSubmit={handleSignUp}>
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium">Name</label>
+                <input 
+                  id="name" 
+                  type="text" 
+                  required 
+                  value={name} 
+                  onChange={(e) => setName(e.target.value)} 
+                  className="input w-full mt-1" 
+                  placeholder="Your full name"
+                />
+              </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium">Email</label>
                 <input 
@@ -81,4 +105,4 @@ export default function SignUp() {
       </div>
     </>
   );
-} 
+}
