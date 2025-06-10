@@ -2,21 +2,80 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { supabase, User } from '../lib/supabaseClient';
+import UsageCard from '../components/UsageCard';
+
+// Define the UsageMetrics type
+type UsageMetrics = {
+  id: string;
+  user_id: string;
+  input_tokens: number;
+  output_tokens: number;
+  total_tokens: number;
+  request_count: number;
+  updated_at: string;
+  created_at: string;
+};
 
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [usageMetrics, setUsageMetrics] = useState<UsageMetrics | null>(null);
+  const [usageLoading, setUsageLoading] = useState(true);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     async function getUser() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return router.push('/auth/login');
       setUser(session.user);
+      setToken(session.access_token);
       setLoading(false);
     }
     getUser();
   }, [router]);
+
+  useEffect(() => {
+    async function fetchUsageMetrics() {
+      if (!user || !token) return;
+      
+      try {
+        // Try to fetch from API first
+        const response = await fetch('/api/usage', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setUsageMetrics(data);
+        } else {
+          // Fallback to direct Supabase query if API fails
+          console.warn('API request failed, falling back to direct query');
+          const { data, error } = await supabase
+            .from('usage_metrics')
+            .select('*')
+            .eq('user_id', user.id)
+            .single();
+            
+          if (error) {
+            console.error('Error fetching usage metrics:', error);
+          } else {
+            setUsageMetrics(data);
+          }
+        }
+      } catch (error) {
+        console.error('Exception fetching usage metrics:', error);
+      } finally {
+        setUsageLoading(false);
+      }
+    }
+    
+    if (user && token) {
+      fetchUsageMetrics();
+    }
+  }, [user, token]);
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen hero-pattern">
@@ -155,6 +214,11 @@ export default function Dashboard() {
                   </button>
                 </div>
               </div>
+            </div>
+
+            {/* Usage Metrics Card - Takes full width */}
+            <div className="md:col-span-3">
+              <UsageCard metrics={usageMetrics} isLoading={usageLoading} />
             </div>
           </div>
         </div>
