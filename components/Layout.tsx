@@ -165,7 +165,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
           </div>
           
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; {new Date().getFullYear()} AI-OS. All rights reserved.</p>
+            <div className="mb-2">developed by Prajwal Ghadge</div>
+            <div className="mb-1">Email: <a href="mailto:prajwalghadge2005@gmail.com" className="text-blue-400 underline">prajwalghadge2005@gmail.com</a></div>
+            <div>Phone: <a href="tel:9619039912" className="text-blue-400 underline">9619039912</a></div>
           </div>
         </div>
       </footer>
