@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { supabase } from '../lib/supabaseClient';
@@ -7,12 +7,32 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((_, session) => setUser(session?.user || null));
     supabase.auth.getSession().then(({ data }) => setUser(data.session?.user || null));
     return () => { authListener?.subscription.unsubscribe(); };
   }, []);
+
+  // Auto-close mobile menu on outside click or scroll
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    function handleClick(e: MouseEvent) {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target as Node)) {
+        setMobileMenuOpen(false);
+      }
+    }
+    function handleScroll() {
+      setMobileMenuOpen(false);
+    }
+    document.addEventListener('mousedown', handleClick);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [mobileMenuOpen]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -61,7 +81,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden glass-effect">
+          <div ref={sidebarRef} className="md:hidden glass-effect">
             <div className="px-2 pt-2 pb-3 space-y-1">
               <Link href="/" className={`block px-3 py-2 hover:text-blue-400 ${router.pathname === '/' ? 'text-blue-400' : ''}`}>Home</Link>
               <Link href="/#features" className="block px-3 py-2 hover:text-blue-400">Features</Link>
