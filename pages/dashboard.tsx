@@ -129,24 +129,24 @@ export default function Dashboard() {
         <link rel="icon" href="/icon.ico" />
       </Head>
       <div className="pt-20 min-h-screen hero-pattern">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2">Welcome to your Dashboard</h1>
-            <p className="text-gray-400">Manage your AI-OS experience</p>
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-8">
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2">Welcome to your Dashboard</h1>
+            <p className="text-gray-400 text-base sm:text-lg">Manage your AI-OS experience</p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {/* Profile Card */}
-            <div className="glass-effect rounded-xl p-6">
-              <h3 className="text-xl font-semibold mb-4">Profile Information</h3>
-              <div className="space-y-4">
+            <div className="glass-effect rounded-xl p-4 sm:p-6 w-full">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Profile Information</h3>
+              <div className="space-y-3 sm:space-y-4">
                 <div>
                   <span className="text-gray-400">Name:</span>
-                  <p className="font-medium">{user?.user_metadata?.name || 'Not provided'}</p>
+                  <p className="font-medium break-words">{user?.user_metadata?.name || 'Not provided'}</p>
                 </div>
                 <div>
                   <span className="text-gray-400">Email:</span>
-                  <p className="font-medium">{user?.email}</p>
+                  <p className="font-medium break-words">{user?.email}</p>
                 </div>
                 <div>
                   <span className="text-gray-400">Plan:</span>
@@ -163,15 +163,15 @@ export default function Dashboard() {
             </div>
             
             {/* Download Card */}
-            <div className="glass-effect rounded-xl p-6">
-              <h3 className="text-xl font-semibold mb-4">Download AI-OS</h3>
-              <p className="text-gray-400 mb-4">Latest version: v1.0.0</p>
-              <div className="space-y-3">
+            <div className="glass-effect rounded-xl p-4 sm:p-6 w-full">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Download AI-OS</h3>
+              <p className="text-gray-400 mb-3 sm:mb-4 text-sm sm:text-base">Latest version: v1.0.0</p>
+              <div className="space-y-2 sm:space-y-3">
                 {platforms.map((platform) => (
                   <button 
                     key={platform.name} 
                     onClick={() => handleDownload(platform)}
-                    className={`w-full py-2 ${platform.available ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-600 cursor-not-allowed'} rounded-lg transition-colors transform hover:scale-105 flex items-center justify-center`}
+                    className={`w-full py-2 ${platform.available ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-600 cursor-not-allowed'} rounded-lg transition-colors transform hover:scale-105 flex items-center justify-center text-sm sm:text-base`}
                   >
                     <span className="mr-2">{platform.emoji}</span>
                     <span>
@@ -185,31 +185,31 @@ export default function Dashboard() {
             </div>
             
             {/* Subscription Card */}
-            <div className="glass-effect rounded-xl p-6">
-              <h3 className="text-xl font-semibold mb-4">Subscription</h3>
-              <p className="text-gray-400 mb-4">Upgrade to unlock premium features</p>
-              <div className="space-y-4">
-                <div className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-lg p-4">
-                  <div className="flex justify-between items-center mb-2">
+            <div className="glass-effect rounded-xl p-4 sm:p-6 w-full">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Subscription</h3>
+              <p className="text-gray-400 mb-3 sm:mb-4 text-sm sm:text-base">Upgrade to unlock premium features</p>
+              <div className="space-y-3 sm:space-y-4">
+                <div className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-lg p-3 sm:p-4">
+                  <div className="flex justify-between items-center mb-1 sm:mb-2">
                     <span className="font-semibold">Pro</span>
                     <span className="text-blue-400">$19/month</span>
                   </div>
-                  <ul className="text-sm text-gray-300 space-y-1 mb-4">
+                  <ul className="text-xs sm:text-sm text-gray-300 space-y-1 mb-3 sm:mb-4">
                     <li>✓ Advanced AI capabilities</li>
                     <li>✓ Priority support</li>
                     <li>✓ Custom workflows</li>
                   </ul>
-                  <button className="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors transform hover:scale-105">
+                  <button className="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors transform hover:scale-105 text-xs sm:text-base">
                     Upgrade to Pro
                   </button>
                 </div>
                 
-                <div className="bg-gradient-to-r from-purple-500/20 to-pink-600/20 rounded-lg p-4">
-                  <div className="flex justify-between items-center mb-2">
+                <div className="bg-gradient-to-r from-purple-500/20 to-pink-600/20 rounded-lg p-3 sm:p-4">
+                  <div className="flex justify-between items-center mb-1 sm:mb-2">
                     <span className="font-semibold">Enterprise</span>
                     <span className="text-purple-400">Custom pricing</span>
                   </div>
-                  <button className="w-full py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors transform hover:scale-105">
+                  <button className="w-full py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors transform hover:scale-105 text-xs sm:text-base">
                     Contact Sales
                   </button>
                 </div>
@@ -217,7 +217,7 @@ export default function Dashboard() {
             </div>
 
             {/* Usage Metrics Card - Takes full width */}
-            <div className="md:col-span-3">
+            <div className="col-span-1 md:col-span-3 mt-4 sm:mt-6">
               <UsageCard metrics={usageMetrics} isLoading={usageLoading} />
             </div>
           </div>
