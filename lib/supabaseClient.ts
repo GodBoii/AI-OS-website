@@ -16,9 +16,25 @@ export type User = {
 
 export type Session = {
   user: User;
+  access_token: string;
 };
 
 export const getCurrentUser = async (): Promise<User | null> => {
   const { data: { session } } = await supabase.auth.getSession();
   return session?.user || null;
+};
+
+export const getCurrentSession = async (): Promise<Session | null> => {
+  const { data: { session } } = await supabase.auth.getSession();
+  return session as Session | null;
+};
+
+export const createClientWithToken = (token: string) => {
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    global: {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  });
 }; 

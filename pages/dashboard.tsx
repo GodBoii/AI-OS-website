@@ -1,33 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { supabase, User } from '../lib/supabaseClient';
+import { supabase, User, getCurrentSession } from '../lib/supabaseClient';
 import UsageCard from '../components/UsageCard';
 
-// Define the UsageMetrics type
-type UsageMetrics = {
+// Define the RequestLog type
+type RequestLog = {
   id: string;
   user_id: string;
   input_tokens: number;
   output_tokens: number;
   total_tokens: number;
-  request_count: number;
-  updated_at: string;
   created_at: string;
 };
+
+// Define the API response type
+type UsageResponse = {
+  logs: RequestLog[];
+  totalMetrics: {
+    request_count: number;
+    input_tokens: number;
+    output_tokens: number;
+    total_tokens: number;
+  };
+};
+
+// Define time period options
+type TimePeriod = '7days' | '30days' | '90days' | 'all';
 
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [usageMetrics, setUsageMetrics] = useState<UsageMetrics | null>(null);
+  const [usageData, setUsageData] = useState<UsageResponse | null>(null);
   const [usageLoading, setUsageLoading] = useState(true);
+  const [usageError, setUsageError] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [timePeriod, setTimePeriod] = useState<TimePeriod>('7days');
 
   useEffect(() => {
     async function getUser() {
-      const { data: { session } } = await supabase.auth.getSession();
+      const session = await getCurrentSession();
       if (!session) return router.push('/auth/login');
+      
       setUser(session.user);
       setToken(session.access_token);
       setLoading(false);
@@ -36,46 +51,49 @@ export default function Dashboard() {
   }, [router]);
 
   useEffect(() => {
-    async function fetchUsageMetrics() {
-      if (!user || !token) return;
-      
-      try {
-        // Try to fetch from API first
-        const response = await fetch('/api/usage', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          setUsageMetrics(data);
-        } else {
-          // Fallback to direct Supabase query if API fails
-          console.warn('API request failed, falling back to direct query');
-          const { data, error } = await supabase
-            .from('usage_metrics')
-            .select('*')
-            .eq('user_id', user.id)
-            .single();
-            
-          if (error) {
-            console.error('Error fetching usage metrics:', error);
-          } else {
-            setUsageMetrics(data);
-          }
-        }
-      } catch (error) {
-        console.error('Exception fetching usage metrics:', error);
-      } finally {
-        setUsageLoading(false);
-      }
-    }
-    
     if (user && token) {
-      fetchUsageMetrics();
+      fetchUsageData();
     }
   }, [user, token]);
+
+  function fetchUsageData() {
+    if (!user || !token) return;
+    
+    setUsageLoading(true);
+    setUsageError(null);
+    
+    console.log('Fetching usage data for user:', user.id);
+    
+    fetch('/api/usage', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Received usage data:', data);
+          setUsageData(data);
+        } else {
+          const errorData = await response.json().catch(() => null);
+          const errorText = errorData?.error || response.statusText;
+          console.error('Failed to fetch usage data:', errorText);
+          setUsageError(errorText || 'Failed to fetch usage data');
+        }
+      })
+      .catch((error) => {
+        console.error('Exception fetching usage data:', error);
+        setUsageError('Error connecting to the server');
+      })
+      .finally(() => {
+        setUsageLoading(false);
+      });
+  }
+
+  const handleRetryFetch = () => {
+    fetchUsageData();
+  };
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen hero-pattern">
@@ -122,6 +140,10 @@ export default function Dashboard() {
     document.body.removeChild(link);
   };
 
+  const handleTimePeriodChange = (period: TimePeriod) => {
+    setTimePeriod(period);
+  };
+
   return (
     <>
       <Head>
@@ -158,6 +180,10 @@ export default function Dashboard() {
                     month: 'short', 
                     year: 'numeric' 
                   })}</p>
+                </div>
+                <div>
+                  <span className="text-gray-400">User ID:</span>
+                  <p className="text-xs break-all">{user?.id}</p>
                 </div>
               </div>
             </div>
@@ -218,7 +244,59 @@ export default function Dashboard() {
 
             {/* Usage Metrics Card - Takes full width */}
             <div className="col-span-1 md:col-span-3 mt-4 sm:mt-6">
-              <UsageCard metrics={usageMetrics} isLoading={usageLoading} />
+              <div className="glass-effect rounded-xl p-4 mb-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold">Time Period</h3>
+                  <div className="flex space-x-2">
+                    <button 
+                      onClick={() => handleTimePeriodChange('7days')}
+                      className={`px-3 py-1 rounded-lg text-sm ${timePeriod === '7days' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+                    >
+                      7 Days
+                    </button>
+                    <button 
+                      onClick={() => handleTimePeriodChange('30days')}
+                      className={`px-3 py-1 rounded-lg text-sm ${timePeriod === '30days' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+                    >
+                      30 Days
+                    </button>
+                    <button 
+                      onClick={() => handleTimePeriodChange('90days')}
+                      className={`px-3 py-1 rounded-lg text-sm ${timePeriod === '90days' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+                    >
+                      90 Days
+                    </button>
+                    <button 
+                      onClick={() => handleTimePeriodChange('all')}
+                      className={`px-3 py-1 rounded-lg text-sm ${timePeriod === 'all' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+                    >
+                      All Time
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              {usageError ? (
+                <div className="glass-effect rounded-xl p-6">
+                  <h3 className="text-xl font-semibold mb-4">Usage Metrics</h3>
+                  <div className="bg-red-900/20 border border-red-500/50 text-red-400 p-4 rounded mb-4">
+                    <p className="mb-2"><strong>Error:</strong> {usageError}</p>
+                    <p className="text-sm">This could be due to missing data or a server configuration issue.</p>
+                  </div>
+                  <button 
+                    onClick={handleRetryFetch}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                  >
+                    Retry
+                  </button>
+                </div>
+              ) : (
+                <UsageCard 
+                  usageData={usageData} 
+                  isLoading={usageLoading} 
+                  timePeriod={timePeriod} 
+                />
+              )}
             </div>
           </div>
         </div>
