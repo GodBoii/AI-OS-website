@@ -42,9 +42,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
                 <div className="w-10 h-10 flex items-center justify-center mr-3">
-                  <img src="/icon.ico" alt="AI-OS Logo" className="w-full h-full" />
+                  <img src="/icon.ico" alt="Aetheria AI Logo" className="w-full h-full" />
                 </div>
-                <span className="text-xl font-bold">AI-OS</span>
+                <span className="text-xl font-bold">Aetheria AI</span>
               </Link>
               
               <div className="hidden md:flex ml-6 space-x-8">
@@ -113,7 +113,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-2">
                   <span className="text-sm font-bold">AI</span>
                 </div>
-                <span className="text-lg font-bold">AI-OS</span>
+                <span className="text-lg font-bold">Aetheria AI</span>
               </div>
               <p className="text-gray-400">The future of intelligent computing</p>
             </div>

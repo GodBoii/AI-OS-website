@@ -106,7 +106,7 @@ export default function Dashboard() {
       name: 'Windows', 
       emoji: '🪟', 
       desc: '64-bit installer',
-      filename: 'AI-OS Setup 1.0.0.exe',
+      filename: 'Aetheria ai Setup 1.0.4.exe',
       path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.0.0/Aetheria ai Setup 1.0.4.exe',
       available: true
     },
@@ -147,14 +147,14 @@ export default function Dashboard() {
   return (
     <>
       <Head>
-        <title>Dashboard - AI-OS</title>
+        <title>Dashboard - Aetheria AI</title>
         <link rel="icon" href="/icon.ico" />
       </Head>
       <div className="pt-20 min-h-screen hero-pattern">
         <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-8">
           <div className="mb-6 sm:mb-8">
             <h1 className="text-3xl sm:text-4xl font-bold mb-2">Welcome to your Dashboard</h1>
-            <p className="text-gray-400 text-base sm:text-lg">Manage your AI-OS experience</p>
+            <p className="text-gray-400 text-base sm:text-lg">Manage your Aetheria AI experience</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
