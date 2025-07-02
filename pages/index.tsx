@@ -4,69 +4,96 @@ import Link from 'next/link';
 export default function Home() {
   const features = [
     { 
-      title: 'AI-Powered Automation', 
-      desc: 'Let AI handle repetitive tasks while you focus on what matters most.', 
+      title: 'Multi-Agent Architecture', 
+      desc: 'Specialized AI agents for coding, research, finance, and creative tasks working together seamlessly.', 
       emoji: '🧠', 
       bgColor: 'bg-blue-600' 
     },
     { 
-      title: 'Lightning Fast', 
-      desc: 'Optimized performance with intelligent resource management.', 
-      emoji: '⚡', 
+      title: 'True Cross-Platform', 
+      desc: 'The only AI solution with full feature parity across Android, iOS, Windows, and macOS.', 
+      emoji: '🌐', 
       bgColor: 'bg-purple-600' 
     },
     { 
-      title: 'Secure & Private', 
-      desc: 'Advanced security with privacy-first architecture.', 
+       title: 'Deep Integrations', 
+       desc: 'Seamless connections with GitHub, Google Suite, and your file system that other AI tools can\'t match.', 
+       emoji: '🔄', 
+       bgColor: 'bg-green-600' 
+     },
+    { 
+      title: 'Workflow Automation', 
+      desc: 'Connect multiple AI agents in automated chains to accomplish complex tasks no other tool can handle.', 
+      emoji: '⚙️', 
+      bgColor: 'bg-orange-600' 
+    },
+    { 
+      title: 'Stateful Sandbox', 
+      desc: 'Persistent execution environment with long-term memory for complex, multi-session projects.', 
+      emoji: '📦', 
+      bgColor: 'bg-teal-600' 
+    },
+    { 
+      title: 'Privacy-First Design', 
+      desc: 'Local processing for sensitive operations with enterprise-grade security and data control.', 
       emoji: '🔒', 
-      bgColor: 'bg-green-600' 
+      bgColor: 'bg-red-600' 
     }
   ];
 
   const downloads = [
     { platform: 'Windows', emoji: '🪟', desc: 'Windows 10/11' },
     { platform: 'macOS', emoji: '🍎', desc: 'macOS 10.15+' },
-    { platform: 'Linux', emoji: '🐧', desc: 'Ubuntu, Debian, etc.' }
+    { platform: 'Linux', emoji: '🐧', desc: 'Ubuntu, Debian, etc.' },
+    { platform: 'Android', emoji: '📱', desc: 'Android 10+' },
+    { platform: 'iOS', emoji: '📲', desc: 'iOS 14+' }
   ];
 
-  const plans = [
+  const competitiveAdvantages = [
     {
-      name: 'Free',
-      price: '0',
-      features: [
-        'Basic AI features',
-        'Core automation tools',
-        'Community support'
-      ],
-      buttonClass: 'border-2 border-gray-600 hover:border-gray-500',
-      buttonText: 'Get Started',
-      popular: false
+      competitor: 'Perplexity AI',
+      advantages: [
+        'Beyond just search - we execute tasks while they only answer questions',
+        'Development capabilities with code execution they lack',
+        'More free capabilities without a subscription wall',
+        'Multi-agent architecture vs their single-purpose assistant'
+      ]
     },
     {
-      name: 'Pro',
-      price: '19',
-      features: [
-        'Advanced AI capabilities',
-        'Priority support',
-        'Custom workflows',
-        'Team collaboration'
-      ],
-      buttonClass: 'bg-blue-600 hover:bg-blue-700',
-      buttonText: 'Choose Pro',
-      popular: true
+      competitor: 'Claude',
+      advantages: [
+        'Multiple specialized agents vs one general assistant',
+        'True mobile-first experience vs their limited mobile apps',
+        'Deep tool integrations beyond their basic connections',
+        'Sandbox execution environment they don\'t offer'
+      ]
     },
     {
-      name: 'Enterprise',
-      price: '99',
-      features: [
-        'Everything in Pro',
-        'Dedicated support',
-        'Custom integrations',
-        'SLA guarantee'
-      ],
-      buttonClass: 'bg-purple-600 hover:bg-purple-700',
-      buttonText: 'Contact Sales',
-      popular: false
+      competitor: 'Coding Tools',
+      advantages: [
+        'Business context with research and investment agents',
+        'Mobile development capabilities they don\'t have',
+        'Accessible AI for non-technical users',
+        'Integrated workflow instead of switching between tools'
+      ]
+    }
+  ];
+  
+  const testimonials = [
+    {
+      quote: "Aetheria AI replaced 5 different AI subscriptions for our team. The workflow automation is a game-changer.",
+      name: "Sarah Chen",
+      title: "CTO, TechVentures"
+    },
+    {
+      quote: "As an investor, I love how the research agent connects with the financial analysis agent to give me comprehensive insights.",
+      name: "Michael Rodriguez",
+      title: "Investment Analyst"
+    },
+    {
+      quote: "The cross-platform experience is seamless. I start work on my phone and continue on desktop without missing a beat.",
+      name: "Priya Sharma",
+      title: "Product Designer"
     }
   ];
 
@@ -81,12 +108,25 @@ export default function Home() {
         <section className="bg-gradient-to-b from-gray-900 to-black text-white py-20">
           <div className="container mx-auto px-4">
             <h1 className="text-5xl md:text-6xl font-bold text-center mb-6">
-              Welcome to Aetheria AI
+              The Operating System for AI Workflows
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-300 max-w-3xl mx-auto">
-              The next generation operating system powered by artificial intelligence.
-              Experience computing like never before with intelligent automation and seamless workflows.
+              Aetheria AI is the only platform that connects specialized AI agents across all your devices.
+              Replace 5-10 different AI subscriptions with one unified solution.
             </p>
+            
+            <div className="max-w-3xl mx-auto glass-effect rounded-xl p-6 mb-10">
+              <div className="flex flex-col md:flex-row items-center justify-between">
+                <div className="text-center md:text-left mb-6 md:mb-0">
+                  <h3 className="text-2xl font-bold mb-2">For Users</h3>
+                  <p className="text-gray-300">Seamless AI workflows across all your devices</p>
+                </div>
+                <div className="text-center md:text-left">
+                  <h3 className="text-2xl font-bold mb-2">For Investors</h3>
+                  <p className="text-gray-300">The platform strategy no competitor can match</p>
+                </div>
+              </div>
+            </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <Link href="/auth/signup" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-xl text-lg font-semibold transition-all transform hover:scale-105 glow-animation">
@@ -112,9 +152,9 @@ export default function Home() {
         <section id="features" className="py-20 bg-gray-800/50">
           <div className="max-w-7xl mx-auto px-4">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">Powerful Features</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">Unfair Advantages</h2>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Discover the intelligent features that make Aetheria AI the future of computing
+                Our multi-agent architecture creates capabilities no single-purpose AI tool can match
               </p>
             </div>
             
@@ -131,16 +171,75 @@ export default function Home() {
             </div>
           </div>
         </section>
+        
+        {/* Platform Strategy Section */}
+        <section className="py-20">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">The Platform Strategy</h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                While competitors focus on single use cases, we're creating the platform that connects everything
+              </p>
+            </div>
+            
+            <div className="glass-effect rounded-xl p-8 max-w-4xl mx-auto">
+              <div className="grid md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-2xl font-bold mb-4 text-blue-500">For Users</h3>
+                  <ul className="space-y-3">
+                    <li className="flex items-start">
+                      <span className="text-blue-500 mr-2">→</span>
+                      <span>Replace multiple AI subscriptions with one solution</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-500 mr-2">→</span>
+                      <span>Seamless experience across all devices</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-500 mr-2">→</span>
+                      <span>Connect specialized agents for complex workflows</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-500 mr-2">→</span>
+                      <span>Privacy-first with local execution options</span>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold mb-4 text-purple-500">For Investors</h3>
+                  <ul className="space-y-3">
+                    <li className="flex items-start">
+                      <span className="text-purple-500 mr-2">→</span>
+                      <span>Agent marketplace with network effects</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-500 mr-2">→</span>
+                      <span>Platform lock-in through workflow creation</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-500 mr-2">→</span>
+                      <span>Multiple monetization channels</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-500 mr-2">→</span>
+                      <span>Defensible position as the OS for AI workflows</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Download Section */}
         <section id="download" className="py-20">
           <div className="max-w-7xl mx-auto px-4 text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Download Aetheria AI</h2>
-            <p className="text-xl text-gray-400 mb-12">Available for all major platforms</p>
+            <p className="text-xl text-gray-400 mb-12">The only AI solution with true cross-platform capabilities</p>
             
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-5 gap-6 max-w-5xl mx-auto">
               {downloads.map((item, i) => (
-                <div key={i} className="p-8 glass-effect rounded-xl hover:bg-white/10 transition-all transform hover:scale-105">
+                <div key={i} className="p-6 glass-effect rounded-xl hover:bg-white/10 transition-all transform hover:scale-105">
                   <div className="text-4xl mb-4">{item.emoji}</div>
                   <h3 className="text-xl font-bold mb-2">{item.platform}</h3>
                   <p className="text-gray-400 mb-4">{item.desc}</p>
@@ -153,34 +252,55 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Pricing Section */}
-        <section id="pricing" className="py-20 bg-gray-800/50">
+        {/* Competitive Advantages Section */}
+        <section id="advantages" className="py-20 bg-gray-800/50">
           <div className="max-w-7xl mx-auto px-4">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">Choose Your Plan</h2>
-              <p className="text-xl text-gray-400">Start free, upgrade when you need more power</p>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">Why Choose Aetheria AI?</h2>
+              <p className="text-xl text-gray-400">The unified platform that replaces 5-10 different AI subscriptions</p>
             </div>
             
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {plans.map((plan, i) => (
-                <div key={i} className={`glass-effect rounded-xl p-8 text-center ${plan.popular ? 'border-2 border-blue-500 relative' : ''}`}>
-                  {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 px-4 py-1 rounded-full text-sm">
-                      Popular
-                    </div>
-                  )}
-                  <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
-                  <div className="text-4xl font-bold mb-6">${plan.price}<span className="text-lg text-gray-400">/month</span></div>
-                  <ul className="text-left space-y-3 mb-8">
-                    {plan.features.map((feature, j) => (
-                      <li key={j} className="flex items-center"><span className="text-green-400 mr-2">✓</span> {feature}</li>
+              {competitiveAdvantages.map((item, i) => (
+                <div key={i} className="glass-effect rounded-xl p-8 h-full">
+                  <h3 className="text-2xl font-bold mb-6 text-center">vs. {item.competitor}</h3>
+                  <ul className="text-left space-y-4 mb-8">
+                    {item.advantages.map((advantage, j) => (
+                      <li key={j} className="flex items-start">
+                        <span className="text-green-400 mr-2 mt-1">✓</span> 
+                        <span>{advantage}</span>
+                      </li>
                     ))}
                   </ul>
-                  <Link href="/auth/signup" className={`w-full py-3 rounded-lg transition-colors block ${plan.buttonClass}`}>
-                    {plan.buttonText}
-                  </Link>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section id="testimonials" className="py-20">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">What Our Users Say</h2>
+              <p className="text-xl text-gray-400">Join thousands of satisfied users and investors</p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {testimonials.map((item, i) => (
+                <div key={i} className="glass-effect rounded-xl p-8 text-center">
+                  <div className="text-4xl text-gray-500 mb-6">❝</div>
+                  <p className="text-lg mb-6 italic">"{item.quote}"</p>
+                  <div className="font-bold">{item.name}</div>
+                  <div className="text-gray-400 text-sm">{item.title}</div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-12 text-center">
+              <Link href="/auth/signup" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-xl text-lg font-semibold transition-all transform hover:scale-105 inline-block">
+                Join Them Today
+              </Link>
             </div>
           </div>
         </section>
