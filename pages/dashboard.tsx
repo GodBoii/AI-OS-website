@@ -106,8 +106,8 @@ export default function Dashboard() {
       name: 'Windows', 
       emoji: '🪟', 
       desc: '64-bit installer',
-      filename: 'Aetheria ai Setup 1.0.4.exe',
-      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.0.0/Aetheria.ai.Setup.1.0.4.exe',
+      filename: 'Aetheria ai Setup 1.1.4.exe',
+      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.1.4/Aetheria.ai.Setup.1.1.4.exe',
       available: true
     },
     { 
