@@ -64,7 +64,7 @@ const formatNumber = (num: number): string => {
 };
 
 // Group logs by day
-const groupLogsByDay = (logs: RequestLog[]): Record<string, { 
+const groupLogsByDay = (logs: RequestLog[]): Record<string, {
   date: string,
   total_tokens: number,
   input_tokens: number,
@@ -142,9 +142,9 @@ const UsageCard: React.FC<UsageCardProps> = ({ usageData, isLoading, timePeriod 
   // Group filtered logs by day
   const dailyData = useMemo(() => {
     const grouped = groupLogsByDay(filteredLogs);
-    
+
     // Sort by date (ascending)
-    return Object.values(grouped).sort((a, b) => 
+    return Object.values(grouped).sort((a, b) =>
       new Date(a.date).getTime() - new Date(b.date).getTime()
     );
   }, [filteredLogs]);
@@ -171,28 +171,28 @@ const UsageCard: React.FC<UsageCardProps> = ({ usageData, isLoading, timePeriod 
   // Prepare chart data based on selected token type
   const chartData = useMemo(() => {
     const labels = dailyData.map(day => day.date);
-    
+
     // Select data based on token type
     let tokenData: number[];
     let borderColor: string;
     let backgroundColor: string;
-    
+
     switch (tokenType) {
       case 'input':
         tokenData = dailyData.map(day => day.input_tokens);
-        borderColor = 'rgb(75, 192, 192)';
-        backgroundColor = 'rgba(75, 192, 192, 0.2)';
+        borderColor = '#000000';
+        backgroundColor = '#ccff00'; // neo-lime
         break;
       case 'output':
         tokenData = dailyData.map(day => day.output_tokens);
-        borderColor = 'rgb(153, 102, 255)';
-        backgroundColor = 'rgba(153, 102, 255, 0.2)';
+        borderColor = '#000000';
+        backgroundColor = '#FF4D9B'; // neo-pink
         break;
       case 'total':
       default:
         tokenData = dailyData.map(day => day.total_tokens);
-        borderColor = 'rgb(54, 162, 235)';
-        backgroundColor = 'rgba(54, 162, 235, 0.2)';
+        borderColor = '#000000';
+        backgroundColor = '#00ffff'; // neo-cyan
     }
 
     return {
@@ -204,7 +204,8 @@ const UsageCard: React.FC<UsageCardProps> = ({ usageData, isLoading, timePeriod 
           fill: true,
           backgroundColor,
           borderColor,
-          tension: 0.4,
+          borderWidth: 2,
+          tension: 0, // Sharp lines for brutalism
         },
       ],
     };
@@ -213,26 +214,26 @@ const UsageCard: React.FC<UsageCardProps> = ({ usageData, isLoading, timePeriod 
   // Determine usage level for visual indicator
   const getUsageLevel = useMemo(() => {
     if (!filteredMetrics || filteredMetrics.request_count === 0) {
-      return { color: 'bg-gray-400', text: 'No data' };
+      return { color: 'bg-gray-200', text: 'No data' };
     }
-    
+
     const requestCount = filteredMetrics.request_count;
-    
-    if (requestCount === 0) return { color: 'bg-gray-400', text: 'No usage' };
-    if (requestCount < 5) return { color: 'bg-green-400', text: 'Low' };
-    if (requestCount < 20) return { color: 'bg-blue-400', text: 'Moderate' };
-    if (requestCount < 50) return { color: 'bg-yellow-400', text: 'High' };
-    return { color: 'bg-purple-400', text: 'Intensive' };
+
+    if (requestCount === 0) return { color: 'bg-gray-200', text: 'No usage' };
+    if (requestCount < 5) return { color: 'bg-neo-lime', text: 'Low' };
+    if (requestCount < 20) return { color: 'bg-neo-blue', text: 'Moderate' };
+    if (requestCount < 50) return { color: 'bg-neo-yellow', text: 'High' };
+    return { color: 'bg-neo-pink', text: 'Intensive' };
   }, [filteredMetrics]);
 
   if (isLoading) {
     return (
-      <div className="glass-effect rounded-xl p-6">
-        <h3 className="text-xl font-semibold mb-4">Usage Metrics</h3>
+      <div className="card-brutal">
+        <h3 className="text-xl font-black uppercase mb-4">Usage Metrics</h3>
         <div className="flex items-center justify-center h-64">
-          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-16 h-16 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
         </div>
-        <p className="text-center text-gray-400 mt-4">Loading your usage data...</p>
+        <p className="text-center font-mono mt-4">SYNCING DATA...</p>
       </div>
     );
   }
@@ -245,11 +246,12 @@ const UsageCard: React.FC<UsageCardProps> = ({ usageData, isLoading, timePeriod 
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(255, 255, 255, 0.1)',
+          color: 'rgba(0, 0, 0, 0.1)',
         },
         ticks: {
-          color: 'rgba(255, 255, 255, 0.7)',
-          callback: function(value) {
+          color: '#000000',
+          font: { family: 'Space Grotesk', weight: 'bold' },
+          callback: function (value) {
             if (typeof value === 'number') {
               return formatNumber(value);
             }
@@ -259,23 +261,29 @@ const UsageCard: React.FC<UsageCardProps> = ({ usageData, isLoading, timePeriod 
       },
       x: {
         grid: {
-          color: 'rgba(255, 255, 255, 0.1)',
+          color: 'rgba(0, 0, 0, 0.1)',
         },
         ticks: {
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: '#000000',
+          font: { family: 'Space Grotesk', weight: 'bold' }
         }
       }
     },
     plugins: {
       legend: {
         labels: {
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: '#000000',
+          font: { family: 'Space Grotesk', weight: 'bold' }
         }
       },
       tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        backgroundColor: '#000000',
+        titleColor: '#ffffff',
+        bodyColor: '#ffffff',
+        titleFont: { family: 'Space Grotesk' },
+        bodyFont: { family: 'JetBrains Mono' },
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             let label = context.dataset.label || '';
             if (label) {
               label += ': ';
@@ -293,12 +301,12 @@ const UsageCard: React.FC<UsageCardProps> = ({ usageData, isLoading, timePeriod 
   // No data scenario
   if (!usageData || !usageData.logs || usageData.logs.length === 0) {
     return (
-      <div className="glass-effect rounded-xl p-6">
-        <h3 className="text-xl font-semibold mb-4">Usage Metrics</h3>
-        <div className="flex items-center justify-center h-64">
+      <div className="card-brutal">
+        <h3 className="text-xl font-black uppercase mb-4">Usage Metrics</h3>
+        <div className="flex items-center justify-center h-64 border-2 border-dashed border-gray-400 bg-gray-50">
           <div className="text-center">
-            <p className="text-gray-400 mb-4">No usage data available for this time period</p>
-            <p className="text-sm text-gray-500">Start using the application to generate usage data</p>
+            <p className="font-bold uppercase mb-2">No Data Found</p>
+            <p className="font-mono text-sm">Initialize system to generate telemetry.</p>
           </div>
         </div>
       </div>
@@ -306,104 +314,105 @@ const UsageCard: React.FC<UsageCardProps> = ({ usageData, isLoading, timePeriod 
   }
 
   return (
-    <div className="glass-effect rounded-xl p-6">
-      <h3 className="text-xl font-semibold mb-4">Usage Metrics</h3>
-      
-      <div className="mb-6">
+    <div className="card-brutal">
+      <h3 className="text-xl font-black uppercase mb-6 bg-black text-white inline-block px-2">Usage Telemetry</h3>
+
+      <div className="mb-8 border-2 border-black p-4 bg-gray-50">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-gray-400">Requests ({timePeriod === 'all' ? 'All Time' : timePeriod}):</span>
-          <div className={`px-3 py-1 rounded-full text-xs font-medium ${getUsageLevel.color} text-gray-800`}>
+          <span className="font-bold uppercase text-sm">Requests ({timePeriod === 'all' ? 'All Time' : timePeriod}):</span>
+          <div className={`px-3 py-1 font-bold uppercase text-xs border border-black ${getUsageLevel.color} text-black`}>
             {getUsageLevel.text}
           </div>
         </div>
         <div className="flex items-center">
-          <span className="text-3xl font-bold text-blue-400 mr-2">
+          <span className="text-4xl font-black mr-4 font-mono">
             {formatNumber(filteredMetrics.request_count)}
           </span>
-          <div className="h-2 flex-grow bg-gray-700 rounded-full overflow-hidden">
-            <div 
-              className={`h-full ${getUsageLevel.color}`} 
-              style={{ 
-                width: `${Math.min(100, (filteredMetrics.request_count / 50) * 100)}%` 
+          <div className="h-4 flex-grow border-2 border-black bg-white rounded-none overflow-hidden relative">
+            <div className="absolute inset-0 bg-[url('/stripe.png')] opacity-10"></div>
+            <div
+              className={`h-full ${getUsageLevel.color}`}
+              style={{
+                width: `${Math.min(100, (filteredMetrics.request_count / 50) * 100)}%`
               }}
             ></div>
           </div>
         </div>
       </div>
-      
+
       <div>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-gray-400">Token Usage Over Time:</span>
+        <div className="flex justify-between items-center mb-4">
+          <span className="font-bold uppercase text-sm">Token Velocity:</span>
           <div className="flex space-x-2">
-            <button 
+            <button
               onClick={() => setTokenType('total')}
-              className={`px-3 py-1 rounded-lg text-xs ${tokenType === 'total' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+              className={`px-3 py-1 text-xs font-bold uppercase border-2 border-black transition-all ${tokenType === 'total' ? 'bg-black text-white' : 'bg-white hover:bg-gray-200'}`}
             >
               Total
             </button>
-            <button 
+            <button
               onClick={() => setTokenType('input')}
-              className={`px-3 py-1 rounded-lg text-xs ${tokenType === 'input' ? 'bg-teal-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+              className={`px-3 py-1 text-xs font-bold uppercase border-2 border-black transition-all ${tokenType === 'input' ? 'bg-neo-lime text-black' : 'bg-white hover:bg-gray-200'}`}
             >
               Input
             </button>
-            <button 
+            <button
               onClick={() => setTokenType('output')}
-              className={`px-3 py-1 rounded-lg text-xs ${tokenType === 'output' ? 'bg-purple-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+              className={`px-3 py-1 text-xs font-bold uppercase border-2 border-black transition-all ${tokenType === 'output' ? 'bg-neo-pink text-black' : 'bg-white hover:bg-gray-200'}`}
             >
               Output
             </button>
           </div>
         </div>
-        <div className="h-64">
+        <div className="h-64 border-2 border-black p-2 bg-white">
           {dailyData.length > 1 ? (
             <Line data={chartData} options={chartOptions} />
           ) : (
             <div className="flex items-center justify-center h-full">
-              <p className="text-gray-400">Not enough data points to display a chart</p>
+              <p className="font-mono text-sm">INSUFFICIENT DATA POINTS</p>
             </div>
           )}
         </div>
       </div>
-      
-      <div className="grid grid-cols-3 gap-4 mt-4">
-        <div className="text-center">
-          <span className="text-gray-400 text-sm">Input Tokens</span>
-          <p className="font-medium">{formatNumber(filteredMetrics.input_tokens)}</p>
+
+      <div className="grid grid-cols-3 gap-4 mt-8">
+        <div className="text-center border-2 border-neo-lime p-2 bg-black text-white">
+          <span className="text-xs uppercase font-bold text-neo-lime">Input Tokens</span>
+          <p className="font-mono font-bold text-lg">{formatNumber(filteredMetrics.input_tokens)}</p>
         </div>
-        <div className="text-center">
-          <span className="text-gray-400 text-sm">Output Tokens</span>
-          <p className="font-medium">{formatNumber(filteredMetrics.output_tokens)}</p>
+        <div className="text-center border-2 border-neo-pink p-2 bg-black text-white">
+          <span className="text-xs uppercase font-bold text-neo-pink">Output Tokens</span>
+          <p className="font-mono font-bold text-lg">{formatNumber(filteredMetrics.output_tokens)}</p>
         </div>
-        <div className="text-center">
-          <span className="text-gray-400 text-sm">Total Tokens</span>
-          <p className="font-medium">{formatNumber(filteredMetrics.total_tokens)}</p>
+        <div className="text-center border-2 border-neo-cyan p-2 bg-black text-white">
+          <span className="text-xs uppercase font-bold text-neo-cyan">Total Tokens</span>
+          <p className="font-mono font-bold text-lg">{formatNumber(filteredMetrics.total_tokens)}</p>
         </div>
       </div>
 
       {/* Usage Summary Table */}
       {dailyData.length > 0 && (
-        <div className="mt-6">
-          <h4 className="text-lg font-semibold mb-3">Daily Breakdown</h4>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+        <div className="mt-8 border-t-2 border-black pt-6">
+          <h4 className="text-lg font-black uppercase mb-4">Daily Breakdown</h4>
+          <div className="overflow-x-auto border-2 border-black">
+            <table className="w-full text-sm font-mono">
               <thead>
-                <tr className="border-b border-gray-700">
-                  <th className="py-2 text-left">Date</th>
-                  <th className="py-2 text-right">Requests</th>
-                  <th className="py-2 text-right">Input Tokens</th>
-                  <th className="py-2 text-right">Output Tokens</th>
-                  <th className="py-2 text-right">Total Tokens</th>
+                <tr className="bg-black text-white text-xs uppercase">
+                  <th className="py-2 px-3 text-left">Date</th>
+                  <th className="py-2 px-3 text-right border-l border-gray-700">Reqs</th>
+                  <th className="py-2 px-3 text-right border-l border-gray-700">In</th>
+                  <th className="py-2 px-3 text-right border-l border-gray-700">Out</th>
+                  <th className="py-2 px-3 text-right border-l border-gray-700">Total</th>
                 </tr>
               </thead>
               <tbody>
                 {dailyData.map((day) => (
-                  <tr key={day.date} className="border-b border-gray-800">
-                    <td className="py-2 text-left">{new Date(day.date).toLocaleDateString()}</td>
-                    <td className="py-2 text-right">{formatNumber(day.request_count)}</td>
-                    <td className="py-2 text-right">{formatNumber(day.input_tokens)}</td>
-                    <td className="py-2 text-right">{formatNumber(day.output_tokens)}</td>
-                    <td className="py-2 text-right">{formatNumber(day.total_tokens)}</td>
+                  <tr key={day.date} className="border-b border-black hover:bg-neo-yellow transition-colors">
+                    <td className="py-2 px-3 text-left font-bold">{new Date(day.date).toLocaleDateString()}</td>
+                    <td className="py-2 px-3 text-right border-l border-black">{formatNumber(day.request_count)}</td>
+                    <td className="py-2 px-3 text-right border-l border-black">{formatNumber(day.input_tokens)}</td>
+                    <td className="py-2 px-3 text-right border-l border-black">{formatNumber(day.output_tokens)}</td>
+                    <td className="py-2 px-3 text-right border-l border-black">{formatNumber(day.total_tokens)}</td>
                   </tr>
                 ))}
               </tbody>

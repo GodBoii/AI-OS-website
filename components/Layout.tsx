@@ -34,46 +34,68 @@ const Layout = ({ children }: { children: ReactNode }) => {
     };
   }, [mobileMenuOpen]);
 
-  return (
-    <div className="flex flex-col min-h-screen">
-      <header className="fixed top-0 w-full z-50 glass-effect">
-        <nav className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center">
-                <div className="w-10 h-10 flex items-center justify-center mr-3">
-                  <img src="/icon.ico" alt="Aetheria AI Logo" className="w-full h-full" />
-                </div>
-                <span className="text-xl font-bold">Aetheria AI</span>
-              </Link>
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/playbook', label: 'Playbook' },
+    { href: '/#features', label: 'Features' },
+    { href: '/#download', label: 'Download' },
+    { href: '/#about', label: 'About' },
+  ];
 
-              <div className="hidden md:flex ml-6 space-x-8">
-                <Link href="/" className={`hover:text-blue-400 transition-colors ${router.pathname === '/' ? 'text-blue-400' : ''}`}>Home</Link>
-                <Link href="/playbook" className={`hover:text-blue-400 transition-colors ${router.pathname === '/playbook' ? 'text-blue-400' : ''}`}>Playbook</Link>
-                <Link href="/#features" className="hover:text-blue-400 transition-colors">Features</Link>
-                <Link href="/#download" className="hover:text-blue-400 transition-colors">Download</Link>
-                <Link href="/#about" className="hover:text-blue-400 transition-colors">About</Link>
-              </div>
+  return (
+    <div className="flex flex-col min-h-screen bg-neo-bg text-black font-sans selection:bg-neo-lime">
+      <header className="fixed top-0 w-full z-50 bg-white border-b-2 border-black">
+        <nav className="max-w-7xl mx-auto px-4">
+          <div className="flex justify-between items-center h-20">
+            {/* Logo */}
+            <div className="flex items-center">
+              <Link href="/" className="flex items-center group">
+                <div className="w-12 h-12 flex items-center justify-center mr-3 border-2 border-black bg-neo-lime shadow-brutal-sm group-hover:shadow-none group-hover:translate-y-1 transition-all">
+                  <img src="/icon.ico" alt="Logo" className="w-8 h-8" />
+                </div>
+                <span className="text-2xl font-black tracking-tighter">Aetheria ai</span>
+              </Link>
             </div>
 
-            <div className="hidden md:flex items-center">
+            {/* Desktop Nav */}
+            <div className="hidden md:flex items-center space-x-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className={`px-4 py-2 font-bold uppercase text-sm border-2 border-transparent hover:border-black hover:bg-neo-yellow transition-all ${router.pathname === link.href ? 'bg-black text-white' : ''}`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Auth Buttons */}
+            <div className="hidden md:flex items-center space-x-3 pl-6 border-l-2 border-black ml-6 h-10">
               {user ? (
-                <div className="flex items-center space-x-4">
-                  <Link href="/dashboard" className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors">Dashboard</Link>
-                  <button onClick={() => { supabase.auth.signOut(); router.push('/'); }} className="text-red-400 hover:text-red-300 transition-colors px-4 py-2">Sign Out</button>
+                <div className="flex items-center space-x-3">
+                  <Link href="/dashboard" className="btn-brutal bg-neo-mint py-2 px-4 shadow-brutal-sm hover:shadow-brutal text-sm">
+                    Dashboard
+                  </Link>
+                  <button onClick={() => { supabase.auth.signOut(); router.push('/'); }} className="font-bold border-b-2 border-black hover:bg-red-500 hover:text-white transition-colors">
+                    Sign Out
+                  </button>
                 </div>
               ) : (
-                <div className="flex items-center space-x-4">
-                  <Link href="/auth/login" className="text-blue-400 hover:text-blue-300 transition-colors px-4 py-2">Log In</Link>
-                  <Link href="/auth/signup" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">Sign Up</Link>
-                </div>
+                <>
+                  <Link href="/auth/login" className="font-bold hover:underline">Log In</Link>
+                  <Link href="/auth/signup" className="btn-brutal bg-black text-white py-2 px-6 shadow-brutal-sm text-sm hover:bg-gray-800">
+                    Sign Up
+                  </Link>
+                </>
               )}
             </div>
 
+            {/* Mobile Toggle */}
             <div className="md:hidden">
-              <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-white">
+              <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 border-2 border-black shadow-brutal-sm active:shadow-none active:translate-y-1">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
               </button>
             </div>
@@ -82,22 +104,28 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div ref={sidebarRef} className="md:hidden glass-effect">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <Link href="/" className={`block px-3 py-2 hover:text-blue-400 ${router.pathname === '/' ? 'text-blue-400' : ''}`}>Home</Link>
-              <Link href="/playbook" className={`block px-3 py-2 hover:text-blue-400 ${router.pathname === '/playbook' ? 'text-blue-400' : ''}`}>Playbook</Link>
-              <Link href="/#features" className="block px-3 py-2 hover:text-blue-400">Features</Link>
-              <Link href="/#download" className="block px-3 py-2 hover:text-blue-400">Download</Link>
-              <Link href="/#about" className="block px-3 py-2 hover:text-blue-400">About</Link>
+          <div ref={sidebarRef} className="md:hidden border-t-2 border-black bg-white absolute w-full left-0 animate-slide-down">
+            <div className="p-4 space-y-2 flex flex-col">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="block px-4 py-3 border-2 border-black font-bold uppercase hover:bg-neo-yellow shadow-brutal-sm text-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <div className="h-px bg-black my-2"></div>
               {user ? (
                 <>
-                  <Link href="/dashboard" className="block px-3 py-2 hover:text-blue-400">Dashboard</Link>
-                  <button onClick={() => { supabase.auth.signOut(); router.push('/'); }} className="block w-full text-left px-3 py-2 text-red-400 hover:text-red-300">Sign Out</button>
+                  <Link href="/dashboard" className="btn-brutal bg-neo-mint text-center block">Dashboard</Link>
+                  <button onClick={() => { supabase.auth.signOut(); router.push('/'); }} className="btn-brutal bg-red-500 text-white text-center block w-full mt-2">Sign Out</button>
                 </>
               ) : (
                 <>
-                  <Link href="/auth/login" className="block px-3 py-2 hover:text-blue-400">Log In</Link>
-                  <Link href="/auth/signup" className="block px-3 py-2 hover:text-blue-400">Sign Up</Link>
+                  <Link href="/auth/login" className="block text-center font-bold py-2 border-2 border-transparent hover:border-black">Log In</Link>
+                  <Link href="/auth/signup" className="btn-brutal bg-black text-white text-center block">Sign Up</Link>
                 </>
               )}
             </div>
@@ -105,71 +133,66 @@ const Layout = ({ children }: { children: ReactNode }) => {
         )}
       </header>
 
-      <main className="flex-grow pt-16">{children}</main>
+      <main className="flex-grow pt-24 pb-12 overflow-x-hidden">
+        {children}
+      </main>
 
-      <footer className="bg-gray-900 border-t border-gray-800 py-12">
+      <footer className="bg-black text-white border-t-4 border-neo-lime py-16">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-4 gap-12">
             <div>
-              <div className="flex items-center mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-2">
-                  <span className="text-sm font-bold">AI</span>
+              <div className="flex items-center mb-6">
+                <div className="w-10 h-10 bg-neo-lime border-2 border-white text-black flex items-center justify-center mr-3 font-bold text-xl shadow-[4px_4px_0px_0px_#fff]">
+                  AI
                 </div>
-                <span className="text-lg font-bold">Aetheria AI</span>
+                <span className="text-2xl font-bold font-mono">AETHERIA</span>
               </div>
-              <p className="text-gray-400">The future of intelligent computing</p>
+              <p className="text-gray-400 font-mono text-sm leading-relaxed">
+                The operating system for the next generation of intelligence.
+                <br />
+                Brutally efficient.
+              </p>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/#features" className="hover:text-white">Features</Link></li>
-                <li><Link href="/#download" className="hover:text-white">Download</Link></li>
+              <h4 className="font-bold uppercase tracking-widest text-neo-lime mb-6 border-b-2 border-neo-lime inline-block pb-1">Product</h4>
+              <ul className="space-y-3 font-mono">
+                <li><Link href="/#features" className="hover:text-neo-lime hover:translate-x-1 inline-block transition-transform">Features</Link></li>
+                <li><Link href="/#download" className="hover:text-neo-lime hover:translate-x-1 inline-block transition-transform">Download</Link></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
+              <h4 className="font-bold uppercase tracking-widest text-neo-lime mb-6 border-b-2 border-neo-lime inline-block pb-1">Interact</h4>
+              <ul className="space-y-3 font-mono">
+                <li><Link href="/contact" className="hover:text-neo-lime hover:translate-x-1 inline-block transition-transform">Contact Protocols</Link></li>
+                <li><Link href="/playbook" className="hover:text-neo-lime hover:translate-x-1 inline-block transition-transform">The Playbook</Link></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-white">Terms of Service</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">About Me</h4>
-              <div className="flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full overflow-hidden mb-3">
+              <h4 className="font-bold uppercase tracking-widest text-neo-lime mb-6 border-b-2 border-neo-lime inline-block pb-1">Creator</h4>
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 border-2 border-white shadow-[4px_4px_0px_0px_#fff] overflow-hidden grayscale hover:grayscale-0 transition-all">
                   <img src="/Prajwal.jpg" alt="Prajwal" className="w-full h-full object-cover" />
                 </div>
-                <p className="text-gray-400 mb-3">Prajwal</p>
-                <div className="flex space-x-3">
-                  <a href="https://github.com/GodBoii" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-                    </svg>
-                  </a>
-                  <a href="https://www.instagram.com/prajwal_._7/?hl=en" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772a4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" />
-                    </svg>
-                  </a>
+                <div>
+                  <p className="font-bold text-lg">Prajwal</p>
+                  <div className="flex space-x-2 mt-2">
+                    <a href="https://github.com/GodBoii" target="_blank" className="bg-white text-black p-1 hover:bg-neo-lime transition-colors">GH</a>
+                    <a href="https://www.instagram.com/prajwal_._7/?hl=en" target="_blank" className="bg-white text-black p-1 hover:bg-neo-pink transition-colors">IG</a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <div className="mb-2">developed by Prajwal Ghadge</div>
-            <div className="mb-1">Email: <a href="mailto:prajwalghadge2005@gmail.com" className="text-blue-400 underline">prajwalghadge2005@gmail.com</a></div>
-            <div>Phone: <a href="tel:9619039912" className="text-blue-400 underline">9619039912</a></div>
+          <div className="border-t-2 border-gray-800 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-500 font-mono text-xs uppercase">
+            <div>© 2025 Aetheria AI // All Systems Operational</div>
+            <div className="mt-4 md:mt-0">
+              <a href="mailto:prajwalghadge2005@gmail.com" className="hover:text-white mr-6">Email_Link</a>
+              <a href="tel:9619039912" className="hover:text-white">Secure_Line</a>
+            </div>
           </div>
         </div>
       </footer>

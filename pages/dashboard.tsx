@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { supabase, User, getCurrentSession } from '../lib/supabaseClient';
 import UsageCard from '../components/UsageCard';
+import Layout from '../components/Layout'; // Import Layout to ensure consistent header/footer
 
 // Define the RequestLog type
 type RequestLog = {
@@ -40,9 +41,16 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function getUser() {
+      console.log('Dashboard: Checking session...');
       const session = await getCurrentSession();
-      if (!session) return router.push('/auth/login');
-      
+      console.log('Dashboard: Session check result:', session ? 'Session found' : 'No session');
+
+      if (!session) {
+        console.log('Dashboard: No session, redirecting to login...');
+        return router.push('/auth/login');
+      }
+
+      console.log('Dashboard: Authenticated as', session.user.email);
       setUser(session.user);
       setToken(session.access_token);
       setLoading(false);
@@ -58,12 +66,12 @@ export default function Dashboard() {
 
   function fetchUsageData() {
     if (!user || !token) return;
-    
+
     setUsageLoading(true);
     setUsageError(null);
-    
+
     console.log('Fetching usage data for user:', user.id);
-    
+
     fetch('/api/usage', {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -96,31 +104,31 @@ export default function Dashboard() {
   };
 
   if (loading) return (
-    <div className="flex items-center justify-center min-h-screen hero-pattern">
-      <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    <div className="flex items-center justify-center min-h-screen bg-neo-bg">
+      <div className="w-20 h-20 border-8 border-black border-t-neo-lime rounded-full animate-spin"></div>
     </div>
   );
 
   const platforms = [
-    { 
-      name: 'Windows', 
-      emoji: '🪟', 
+    {
+      name: 'Windows',
+      emoji: '🪟',
       desc: '64-bit installer',
       filename: 'Aetheria ai Setup 1.1.4.exe',
       path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.1.4/Aetheria.ai.Setup.1.1.4.exe',
       available: true
     },
-    { 
-      name: 'macOS', 
-      emoji: '🍎', 
-      desc: 'Universal (Intel/Apple Silicon)',
+    {
+      name: 'macOS',
+      emoji: '🍎',
+      desc: 'Universal',
       filename: '',
       path: '',
       available: false
     },
-    { 
-      name: 'Linux', 
-      emoji: '🐧', 
+    {
+      name: 'Linux',
+      emoji: '🐧',
       desc: 'AppImage',
       filename: '',
       path: '',
@@ -130,8 +138,7 @@ export default function Dashboard() {
 
   const handleDownload = (platform: typeof platforms[0]) => {
     if (!platform.available) return;
-    
-    // Create a temporary anchor element
+
     const link = document.createElement('a');
     link.href = platform.path;
     link.download = platform.filename;
@@ -145,162 +152,132 @@ export default function Dashboard() {
   };
 
   return (
-    <>
+    <Layout>
       <Head>
-        <title>Dashboard - Aetheria AI</title>
+        <title>DASHBOARD // Aetheria AI</title>
         <link rel="icon" href="/icon.ico" />
       </Head>
-      <div className="pt-20 min-h-screen hero-pattern">
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 sm:py-8">
-          <div className="mb-6 sm:mb-8">
-            <h1 className="text-3xl sm:text-4xl font-bold mb-2">Welcome to your Dashboard</h1>
-            <p className="text-gray-400 text-base sm:text-lg">Manage your Aetheria AI experience</p>
+      <div className="bg-neo-bg min-h-screen pb-20">
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          <div className="mb-12 border-l-8 border-black pl-6">
+            <h1 className="text-5xl md:text-6xl font-black uppercase mb-2">Command Center</h1>
+            <p className="text-xl font-mono text-gray-600">Welcome back, Operator.</p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Profile Card */}
-            <div className="glass-effect rounded-xl p-4 sm:p-6 w-full">
-              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Profile Information</h3>
-              <div className="space-y-3 sm:space-y-4">
+            <div className="card-brutal bg-white group hover:bg-black hover:text-white transition-colors">
+              <h3 className="text-2xl font-black uppercase mb-6 border-b-4 border-black group-hover:border-white pb-2">Identity</h3>
+              <div className="space-y-4 font-mono">
                 <div>
-                  <span className="text-gray-400">Name:</span>
-                  <p className="font-medium break-words">{user?.user_metadata?.name || 'Not provided'}</p>
+                  <span className="text-xs uppercase font-bold text-gray-500 group-hover:text-gray-400">Name</span>
+                  <p className="font-bold text-lg">{user?.user_metadata?.name || 'Unknown'}</p>
                 </div>
                 <div>
-                  <span className="text-gray-400">Email:</span>
-                  <p className="font-medium break-words">{user?.email}</p>
+                  <span className="text-xs uppercase font-bold text-gray-500 group-hover:text-gray-400">Email</span>
+                  <p className="font-bold break-words">{user?.email}</p>
                 </div>
                 <div>
-                  <span className="text-gray-400">Plan:</span>
-                  <p className="text-green-400 font-medium">Free</p>
+                  <span className="text-xs uppercase font-bold text-gray-500 group-hover:text-gray-400">Status</span>
+                  <p className="text-neo-lime font-bold uppercase bg-black group-hover:bg-neo-lime group-hover:text-black inline-block px-2">Active Agent</p>
                 </div>
                 <div>
-                  <span className="text-gray-400">Joined:</span>
-                  <p>{new Date(user?.created_at || '').toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    year: 'numeric' 
-                  })}</p>
-                </div>
-                <div>
-                  <span className="text-gray-400">User ID:</span>
-                  <p className="text-xs break-all">{user?.id}</p>
+                  <span className="text-xs uppercase font-bold text-gray-500 group-hover:text-gray-400">User ID</span>
+                  <p className="text-xs break-all opacity-50">{user?.id}</p>
                 </div>
               </div>
             </div>
-            
+
             {/* Download Card */}
-            <div className="glass-effect rounded-xl p-4 sm:p-6 w-full">
-              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Download AI-OS</h3>
-              <p className="text-gray-400 mb-3 sm:mb-4 text-sm sm:text-base">Latest version: v1.0.0</p>
-              <div className="space-y-2 sm:space-y-3">
+            <div className="card-brutal bg-neo-yellow">
+              <h3 className="text-2xl font-black uppercase mb-6 border-b-4 border-black pb-2">Binaries</h3>
+              <p className="font-mono mb-4 text-sm bg-white border border-black inline-block px-2">Latest Build: v1.0.0</p>
+              <div className="space-y-3">
                 {platforms.map((platform) => (
-                  <button 
-                    key={platform.name} 
+                  <button
+                    key={platform.name}
                     onClick={() => handleDownload(platform)}
-                    className={`w-full py-2 ${platform.available ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-600 cursor-not-allowed'} rounded-lg transition-colors transform hover:scale-105 flex items-center justify-center text-sm sm:text-base`}
+                    className={`w-full py-3 border-2 border-black font-bold uppercase shadow-brutal-sm active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all flex items-center justify-center ${platform.available ? 'bg-white hover:bg-black hover:text-white' : 'bg-gray-300 opacity-50 cursor-not-allowed'}`}
                   >
-                    <span className="mr-2">{platform.emoji}</span>
+                    <span className="mr-3 text-xl">{platform.emoji}</span>
                     <span>
-                      {platform.available 
-                        ? `Download for ${platform.name}` 
-                        : `${platform.name} - Coming Soon`}
+                      {platform.available
+                        ? `Get for ${platform.name}`
+                        : `${platform.name} // Locked`}
                     </span>
                   </button>
                 ))}
               </div>
             </div>
-            
+
             {/* Subscription Card */}
-            <div className="glass-effect rounded-xl p-4 sm:p-6 w-full">
-              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Subscription</h3>
-              <p className="text-gray-400 mb-3 sm:mb-4 text-sm sm:text-base">Upgrade to unlock premium features</p>
-              <div className="space-y-3 sm:space-y-4">
-                <div className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-lg p-3 sm:p-4">
-                  <div className="flex justify-between items-center mb-1 sm:mb-2">
-                    <span className="font-semibold">Pro</span>
-                    <span className="text-blue-400">$19/month</span>
+            <div className="card-brutal bg-neo-pink">
+              <h3 className="text-2xl font-black uppercase mb-6 border-b-4 border-black pb-2">Access Level</h3>
+              <div className="space-y-4">
+                <div className="bg-white border-2 border-black p-4 shadow-brutal-sm relative">
+                  <div className="absolute -top-3 -right-3 bg-black text-white px-2 py-1 text-xs font-bold uppercase transform rotate-12">Recommended</div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-black uppercase text-xl">Pro</span>
+                    <span className="font-mono font-bold">$19/mo</span>
                   </div>
-                  <ul className="text-xs sm:text-sm text-gray-300 space-y-1 mb-3 sm:mb-4">
-                    <li>✓ Advanced AI capabilities</li>
-                    <li>✓ Priority support</li>
-                    <li>✓ Custom workflows</li>
-                  </ul>
-                  <button className="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors transform hover:scale-105 text-xs sm:text-base">
-                    Upgrade to Pro
+                  <button className="w-full py-2 bg-black text-white hover:bg-gray-800 font-bold uppercase transition-colors">
+                    Upgrade Access
                   </button>
                 </div>
-                
-                <div className="bg-gradient-to-r from-purple-500/20 to-pink-600/20 rounded-lg p-3 sm:p-4">
-                  <div className="flex justify-between items-center mb-1 sm:mb-2">
-                    <span className="font-semibold">Enterprise</span>
-                    <span className="text-purple-400">Custom pricing</span>
+
+                <div className="bg-white border-2 border-black p-4 shadow-brutal-sm opacity-75 hover:opacity-100 transition-opacity">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-black uppercase text-xl">Enterprise</span>
+                    <span className="font-mono font-bold">Custom</span>
                   </div>
-                  <button className="w-full py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors transform hover:scale-105 text-xs sm:text-base">
-                    Contact Sales
+                  <button className="w-full py-2 border-2 border-black hover:bg-black hover:text-white font-bold uppercase transition-colors">
+                    Contact Command
                   </button>
                 </div>
               </div>
             </div>
 
             {/* Usage Metrics Card - Takes full width */}
-            <div className="col-span-1 md:col-span-3 mt-4 sm:mt-6">
-              <div className="glass-effect rounded-xl p-4 mb-4">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold">Time Period</h3>
-                  <div className="flex space-x-2">
-                    <button 
-                      onClick={() => handleTimePeriodChange('7days')}
-                      className={`px-3 py-1 rounded-lg text-sm ${timePeriod === '7days' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+            <div className="col-span-1 md:col-span-3 mt-8">
+              <div className="flex flex-wrap gap-4 mb-6 items-center">
+                <h3 className="text-2xl font-black uppercase mr-auto">System Telemetry</h3>
+                <div className="flex space-x-2 bg-white border-2 border-black p-1">
+                  {(['7days', '30days', '90days', 'all'] as TimePeriod[]).map((period) => (
+                    <button
+                      key={period}
+                      onClick={() => handleTimePeriodChange(period)}
+                      className={`px-4 py-2 text-xs font-bold uppercase transition-colors ${timePeriod === period ? 'bg-black text-white' : 'hover:bg-gray-200 text-black'}`}
                     >
-                      7 Days
+                      {period === 'all' ? 'All Time' : period}
                     </button>
-                    <button 
-                      onClick={() => handleTimePeriodChange('30days')}
-                      className={`px-3 py-1 rounded-lg text-sm ${timePeriod === '30days' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
-                    >
-                      30 Days
-                    </button>
-                    <button 
-                      onClick={() => handleTimePeriodChange('90days')}
-                      className={`px-3 py-1 rounded-lg text-sm ${timePeriod === '90days' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
-                    >
-                      90 Days
-                    </button>
-                    <button 
-                      onClick={() => handleTimePeriodChange('all')}
-                      className={`px-3 py-1 rounded-lg text-sm ${timePeriod === 'all' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
-                    >
-                      All Time
-                    </button>
-                  </div>
+                  ))}
                 </div>
               </div>
-              
+
               {usageError ? (
-                <div className="glass-effect rounded-xl p-6">
-                  <h3 className="text-xl font-semibold mb-4">Usage Metrics</h3>
-                  <div className="bg-red-900/20 border border-red-500/50 text-red-400 p-4 rounded mb-4">
-                    <p className="mb-2"><strong>Error:</strong> {usageError}</p>
-                    <p className="text-sm">This could be due to missing data or a server configuration issue.</p>
+                <div className="card-brutal bg-red-100 border-red-500">
+                  <h3 className="text-xl font-black text-red-600 mb-4 uppercase">System Error</h3>
+                  <div className="font-mono p-4 border-2 border-red-500 bg-white mb-4 text-red-600">
+                    <p><strong>Error Log:</strong> {usageError}</p>
                   </div>
-                  <button 
+                  <button
                     onClick={handleRetryFetch}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                    className="px-6 py-3 bg-red-500 text-white font-bold uppercase hover:bg-red-600 border-2 border-black shadow-brutal"
                   >
-                    Retry
+                    Retry Connection
                   </button>
                 </div>
               ) : (
-                <UsageCard 
-                  usageData={usageData} 
-                  isLoading={usageLoading} 
-                  timePeriod={timePeriod} 
+                <UsageCard
+                  usageData={usageData}
+                  isLoading={usageLoading}
+                  timePeriod={timePeriod}
                 />
               )}
             </div>
           </div>
         </div>
       </div>
-    </>
+    </Layout>
   );
 }
