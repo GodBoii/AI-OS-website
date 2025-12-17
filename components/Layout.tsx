@@ -46,9 +46,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 </div>
                 <span className="text-xl font-bold">Aetheria AI</span>
               </Link>
-              
+
               <div className="hidden md:flex ml-6 space-x-8">
                 <Link href="/" className={`hover:text-blue-400 transition-colors ${router.pathname === '/' ? 'text-blue-400' : ''}`}>Home</Link>
+                <Link href="/playbook" className={`hover:text-blue-400 transition-colors ${router.pathname === '/playbook' ? 'text-blue-400' : ''}`}>Playbook</Link>
                 <Link href="/#features" className="hover:text-blue-400 transition-colors">Features</Link>
                 <Link href="/#download" className="hover:text-blue-400 transition-colors">Download</Link>
                 <Link href="/#about" className="hover:text-blue-400 transition-colors">About</Link>
@@ -84,6 +85,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
           <div ref={sidebarRef} className="md:hidden glass-effect">
             <div className="px-2 pt-2 pb-3 space-y-1">
               <Link href="/" className={`block px-3 py-2 hover:text-blue-400 ${router.pathname === '/' ? 'text-blue-400' : ''}`}>Home</Link>
+              <Link href="/playbook" className={`block px-3 py-2 hover:text-blue-400 ${router.pathname === '/playbook' ? 'text-blue-400' : ''}`}>Playbook</Link>
               <Link href="/#features" className="block px-3 py-2 hover:text-blue-400">Features</Link>
               <Link href="/#download" className="block px-3 py-2 hover:text-blue-400">Download</Link>
               <Link href="/#about" className="block px-3 py-2 hover:text-blue-400">About</Link>
@@ -117,7 +119,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
               </div>
               <p className="text-gray-400">The future of intelligent computing</p>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4">Product</h4>
               <ul className="space-y-2 text-gray-400">
@@ -125,14 +127,14 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 <li><Link href="/#download" className="hover:text-white">Download</Link></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4">Support</h4>
               <ul className="space-y-2 text-gray-400">
                 <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4">Legal</h4>
               <ul className="space-y-2 text-gray-400">
@@ -140,7 +142,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 <li><Link href="/terms" className="hover:text-white">Terms of Service</Link></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4">About Me</h4>
               <div className="flex flex-col items-center">
@@ -163,7 +165,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
               </div>
             </div>
           </div>
-          
+
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
             <div className="mb-2">developed by Prajwal Ghadge</div>
             <div className="mb-1">Email: <a href="mailto:prajwalghadge2005@gmail.com" className="text-blue-400 underline">prajwalghadge2005@gmail.com</a></div>

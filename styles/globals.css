@@ -16,6 +16,14 @@
 .float-animation { animation: float 3s ease-in-out infinite; }
 .glow-animation { animation: glow 2s ease-in-out infinite; }
 
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
 .gradient-bg {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
