@@ -31,7 +31,7 @@ export default function Playbook() {
                     {/* Section 1: The Mission */}
                     <section className="mb-32">
                         <div className="flex items-start mb-8 border-b-2 border-black pb-2">
-                            <span className="text-6xl font-black mr-4 text-stroke-black text-transparent" style={{ webkitTextStroke: '2px black' }}>01</span>
+                            <span className="text-6xl font-black mr-4 text-stroke-black text-transparent" style={{ WebkitTextStroke: '2px black' }}>01</span>
                             <h2 className="text-4xl md:text-5xl font-black uppercase mt-2">The Mission</h2>
                         </div>
                         <div className="text-xl leading-relaxed space-y-6 max-w-4xl">
@@ -63,7 +63,7 @@ export default function Playbook() {
                     {/* Section 2: The Roadmap */}
                     <section className="mb-32">
                         <div className="flex items-start mb-8 border-b-2 border-black pb-2">
-                            <span className="text-6xl font-black mr-4 text-stroke-black text-transparent" style={{ webkitTextStroke: '2px black' }}>02</span>
+                            <span className="text-6xl font-black mr-4 text-stroke-black text-transparent" style={{ WebkitTextStroke: '2px black' }}>02</span>
                             <h2 className="text-4xl md:text-5xl font-black uppercase mt-2">The Roadmap</h2>
                         </div>
 
@@ -101,7 +101,7 @@ export default function Playbook() {
                     {/* Section 3: Financial Transparency */}
                     <section className="mb-32">
                         <div className="flex items-start mb-8 border-b-2 border-black pb-2">
-                            <span className="text-6xl font-black mr-4 text-stroke-black text-transparent" style={{ webkitTextStroke: '2px black' }}>03</span>
+                            <span className="text-6xl font-black mr-4 text-stroke-black text-transparent" style={{ WebkitTextStroke: '2px black' }}>03</span>
                             <h2 className="text-4xl md:text-5xl font-black uppercase mt-2">Financials</h2>
                         </div>
 
