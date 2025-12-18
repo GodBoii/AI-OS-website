@@ -43,11 +43,11 @@ export default function Home() {
   ];
 
   const downloads = [
-    { platform: 'WINDOWS', emoji: '🪟', specs: 'v10/11' },
-    { platform: 'MACOS', emoji: '🍎', specs: '10.15+' },
-    { platform: 'LINUX', emoji: '🐧', specs: 'Debian/Ubuntu' },
-    { platform: 'ANDROID', emoji: '📱', specs: '10+' },
-    { platform: 'IOS', emoji: '📲', specs: '14+' }
+    { platform: 'WINDOWS', emoji: '🪟', specs: 'v1.1.5 (64-bit)', path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.1.5/Aetheria.AI.Setup.1.1.5.exe' },
+    { platform: 'MACOS', emoji: '🍎', specs: 'Coming Soon', path: '#' },
+    { platform: 'LINUX', emoji: '🐧', specs: 'AppImage (v1.1.5)', path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.1.5/Aetheria.AI-1.1.5.AppImage' },
+    { platform: 'ANDROID', emoji: '📱', specs: 'PWA Mobile', path: 'https://aetheria-ai-mobile.vercel.app/' },
+    { platform: 'IOS', emoji: '📲', specs: 'PWA Mobile', path: 'https://aetheria-ai-mobile.vercel.app/' }
   ];
 
   return (
@@ -61,7 +61,7 @@ export default function Home() {
       <section className="relative pt-20 pb-32 border-b-4 border-black bg-neo-bg bg-[radial-gradient(#000000_1px,transparent_1px)] [background-size:16px_16px]">
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="inline-block bg-neo-lime border-2 border-black px-4 py-1 font-mono font-bold text-sm mb-8 shadow-brutal-sm transform -rotate-2">
-            v1.0.0 // SYSTEM ONLINE
+            v1.1.5 // SYSTEM ONLINE
           </div>
 
           <h1 className="text-6xl md:text-8xl font-black uppercase leading-[0.85] tracking-tighter mb-8 max-w-5xl mx-auto">
@@ -218,12 +218,18 @@ export default function Home() {
 
           <div className="flex flex-wrap justify-center gap-6">
             {downloads.map((item, i) => (
-              <div key={i} className="group bg-neutral-900 border-2 border-neutral-700 w-48 p-6 hover:bg-neo-lime hover:text-black hover:border-neo-lime transition-colors cursor-pointer relative overflow-hidden">
+              <a
+                key={i}
+                href={item.path}
+                target={item.path !== '#' ? "_blank" : undefined}
+                rel="noopener noreferrer"
+                className={`group bg-neutral-900 border-2 border-neutral-700 w-48 p-6 transition-colors relative overflow-hidden ${item.path !== '#' ? 'hover:bg-neo-lime hover:text-black hover:border-neo-lime cursor-pointer' : 'cursor-default opacity-50'}`}
+              >
                 <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{item.emoji}</div>
                 <div className="font-black text-xl uppercase mb-1">{item.platform}</div>
                 <div className="font-mono text-xs opacity-60 text-current">{item.specs}</div>
                 <div className="absolute bottom-0 left-0 w-full h-1 bg-white group-hover:bg-black"></div>
-              </div>
+              </a>
             ))}
           </div>
 

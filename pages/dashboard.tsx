@@ -113,35 +113,54 @@ export default function Dashboard() {
     {
       name: 'Windows',
       emoji: '🪟',
-      desc: '64-bit installer',
-      filename: 'Aetheria ai Setup 1.1.4.exe',
-      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.1.4/Aetheria.ai.Setup.1.1.4.exe',
+      desc: '64-bit installer (v1.1.5)',
+      filename: 'Aetheria.AI.Setup.1.1.5.exe',
+      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.1.5/Aetheria.AI.Setup.1.1.5.exe',
       available: true
-    },
-    {
-      name: 'macOS',
-      emoji: '🍎',
-      desc: 'Universal',
-      filename: '',
-      path: '',
-      available: false
     },
     {
       name: 'Linux',
       emoji: '🐧',
-      desc: 'AppImage',
-      filename: '',
-      path: '',
+      desc: 'AppImage (v1.1.5)',
+      filename: 'Aetheria.AI-1.1.5.AppImage',
+      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.1.5/Aetheria.AI-1.1.5.AppImage',
+      available: true
+    },
+    {
+      name: 'iOS',
+      emoji: '📲',
+      desc: 'PWA Mobile',
+      path: 'https://aetheria-ai-mobile.vercel.app/',
+      available: true,
+      isRedirect: true
+    },
+    {
+      name: 'Android',
+      emoji: '�',
+      desc: 'PWA Mobile',
+      path: 'https://aetheria-ai-mobile.vercel.app/',
+      available: true,
+      isRedirect: true
+    },
+    {
+      name: 'macOS',
+      emoji: '🍎',
+      desc: 'Coming Soon',
       available: false
     }
   ];
 
-  const handleDownload = (platform: typeof platforms[0]) => {
+  const handleDownload = (platform: any) => {
     if (!platform.available) return;
+
+    if (platform.isRedirect) {
+      window.open(platform.path, '_blank');
+      return;
+    }
 
     const link = document.createElement('a');
     link.href = platform.path;
-    link.download = platform.filename;
+    link.download = platform.filename || '';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -191,7 +210,7 @@ export default function Dashboard() {
             {/* Download Card */}
             <div className="card-brutal bg-neo-yellow">
               <h3 className="text-2xl font-black uppercase mb-6 border-b-4 border-black pb-2">Binaries</h3>
-              <p className="font-mono mb-4 text-sm bg-white border border-black inline-block px-2">Latest Build: v1.0.0</p>
+              <p className="font-mono mb-4 text-sm bg-white border border-black inline-block px-2">Latest Build: v1.1.5</p>
               <div className="space-y-3">
                 {platforms.map((platform) => (
                   <button
