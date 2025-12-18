@@ -70,7 +70,7 @@ export default function Home() {
           </h1>
 
           <p className="text-xl md:text-2xl font-mono mb-12 max-w-3xl mx-auto bg-white border-2 border-black p-4 shadow-brutal mx-auto">
-            Replace 5-10 fragmented AI tools with one unified, brutally efficient engine.
+            Replace 60-70 fragmented AI tools with one unified, brutally efficient engine.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20">
