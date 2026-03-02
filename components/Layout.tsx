@@ -189,8 +189,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
           <div className="border-t-2 border-gray-800 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-500 font-mono text-xs uppercase">
             <div>© 2025 Aetheria AI // All Systems Operational</div>
-            <div className="mt-4 md:mt-0">
-              <a href="mailto:prajwalghadge2005@gmail.com" className="hover:text-white mr-6">Email_Link</a>
+            <div className="mt-4 md:mt-0 flex flex-wrap gap-4 justify-center">
+              <Link href="/privacy-policy" className="hover:text-white">Privacy_Policy</Link>
+              <Link href="/terms" className="hover:text-white">Terms_of_Service</Link>
+              <a href="mailto:prajwalghadge2005@gmail.com" className="hover:text-white">Email_Link</a>
               <a href="tel:9619039912" className="hover:text-white">Secure_Line</a>
             </div>
           </div>
