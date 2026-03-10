@@ -115,7 +115,7 @@ export default function Dashboard() {
       emoji: '🪟',
       desc: '64-bit installer (v1.1.5)',
       filename: 'Aetheria.AI.Setup.1.1.5.exe',
-      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.1.5/Aetheria.AI.Setup.1.1.5.exe',
+      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.0/Aetheria.AI.Setup.1.2.0.exe',
       available: true
     },
     {
