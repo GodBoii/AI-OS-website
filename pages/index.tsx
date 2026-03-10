@@ -43,9 +43,9 @@ export default function Home() {
   ];
 
   const downloads = [
-    { platform: 'WINDOWS', emoji: '🪟', specs: 'v1.1.5 (64-bit)', path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.1.5/Aetheria.AI.Setup.1.1.5.exe' },
+    { platform: 'WINDOWS', emoji: '🪟', specs: 'v1.2.0 (64-bit)', path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.0/Aetheria.AI.Setup.1.2.0.exe' },
     { platform: 'MACOS', emoji: '🍎', specs: 'Coming Soon', path: '#' },
-    { platform: 'LINUX', emoji: '🐧', specs: 'AppImage (v1.1.5)', path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.1.5/Aetheria.AI-1.1.5.AppImage' },
+    { platform: 'LINUX', emoji: '🐧', specs: 'AppImage (v1.2.0)', path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.0/Aetheria.AI-1.2.0.AppImage' },
     { platform: 'ANDROID', emoji: '📱', specs: 'PWA Mobile', path: 'https://aetheria-ai-mobile.vercel.app/' },
     { platform: 'IOS', emoji: '📲', specs: 'PWA Mobile', path: 'https://aetheria-ai-mobile.vercel.app/' }
   ];
@@ -61,7 +61,7 @@ export default function Home() {
       <section className="relative pt-20 pb-32 border-b-4 border-black bg-neo-bg bg-[radial-gradient(#000000_1px,transparent_1px)] [background-size:16px_16px]">
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="inline-block bg-neo-lime border-2 border-black px-4 py-1 font-mono font-bold text-sm mb-8 shadow-brutal-sm transform -rotate-2">
-            v1.1.5 // SYSTEM ONLINE
+            v1.2.0 // SYSTEM ONLINE
           </div>
 
           <h1 className="text-6xl md:text-8xl font-black uppercase leading-[0.85] tracking-tighter mb-8 max-w-5xl mx-auto">

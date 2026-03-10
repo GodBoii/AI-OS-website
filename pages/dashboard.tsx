@@ -113,17 +113,17 @@ export default function Dashboard() {
     {
       name: 'Windows',
       emoji: '🪟',
-      desc: '64-bit installer (v1.1.5)',
-      filename: 'Aetheria.AI.Setup.1.1.5.exe',
+      desc: '64-bit installer (v1.2.0)',
+      filename: 'Aetheria.AI.Setup.1.2.0.exe',
       path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.0/Aetheria.AI.Setup.1.2.0.exe',
       available: true
     },
     {
       name: 'Linux',
       emoji: '🐧',
-      desc: 'AppImage (v1.1.5)',
-      filename: 'Aetheria.AI-1.1.5.AppImage',
-      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.1.5/Aetheria.AI-1.1.5.AppImage',
+      desc: 'AppImage (v1.2.0)',
+      filename: 'Aetheria.AI-1.2.0.AppImage',
+      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.0/Aetheria.AI-1.2.0.AppImage',
       available: true
     },
     {
@@ -210,7 +210,7 @@ export default function Dashboard() {
             {/* Download Card */}
             <div className="card-brutal bg-neo-yellow">
               <h3 className="text-2xl font-black uppercase mb-6 border-b-4 border-black pb-2">Binaries</h3>
-              <p className="font-mono mb-4 text-sm bg-white border border-black inline-block px-2">Latest Build: v1.1.5</p>
+              <p className="font-mono mb-4 text-sm bg-white border border-black inline-block px-2">Latest Build: v1.2.0</p>
               <div className="space-y-3">
                 {platforms.map((platform) => (
                   <button
