@@ -1,85 +1,89 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
 
+/**
+ * /api/usage — LEGACY ROUTE (kept for backwards compatibility)
+ *
+ * The old Supabase `request_logs` table has been deleted.
+ * This route now proxies to Convex via the same logic as /api/convex-usage.
+ *
+ * Both /api/usage and /api/convex-usage now return the same Convex data.
+ */
+
+const CONVEX_URL = process.env.CONVEX_URL || 'https://descriptive-bee-184.convex.cloud';
+const CONVEX_ADMIN_KEY = process.env.CONVEX_ADMIN_KEY || '';
+
+async function queryConvex<T>(functionPath: string, args: Record<string, unknown>): Promise<T> {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  if (CONVEX_ADMIN_KEY) {
+    headers['Authorization'] = `Convex ${CONVEX_ADMIN_KEY}`;
+  }
+
+  const response = await fetch(`${CONVEX_URL}/api/query`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ path: functionPath, args }),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Convex ${response.status}: ${text}`);
+  }
+
+  const json = await response.json();
+  if (json.status === 'error') {
+    throw new Error(`Convex error: ${json.errorMessage}`);
+  }
+  return json.value as T;
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Initialize Supabase client
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-  // Extract token from Authorization header
+  // Auth
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    console.error('No valid authorization header found');
+  if (!authHeader?.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-
   const token = authHeader.split(' ')[1];
-  if (!token) {
-    console.error('No token found in authorization header');
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser(token);
+  if (userError || !user) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-
-  // Create a regular Supabase client
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
   try {
-    // Get user information from the token
-    const { data: { user }, error: userError } = await supabase.auth.getUser(token);
+    // Fetch from Convex — same as /api/convex-usage
+    const [daily, lifetime] = await Promise.all([
+      queryConvex<any[]>('usage:getDailyUsageForUser', { user_id: user.id, limit: 90 }),
+      queryConvex<any>('usage:getLifetimeUsage', { user_id: user.id }),
+    ]);
 
-    if (userError || !user) {
-      console.error('User retrieval error:', userError);
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-
-    // Log user ID for debugging
-    console.log('User ID from token:', user.id);
-
-    // Get all request logs for the user
-    const { data: logs, error: logsError, count } = await supabase
-      .from('request_logs')
-      .select('*', { count: 'exact' })
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
-
-    if (logsError) {
-      console.error('Error fetching request logs:', logsError);
-      return res.status(500).json({ error: logsError.message });
-    }
-
-    console.log('Logs found for user:', logs?.length || 0);
-
-    // If no logs found, return empty results
-    if (!logs || logs.length === 0) {
-      return res.status(200).json({
-        logs: [],
-        totalMetrics: {
-          request_count: 0,
-          input_tokens: 0,
-          output_tokens: 0,
-          total_tokens: 0
-        }
-      });
-    }
-
-    // Calculate sums
-    const totalInputTokens = logs.reduce((sum, item) => sum + (item.input_tokens || 0), 0);
-    const totalOutputTokens = logs.reduce((sum, item) => sum + (item.output_tokens || 0), 0);
-    const totalTokens = logs.reduce((sum, item) => sum + (item.total_tokens || 0), 0);
-
-    // Format the response
-    const response = {
-      logs: logs,
-      totalMetrics: {
-        request_count: logs.length,
-        input_tokens: totalInputTokens,
-        output_tokens: totalOutputTokens,
-        total_tokens: totalTokens,
-      }
-    };
-
-    return res.status(200).json(response);
-  } catch (error) {
-    console.error('Exception fetching usage metrics:', error);
-    return res.status(500).json({ error: 'Failed to fetch usage metrics' });
+    // Return in the new Convex shape so the updated dashboard works
+    return res.status(200).json({
+      daily: (daily || []).sort((a: any, b: any) => b.day_key.localeCompare(a.day_key)),
+      lifetime: lifetime || {
+        user_id: user.id,
+        input_tokens: 0, output_tokens: 0, total_tokens: 0,
+        updated_at_ms: null, window_count: 0, usage_source: 'convex_lifetime',
+      },
+    });
+  } catch (err: any) {
+    console.error('[/api/usage] Convex error:', err.message);
+    // Graceful empty response — never 500
+    return res.status(200).json({
+      daily: [],
+      lifetime: {
+        user_id: user.id,
+        input_tokens: 0, output_tokens: 0, total_tokens: 0,
+        updated_at_ms: null, window_count: 0, usage_source: 'convex_lifetime',
+      },
+      _error: err.message,
+    });
   }
-} 
+}
