@@ -43,7 +43,7 @@ export default function Home() {
   ];
 
   const downloads = [
-    { platform: 'WINDOWS', emoji: '🪟', specs: 'v1.2.2 (64-bit)', path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.2/Aetheria.AI.Setup.1.2.2.exe' },
+    { platform: 'WINDOWS', emoji: '🪟', specs: 'v1.2.20 (64-bit)', path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.20/Aetheria.AI.Setup.1.2.20.exe' },
     { platform: 'MACOS', emoji: '🍎', specs: 'Coming Soon', path: '#' },
     { platform: 'LINUX', emoji: '🐧', specs: 'AppImage (v1.2.0)', path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.0/Aetheria.AI-1.2.0.AppImage' },
     { platform: 'ANDROID', emoji: '📱', specs: 'PWA Mobile', path: 'https://aetheria-ai-mobile.vercel.app/' },

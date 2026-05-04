@@ -113,9 +113,9 @@ export default function Dashboard() {
     {
       name: 'Windows',
       emoji: '🪟',
-      desc: '64-bit installer (v1.2.2)',
-      filename: 'Aetheria.AI.Setup.1.2.2.exe',
-      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.2/Aetheria.AI.Setup.1.2.2.exe',
+      desc: '64-bit installer (v1.2.20)',
+      filename: 'Aetheria.AI.Setup.1.2.20.exe',
+      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.20/Aetheria.AI.Setup.1.2.20.exe',
       available: true
     },
     {
