@@ -55,5 +55,5 @@ export async function middleware(req: NextRequest) {
 
 // Add route matching configuration
 export const config = {
-  matcher: ['/dashboard', '/auth/login', '/auth/signup', '/auth/forgot-password'],
+  matcher: ['/dashboard', '/auth/login', '/auth/signup', '/auth/forgot-password', '/auth/callback'],
 }; 

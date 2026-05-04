@@ -3,20 +3,22 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  BarElement,
   PointElement,
   LineElement,
   Title,
   Tooltip,
   Legend,
   Filler,
-  ChartOptions
+  ChartOptions,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 
 // Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  BarElement,
   PointElement,
   LineElement,
   Title,
@@ -25,403 +27,385 @@ ChartJS.register(
   Filler
 );
 
-// Define the RequestLog type
-type RequestLog = {
-  id: string;
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+/** One row from Convex usage_daily table */
+export type ConvexDailyRow = {
+  _id: string;
+  user_id: string;
+  day_key: string;          // "2026-05-04"
+  input_tokens: number;
+  output_tokens: number;
+  total_tokens: number;
+  first_event_at_ms: number;
+  last_event_at_ms: number;
+  created_at_ms: number;
+  updated_at_ms: number;
+};
+
+/** Lifetime totals from Convex */
+export type ConvexLifetime = {
   user_id: string;
   input_tokens: number;
   output_tokens: number;
   total_tokens: number;
-  created_at: string;
+  updated_at_ms: number | null;
+  window_count: number;
+  usage_source: string;
 };
 
-// Define the API response type
-type UsageResponse = {
-  logs: RequestLog[];
-  totalMetrics: {
-    request_count: number;
-    input_tokens: number;
-    output_tokens: number;
-    total_tokens: number;
-  };
+export type ConvexUsageData = {
+  daily: ConvexDailyRow[];
+  lifetime: ConvexLifetime;
+  _error?: string;
 };
 
-// Define time period options
 type TimePeriod = '7days' | '30days' | '90days' | 'all';
-
-// Define token type options for the chart
-type TokenType = 'total' | 'input' | 'output';
+type ChartMode = 'bar' | 'line';
 
 interface UsageCardProps {
-  usageData: UsageResponse | null;
+  usageData: ConvexUsageData | null;
   isLoading: boolean;
   timePeriod: TimePeriod;
 }
 
-// Helper function to format numbers with commas
-const formatNumber = (num: number): string => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const fmt = (n: number): string => n.toLocaleString();
+
+const fmtK = (n: number): string => {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
+  return String(n);
 };
 
-// Group logs by day
-const groupLogsByDay = (logs: RequestLog[]): Record<string, {
-  date: string,
-  total_tokens: number,
-  input_tokens: number,
-  output_tokens: number,
-  request_count: number
-}> => {
-  const grouped: Record<string, {
-    date: string,
-    total_tokens: number,
-    input_tokens: number,
-    output_tokens: number,
-    request_count: number
-  }> = {};
-
-  if (!logs || logs.length === 0) return grouped;
-
-  logs.forEach(log => {
-    // Format as YYYY-MM-DD
-    const date = new Date(log.created_at).toISOString().split('T')[0];
-
-    if (!grouped[date]) {
-      grouped[date] = {
-        date,
-        total_tokens: 0,
-        input_tokens: 0,
-        output_tokens: 0,
-        request_count: 0
-      };
-    }
-
-    grouped[date].total_tokens += log.total_tokens || 0;
-    grouped[date].input_tokens += log.input_tokens || 0;
-    grouped[date].output_tokens += log.output_tokens || 0;
-    grouped[date].request_count += 1;
+const fmtDate = (dayKey: string): string => {
+  // dayKey is "YYYY-MM-DD" — parse safely in UTC to avoid timezone shifts
+  const [y, m, d] = dayKey.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
   });
-
-  return grouped;
 };
 
-// Filter logs by time period
-const filterLogsByTimePeriod = (logs: RequestLog[], period: TimePeriod): RequestLog[] => {
-  if (!logs || logs.length === 0) return [];
-  if (period === 'all') return logs;
-
-  const now = new Date();
-  let cutoffDate: Date;
-
-  switch (period) {
-    case '7days':
-      cutoffDate = new Date(now.setDate(now.getDate() - 7));
-      break;
-    case '30days':
-      cutoffDate = new Date(now.setDate(now.getDate() - 30));
-      break;
-    case '90days':
-      cutoffDate = new Date(now.setDate(now.getDate() - 90));
-      break;
-    default:
-      cutoffDate = new Date(now.setDate(now.getDate() - 7));
-  }
-
-  return logs.filter(log => new Date(log.created_at) >= cutoffDate);
+const filterByPeriod = (rows: ConvexDailyRow[], period: TimePeriod): ConvexDailyRow[] => {
+  if (period === 'all') return rows;
+  const days = period === '7days' ? 7 : period === '30days' ? 30 : 90;
+  const cutoff = new Date();
+  cutoff.setUTCDate(cutoff.getUTCDate() - days);
+  const cutoffKey = cutoff.toISOString().slice(0, 10);
+  return rows.filter(r => r.day_key >= cutoffKey);
 };
+
+// ─── Component ────────────────────────────────────────────────────────────────
 
 const UsageCard: React.FC<UsageCardProps> = ({ usageData, isLoading, timePeriod }) => {
-  // State for token type selection
-  const [tokenType, setTokenType] = useState<TokenType>('total');
+  const [chartMode, setChartMode] = useState<ChartMode>('bar');
 
-  // Filter logs by time period
-  const filteredLogs = useMemo(() => {
-    if (!usageData?.logs) return [];
-    return filterLogsByTimePeriod(usageData.logs, timePeriod);
+  // Filter daily rows by selected time period, ascending by date for chart
+  const chartRows = useMemo(() => {
+    if (!usageData?.daily) return [];
+    return filterByPeriod(usageData.daily, timePeriod)
+      .slice() // copy to avoid mutating
+      .sort((a, b) => a.day_key.localeCompare(b.day_key));
   }, [usageData, timePeriod]);
 
-  // Group filtered logs by day
-  const dailyData = useMemo(() => {
-    const grouped = groupLogsByDay(filteredLogs);
+  // For table: newest first
+  const tableRows = useMemo(() => [...chartRows].reverse(), [chartRows]);
 
-    // Sort by date (ascending)
-    return Object.values(grouped).sort((a, b) =>
-      new Date(a.date).getTime() - new Date(b.date).getTime()
+  // Period totals
+  const periodTotals = useMemo(() => {
+    return chartRows.reduce(
+      (acc, r) => ({
+        input: acc.input + r.input_tokens,
+        output: acc.output + r.output_tokens,
+        total: acc.total + r.total_tokens,
+      }),
+      { input: 0, output: 0, total: 0 }
     );
-  }, [filteredLogs]);
+  }, [chartRows]);
 
-  // Calculate metrics for the filtered period
-  const filteredMetrics = useMemo(() => {
-    if (filteredLogs.length === 0) {
-      return {
-        request_count: 0,
-        input_tokens: 0,
-        output_tokens: 0,
-        total_tokens: 0
-      };
-    }
+  // Lifetime data
+  const lifetime = usageData?.lifetime;
 
-    return {
-      request_count: filteredLogs.length,
-      input_tokens: filteredLogs.reduce((sum, log) => sum + (log.input_tokens || 0), 0),
-      output_tokens: filteredLogs.reduce((sum, log) => sum + (log.output_tokens || 0), 0),
-      total_tokens: filteredLogs.reduce((sum, log) => sum + (log.total_tokens || 0), 0)
-    };
-  }, [filteredLogs]);
+  // Chart labels
+  const labels = chartRows.map(r => fmtDate(r.day_key));
 
-  // Prepare chart data based on selected token type
-  const chartData = useMemo(() => {
-    const labels = dailyData.map(day => day.date);
+  // ── Chart Data ──────────────────────────────────────────────────────────────
+  const chartData = useMemo(() => ({
+    labels,
+    datasets: [
+      {
+        label: 'Input Tokens',
+        data: chartRows.map(r => r.input_tokens),
+        backgroundColor: 'rgba(204, 255, 0, 0.85)',   // neo-lime
+        borderColor: '#000000',
+        borderWidth: 2,
+        fill: chartMode === 'line',
+        tension: 0.35,
+      },
+      {
+        label: 'Output Tokens',
+        data: chartRows.map(r => r.output_tokens),
+        backgroundColor: 'rgba(255, 77, 155, 0.85)',  // neo-pink
+        borderColor: '#000000',
+        borderWidth: 2,
+        fill: false,
+        tension: 0.35,
+      },
+      {
+        label: 'Total Tokens',
+        data: chartRows.map(r => r.total_tokens),
+        backgroundColor: 'rgba(0, 255, 255, 0.85)',   // neo-cyan
+        borderColor: '#000000',
+        borderWidth: 2,
+        fill: false,
+        tension: 0.35,
+      },
+    ],
+  }), [chartRows, chartMode, labels]);
 
-    // Select data based on token type
-    let tokenData: number[];
-    let borderColor: string;
-    let backgroundColor: string;
-
-    switch (tokenType) {
-      case 'input':
-        tokenData = dailyData.map(day => day.input_tokens);
-        borderColor = '#000000';
-        backgroundColor = '#ccff00'; // neo-lime
-        break;
-      case 'output':
-        tokenData = dailyData.map(day => day.output_tokens);
-        borderColor = '#000000';
-        backgroundColor = '#FF4D9B'; // neo-pink
-        break;
-      case 'total':
-      default:
-        tokenData = dailyData.map(day => day.total_tokens);
-        borderColor = '#000000';
-        backgroundColor = '#00ffff'; // neo-cyan
-    }
-
-    return {
-      labels,
-      datasets: [
-        {
-          label: `${tokenType.charAt(0).toUpperCase() + tokenType.slice(1)} Tokens`,
-          data: tokenData,
-          fill: true,
-          backgroundColor,
-          borderColor,
-          borderWidth: 2,
-          tension: 0, // Sharp lines for brutalism
-        },
-      ],
-    };
-  }, [dailyData, tokenType]);
-
-  // Determine usage level for visual indicator
-  const getUsageLevel = useMemo(() => {
-    if (!filteredMetrics || filteredMetrics.request_count === 0) {
-      return { color: 'bg-gray-200', text: 'No data' };
-    }
-
-    const requestCount = filteredMetrics.request_count;
-
-    if (requestCount === 0) return { color: 'bg-gray-200', text: 'No usage' };
-    if (requestCount < 5) return { color: 'bg-neo-lime', text: 'Low' };
-    if (requestCount < 20) return { color: 'bg-neo-blue', text: 'Moderate' };
-    if (requestCount < 50) return { color: 'bg-neo-yellow', text: 'High' };
-    return { color: 'bg-neo-pink', text: 'Intensive' };
-  }, [filteredMetrics]);
-
-  if (isLoading) {
-    return (
-      <div className="card-brutal">
-        <h3 className="text-xl font-black uppercase mb-4">Usage Metrics</h3>
-        <div className="flex items-center justify-center h-64">
-          <div className="w-16 h-16 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
-        </div>
-        <p className="text-center font-mono mt-4">SYNCING DATA...</p>
-      </div>
-    );
-  }
-
-  // Chart options
-  const chartOptions: ChartOptions<'line'> = {
+  // ── Chart Options ───────────────────────────────────────────────────────────
+  const chartOptions: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
     scales: {
+      x: {
+        stacked: false,
+        grid: { color: 'rgba(0,0,0,0.07)' },
+        ticks: { color: '#000', font: { family: 'JetBrains Mono', size: 11 } },
+      },
       y: {
         beginAtZero: true,
-        grid: {
-          color: 'rgba(0, 0, 0, 0.1)',
-        },
+        grid: { color: 'rgba(0,0,0,0.07)' },
         ticks: {
-          color: '#000000',
-          font: { family: 'Space Grotesk', weight: 'bold' },
-          callback: function (value) {
-            if (typeof value === 'number') {
-              return formatNumber(value);
-            }
-            return value;
-          }
-        }
+          color: '#000',
+          font: { family: 'JetBrains Mono', size: 11 },
+          callback: (v) => fmtK(Number(v)),
+        },
       },
-      x: {
-        grid: {
-          color: 'rgba(0, 0, 0, 0.1)',
-        },
-        ticks: {
-          color: '#000000',
-          font: { family: 'Space Grotesk', weight: 'bold' }
-        }
-      }
     },
     plugins: {
       legend: {
         labels: {
-          color: '#000000',
-          font: { family: 'Space Grotesk', weight: 'bold' }
-        }
+          color: '#000',
+          font: { family: 'Space Grotesk', weight: 'bold' as const, size: 12 },
+          boxWidth: 14,
+          boxHeight: 14,
+        },
       },
       tooltip: {
-        backgroundColor: '#000000',
-        titleColor: '#ffffff',
-        bodyColor: '#ffffff',
-        titleFont: { family: 'Space Grotesk' },
+        backgroundColor: '#000',
+        titleColor: '#ccff00',
+        bodyColor: '#fff',
+        borderColor: '#fff',
+        borderWidth: 1,
+        titleFont: { family: 'Space Grotesk', weight: 'bold' as const },
         bodyFont: { family: 'JetBrains Mono' },
         callbacks: {
-          label: function (context) {
-            let label = context.dataset.label || '';
-            if (label) {
-              label += ': ';
-            }
-            if (context.parsed.y !== null) {
-              label += formatNumber(context.parsed.y);
-            }
-            return label;
-          }
-        }
-      }
-    }
+          label: ctx => ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`,
+        },
+      },
+    },
   };
 
-  // No data scenario
-  if (!usageData || !usageData.logs || usageData.logs.length === 0) {
+  // ── Loading State ───────────────────────────────────────────────────────────
+  if (isLoading) {
     return (
       <div className="card-brutal">
         <h3 className="text-xl font-black uppercase mb-4">Usage Metrics</h3>
-        <div className="flex items-center justify-center h-64 border-2 border-dashed border-gray-400 bg-gray-50">
-          <div className="text-center">
-            <p className="font-bold uppercase mb-2">No Data Found</p>
-            <p className="font-mono text-sm">Initialize system to generate telemetry.</p>
-          </div>
+        <div className="flex flex-col items-center justify-center h-64 gap-4">
+          <div className="w-12 h-12 border-4 border-black border-t-neo-lime rounded-full animate-spin" />
+          <p className="font-mono text-sm uppercase tracking-widest animate-pulse">Fetching telemetry...</p>
         </div>
       </div>
     );
   }
 
-  return (
-    <div className="card-brutal">
-      <h3 className="text-xl font-black uppercase mb-6 bg-black text-white inline-block px-2">Usage Telemetry</h3>
+  // ── No Data State ───────────────────────────────────────────────────────────
+  const hasData = chartRows.length > 0;
 
-      <div className="mb-8 border-2 border-black p-4 bg-gray-50">
-        <div className="flex justify-between items-center mb-2">
-          <span className="font-bold uppercase text-sm">Requests ({timePeriod === 'all' ? 'All Time' : timePeriod}):</span>
-          <div className={`px-3 py-1 font-bold uppercase text-xs border border-black ${getUsageLevel.color} text-black`}>
-            {getUsageLevel.text}
-          </div>
-        </div>
-        <div className="flex items-center">
-          <span className="text-4xl font-black mr-4 font-mono">
-            {formatNumber(filteredMetrics.request_count)}
+  return (
+    <div className="card-brutal space-y-8">
+      {/* Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h3 className="text-xl font-black uppercase bg-black text-neo-lime inline-block px-3 py-1">
+          Usage Telemetry // Convex
+        </h3>
+        {usageData?._error && (
+          <span className="text-xs font-mono text-orange-600 border border-orange-400 bg-orange-50 px-2 py-1">
+            ⚠ Partial data: {usageData._error}
           </span>
-          <div className="h-4 flex-grow border-2 border-black bg-white rounded-none overflow-hidden relative">
-            <div className="absolute inset-0 bg-[url('/stripe.png')] opacity-10"></div>
-            <div
-              className={`h-full ${getUsageLevel.color}`}
-              style={{
-                width: `${Math.min(100, (filteredMetrics.request_count / 50) * 100)}%`
-              }}
-            ></div>
+        )}
+      </div>
+
+      {/* ── Lifetime Stats ───────────────────────────────────────────────────── */}
+      <div>
+        <p className="text-xs font-black uppercase text-gray-500 mb-3 tracking-widest">Lifetime Total</p>
+        <div className="grid grid-cols-3 gap-3">
+          <div className="border-2 border-black p-3 bg-neo-lime">
+            <span className="text-[10px] font-black uppercase block text-gray-700">Input</span>
+            <span className="text-2xl font-mono font-black">{fmtK(lifetime?.input_tokens ?? 0)}</span>
+            <span className="text-[10px] font-mono text-gray-600 block">{fmt(lifetime?.input_tokens ?? 0)}</span>
+          </div>
+          <div className="border-2 border-black p-3 bg-neo-pink">
+            <span className="text-[10px] font-black uppercase block text-gray-700">Output</span>
+            <span className="text-2xl font-mono font-black">{fmtK(lifetime?.output_tokens ?? 0)}</span>
+            <span className="text-[10px] font-mono text-gray-600 block">{fmt(lifetime?.output_tokens ?? 0)}</span>
+          </div>
+          <div className="border-2 border-black p-3 bg-black text-white">
+            <span className="text-[10px] font-black uppercase block text-neo-cyan">Total</span>
+            <span className="text-2xl font-mono font-black text-neo-lime">{fmtK(lifetime?.total_tokens ?? 0)}</span>
+            <span className="text-[10px] font-mono text-gray-400 block">{fmt(lifetime?.total_tokens ?? 0)}</span>
           </div>
         </div>
       </div>
 
+      {/* ── Period Summary ───────────────────────────────────────────────────── */}
       <div>
-        <div className="flex justify-between items-center mb-4">
-          <span className="font-bold uppercase text-sm">Token Velocity:</span>
-          <div className="flex space-x-2">
-            <button
-              onClick={() => setTokenType('total')}
-              className={`px-3 py-1 text-xs font-bold uppercase border-2 border-black transition-all ${tokenType === 'total' ? 'bg-black text-white' : 'bg-white hover:bg-gray-200'}`}
-            >
-              Total
-            </button>
-            <button
-              onClick={() => setTokenType('input')}
-              className={`px-3 py-1 text-xs font-bold uppercase border-2 border-black transition-all ${tokenType === 'input' ? 'bg-neo-lime text-black' : 'bg-white hover:bg-gray-200'}`}
-            >
-              Input
-            </button>
-            <button
-              onClick={() => setTokenType('output')}
-              className={`px-3 py-1 text-xs font-bold uppercase border-2 border-black transition-all ${tokenType === 'output' ? 'bg-neo-pink text-black' : 'bg-white hover:bg-gray-200'}`}
-            >
-              Output
-            </button>
+        <p className="text-xs font-black uppercase text-gray-500 mb-3 tracking-widest">
+          Period: {timePeriod === 'all' ? 'All Time' : timePeriod} ({chartRows.length} days active)
+        </p>
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { label: 'Input', val: periodTotals.input, color: 'border-neo-lime' },
+            { label: 'Output', val: periodTotals.output, color: 'border-neo-pink' },
+            { label: 'Total', val: periodTotals.total, color: 'border-neo-cyan' },
+          ].map(({ label, val, color }) => (
+            <div key={label} className={`border-2 ${color} p-3 bg-white`}>
+              <span className="text-[10px] font-black uppercase block text-gray-500">{label}</span>
+              <span className="text-xl font-mono font-black">{fmtK(val)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Chart ─────────────────────────────────────────────────────────────── */}
+      <div>
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <span className="font-bold uppercase text-sm">Daily Token Velocity</span>
+          <div className="flex gap-2">
+            {(['bar', 'line'] as ChartMode[]).map(mode => (
+              <button
+                key={mode}
+                onClick={() => setChartMode(mode)}
+                className={`px-3 py-1 text-xs font-bold uppercase border-2 border-black transition-all ${
+                  chartMode === mode ? 'bg-black text-white' : 'bg-white hover:bg-gray-100'
+                }`}
+              >
+                {mode}
+              </button>
+            ))}
           </div>
         </div>
-        <div className="h-64 border-2 border-black p-2 bg-white">
-          {dailyData.length > 1 ? (
-            <Line data={chartData} options={chartOptions} />
+
+        <div className="h-72 border-2 border-black p-3 bg-white">
+          {hasData ? (
+            chartMode === 'bar' ? (
+              <Bar data={chartData} options={chartOptions} />
+            ) : (
+              <Line data={chartData as any} options={chartOptions as any} />
+            )
           ) : (
-            <div className="flex items-center justify-center h-full">
-              <p className="font-mono text-sm">INSUFFICIENT DATA POINTS</p>
+            <div className="flex flex-col items-center justify-center h-full gap-2">
+              <span className="text-5xl">📊</span>
+              <p className="font-bold uppercase text-sm">No data for this period</p>
+              <p className="font-mono text-xs text-gray-500">Use the AI-OS app to generate usage data.</p>
             </div>
           )}
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mt-8">
-        <div className="text-center border-2 border-neo-lime p-2 bg-black text-white">
-          <span className="text-xs uppercase font-bold text-neo-lime">Input Tokens</span>
-          <p className="font-mono font-bold text-lg">{formatNumber(filteredMetrics.input_tokens)}</p>
-        </div>
-        <div className="text-center border-2 border-neo-pink p-2 bg-black text-white">
-          <span className="text-xs uppercase font-bold text-neo-pink">Output Tokens</span>
-          <p className="font-mono font-bold text-lg">{formatNumber(filteredMetrics.output_tokens)}</p>
-        </div>
-        <div className="text-center border-2 border-neo-cyan p-2 bg-black text-white">
-          <span className="text-xs uppercase font-bold text-neo-cyan">Total Tokens</span>
-          <p className="font-mono font-bold text-lg">{formatNumber(filteredMetrics.total_tokens)}</p>
-        </div>
-      </div>
+      {/* ── Daily Breakdown Table ────────────────────────────────────────────── */}
+      <div>
+        <h4 className="text-lg font-black uppercase mb-4 border-b-4 border-black pb-2">
+          Daily Breakdown
+        </h4>
 
-      {/* Usage Summary Table */}
-      {dailyData.length > 0 && (
-        <div className="mt-8 border-t-2 border-black pt-6">
-          <h4 className="text-lg font-black uppercase mb-4">Daily Breakdown</h4>
+        {tableRows.length === 0 ? (
+          <div className="border-2 border-dashed border-gray-400 p-8 text-center">
+            <p className="font-mono text-sm text-gray-500">No usage records found for this period.</p>
+          </div>
+        ) : (
           <div className="overflow-x-auto border-2 border-black">
             <table className="w-full text-sm font-mono">
               <thead>
                 <tr className="bg-black text-white text-xs uppercase">
-                  <th className="py-2 px-3 text-left">Date</th>
-                  <th className="py-2 px-3 text-right border-l border-gray-700">Reqs</th>
-                  <th className="py-2 px-3 text-right border-l border-gray-700">In</th>
-                  <th className="py-2 px-3 text-right border-l border-gray-700">Out</th>
-                  <th className="py-2 px-3 text-right border-l border-gray-700">Total</th>
+                  <th className="py-3 px-4 text-left">Date</th>
+                  <th className="py-3 px-4 text-right border-l border-gray-700">
+                    <span className="text-neo-lime">Input</span>
+                  </th>
+                  <th className="py-3 px-4 text-right border-l border-gray-700">
+                    <span className="text-neo-pink">Output</span>
+                  </th>
+                  <th className="py-3 px-4 text-right border-l border-gray-700">
+                    <span className="text-neo-cyan">Total</span>
+                  </th>
+                  <th className="py-3 px-4 text-right border-l border-gray-700">% In/Out</th>
                 </tr>
               </thead>
               <tbody>
-                {dailyData.map((day) => (
-                  <tr key={day.date} className="border-b border-black hover:bg-neo-yellow transition-colors">
-                    <td className="py-2 px-3 text-left font-bold">{new Date(day.date).toLocaleDateString()}</td>
-                    <td className="py-2 px-3 text-right border-l border-black">{formatNumber(day.request_count)}</td>
-                    <td className="py-2 px-3 text-right border-l border-black">{formatNumber(day.input_tokens)}</td>
-                    <td className="py-2 px-3 text-right border-l border-black">{formatNumber(day.output_tokens)}</td>
-                    <td className="py-2 px-3 text-right border-l border-black">{formatNumber(day.total_tokens)}</td>
-                  </tr>
-                ))}
+                {tableRows.map((row, idx) => {
+                  const pct = row.total_tokens > 0
+                    ? Math.round((row.input_tokens / row.total_tokens) * 100)
+                    : 50;
+                  return (
+                    <tr
+                      key={row._id}
+                      className={`border-b border-black hover:bg-neo-yellow transition-colors cursor-default ${
+                        idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                      }`}
+                    >
+                      <td className="py-2 px-4 text-left font-bold whitespace-nowrap">
+                        {fmtDate(row.day_key)}
+                        <span className="text-[10px] text-gray-400 ml-2">{row.day_key}</span>
+                      </td>
+                      <td className="py-2 px-4 text-right border-l border-gray-200">
+                        {fmt(row.input_tokens)}
+                      </td>
+                      <td className="py-2 px-4 text-right border-l border-gray-200">
+                        {fmt(row.output_tokens)}
+                      </td>
+                      <td className="py-2 px-4 text-right border-l border-gray-200 font-bold">
+                        {fmt(row.total_tokens)}
+                      </td>
+                      <td className="py-2 px-4 border-l border-gray-200">
+                        {/* Mini ratio bar */}
+                        <div className="flex items-center gap-1.5">
+                          <div className="h-2 flex-1 border border-black overflow-hidden flex">
+                            <div className="h-full bg-neo-lime" style={{ width: `${pct}%` }} />
+                            <div className="h-full bg-neo-pink flex-1" />
+                          </div>
+                          <span className="text-[10px] whitespace-nowrap">{pct}%</span>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
+              <tfoot>
+                <tr className="bg-black text-white font-bold text-xs uppercase">
+                  <td className="py-2 px-4">Period Total</td>
+                  <td className="py-2 px-4 text-right border-l border-gray-700 text-neo-lime">
+                    {fmt(periodTotals.input)}
+                  </td>
+                  <td className="py-2 px-4 text-right border-l border-gray-700 text-neo-pink">
+                    {fmt(periodTotals.output)}
+                  </td>
+                  <td className="py-2 px-4 text-right border-l border-gray-700 text-neo-cyan">
+                    {fmt(periodTotals.total)}
+                  </td>
+                  <td className="py-2 px-4 border-l border-gray-700" />
+                </tr>
+              </tfoot>
             </table>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
 
-export default UsageCard; 
+export default UsageCard;
