@@ -7,6 +7,15 @@ import Layout from '../components/Layout';
 
 type TimePeriod = '7days' | '30days' | '90days' | 'all';
 
+type PlanType = 'free' | 'pro' | 'elite';
+
+interface UserProfile {
+  plan_type: PlanType;
+  subscription_status: string;
+  current_period_end: string | null;
+  _error?: string;
+}
+
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -17,6 +26,14 @@ export default function Dashboard() {
   const [usageLoading, setUsageLoading] = useState(true);
   const [usageError, setUsageError] = useState<string | null>(null);
   const [timePeriod, setTimePeriod] = useState<TimePeriod>('30days');
+
+  // Profile / plan state
+  const [profile, setProfile] = useState<UserProfile>({
+    plan_type: 'free',
+    subscription_status: 'none',
+    current_period_end: null,
+  });
+  const [profileLoading, setProfileLoading] = useState(true);
 
   // ── Auth Gate ──────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -33,12 +50,36 @@ export default function Dashboard() {
     getUser();
   }, [router]);
 
-  // ── Fetch Convex Usage ─────────────────────────────────────────────────────
+  // ── Fetch Convex Usage + Profile ──────────────────────────────────────────
   useEffect(() => {
     if (user && token) {
       fetchConvexUsage();
+      fetchProfile();
     }
   }, [user, token]);
+
+  async function fetchProfile() {
+    if (!token) return;
+    setProfileLoading(true);
+    try {
+      const res = await fetch('/api/profile', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Profile fetch failed');
+      const data = await res.json();
+      setProfile({
+        plan_type: (data.plan_type ?? 'free') as PlanType,
+        subscription_status: data.subscription_status ?? 'none',
+        current_period_end: data.current_period_end ?? null,
+        _error: data._error,
+      });
+    } catch (err: any) {
+      console.error('[dashboard] profile fetch error:', err.message);
+      // Leave the default 'free' so the UI still renders
+    } finally {
+      setProfileLoading(false);
+    }
+  }
 
   async function fetchConvexUsage() {
     if (!token) return;
@@ -226,32 +267,130 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Subscription Card */}
+            {/* Subscription / Access Level Card */}
             <div className="card-brutal bg-neo-pink">
-              <h3 className="text-2xl font-black uppercase mb-6 border-b-4 border-black pb-2">Access Level</h3>
-              <div className="space-y-4">
-                <div className="bg-white border-2 border-black p-4 shadow-brutal-sm relative">
-                  <div className="absolute -top-3 -right-3 bg-black text-white px-2 py-1 text-xs font-bold uppercase transform rotate-12">
-                    Recommended
-                  </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-black uppercase text-xl">Pro</span>
-                    <span className="font-mono font-bold">$19/mo</span>
-                  </div>
-                  <button className="w-full py-2 bg-black text-white hover:bg-gray-800 font-bold uppercase transition-colors">
-                    Upgrade Access
-                  </button>
+              <h3 className="text-2xl font-black uppercase mb-4 border-b-4 border-black pb-2">Access Level</h3>
+
+              {profileLoading ? (
+                <div className="flex items-center justify-center h-32">
+                  <div className="w-8 h-8 border-4 border-black border-t-white rounded-full animate-spin" />
                 </div>
-                <div className="bg-white border-2 border-black p-4 shadow-brutal-sm opacity-75 hover:opacity-100 transition-opacity">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-black uppercase text-xl">Enterprise</span>
-                    <span className="font-mono font-bold">Custom</span>
+              ) : (
+                <div className="space-y-3">
+
+                  {/* ── FREE tier ─────────────────────────────────────────── */}
+                  <div className={`border-2 border-black p-4 relative transition-all ${
+                    profile.plan_type === 'free'
+                      ? 'bg-neo-lime shadow-brutal-sm'
+                      : 'bg-white opacity-70 hover:opacity-100'
+                  }`}>
+                    {profile.plan_type === 'free' && (
+                      <div className="absolute -top-3 -right-3 bg-black text-neo-lime px-2 py-1 text-xs font-bold uppercase">
+                        ✓ Active
+                      </div>
+                    )}
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-black uppercase text-lg">Free</span>
+                      <span className="font-mono font-bold text-sm">₹0/mo</span>
+                    </div>
+                    <p className="font-mono text-xs text-gray-600 mb-3">50,000 tokens/day</p>
+                    {profile.plan_type === 'free' ? (
+                      <div className="w-full py-2 bg-black text-neo-lime font-bold uppercase text-center text-xs tracking-widest">
+                        Current Plan
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => window.open('https://aetheriai.online/#pricing', '_blank')}
+                        className="w-full py-2 border-2 border-black hover:bg-black hover:text-white font-bold uppercase transition-colors text-sm"
+                      >
+                        Downgrade
+                      </button>
+                    )}
                   </div>
-                  <button className="w-full py-2 border-2 border-black hover:bg-black hover:text-white font-bold uppercase transition-colors">
-                    Contact Command
-                  </button>
+
+                  {/* ── PRO tier ──────────────────────────────────────────── */}
+                  <div className={`border-2 border-black p-4 relative transition-all ${
+                    profile.plan_type === 'pro'
+                      ? 'bg-neo-lime shadow-brutal-sm'
+                      : 'bg-white opacity-90 hover:opacity-100'
+                  }`}>
+                    {profile.plan_type !== 'pro' && (
+                      <div className="absolute -top-3 -right-3 bg-black text-white px-2 py-1 text-xs font-bold uppercase transform rotate-12">
+                        Popular
+                      </div>
+                    )}
+                    {profile.plan_type === 'pro' && (
+                      <div className="absolute -top-3 -right-3 bg-black text-neo-lime px-2 py-1 text-xs font-bold uppercase">
+                        ✓ Active
+                      </div>
+                    )}
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-black uppercase text-lg">Pro</span>
+                      <span className="font-mono font-bold text-sm">₹428/mo</span>
+                    </div>
+                    <p className="font-mono text-xs text-gray-600 mb-3">5,000,000 tokens/month</p>
+                    {profile.plan_type === 'pro' ? (
+                      <div className="w-full py-2 bg-black text-neo-lime font-bold uppercase text-center text-xs tracking-widest">
+                        Current Plan
+                      </div>
+                    ) : profile.plan_type === 'free' ? (
+                      <button
+                        onClick={() => window.open('https://aetheriai.online/#pricing', '_blank')}
+                        className="w-full py-2 bg-black text-white hover:bg-gray-800 font-bold uppercase transition-colors text-sm"
+                      >
+                        Upgrade to Pro
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => window.open('https://aetheriai.online/#pricing', '_blank')}
+                        className="w-full py-2 border-2 border-black hover:bg-black hover:text-white font-bold uppercase transition-colors text-sm"
+                      >
+                        Downgrade to Pro
+                      </button>
+                    )}
+                  </div>
+
+                  {/* ── ELITE tier ────────────────────────────────────────── */}
+                  <div className={`border-2 border-black p-4 relative transition-all ${
+                    profile.plan_type === 'elite'
+                      ? 'bg-neo-lime shadow-brutal-sm'
+                      : 'bg-white opacity-70 hover:opacity-100'
+                  }`}>
+                    {profile.plan_type === 'elite' && (
+                      <div className="absolute -top-3 -right-3 bg-black text-neo-lime px-2 py-1 text-xs font-bold uppercase">
+                        ✓ Active
+                      </div>
+                    )}
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-black uppercase text-lg">Elite</span>
+                      <span className="font-mono font-bold text-sm">₹4,428/mo</span>
+                    </div>
+                    <p className="font-mono text-xs text-gray-600 mb-3">50,000,000 tokens/month</p>
+                    {profile.plan_type === 'elite' ? (
+                      <div className="w-full py-2 bg-black text-neo-lime font-bold uppercase text-center text-xs tracking-widest">
+                        Current Plan
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => window.open('https://aetheriai.online/#pricing', '_blank')}
+                        className="w-full py-2 bg-black text-white hover:bg-gray-800 font-bold uppercase transition-colors text-sm"
+                      >
+                        Upgrade to Elite
+                      </button>
+                    )}
+                  </div>
+
+                  {/* ── Renewal date (if subscribed) ─────────────────────── */}
+                  {profile.current_period_end && profile.plan_type !== 'free' && (
+                    <p className="font-mono text-[10px] text-center text-gray-700 pt-1">
+                      Renews {new Date(profile.current_period_end).toLocaleDateString('en-IN', {
+                        day: 'numeric', month: 'short', year: 'numeric'
+                      })}
+                    </p>
+                  )}
+
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
