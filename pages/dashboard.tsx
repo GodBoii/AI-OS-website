@@ -128,9 +128,9 @@ export default function Dashboard() {
     {
       name: 'Windows',
       emoji: '🪟',
-      desc: '64-bit installer (v1.2.20)',
-      filename: 'Aetheria.AI.Setup.1.2.20.exe',
-      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.20/Aetheria.AI.Setup.1.2.20.exe',
+      desc: '64-bit installer (v1.2.21)',
+      filename: 'Aetheria.AI.Setup.1.2.21.exe',
+      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.21/Aetheria.AI.Setup.1.2.21.exe',
       available: true,
     },
     {
@@ -243,7 +243,7 @@ export default function Dashboard() {
             <div className="card-brutal bg-neo-yellow">
               <h3 className="text-2xl font-black uppercase mb-2 border-b-4 border-black pb-2">Binaries</h3>
               <p className="font-mono mb-4 text-sm bg-white border border-black inline-block px-2">
-                Latest: v1.2.20
+                Latest: v1.2.21
               </p>
               <div className="space-y-3">
                 {platforms.map((platform) => (
