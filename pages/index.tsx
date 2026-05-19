@@ -151,39 +151,38 @@ export default function Home() {
       {/* DOWNLOAD SECTION */}
       <section id="download" className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/5 -z-10"></div>
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">
-            Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Get Started?</span>
-          </h2>
-          <p className="text-xl mb-16 max-w-2xl mx-auto text-gray-400">
-            Select your target environment and start delegating tasks in seconds.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
-            {downloads.map((item, i) => (
-              <a
-                key={i}
-                href={item.path}
-                target={item.path !== '#' ? "_blank" : undefined}
-                rel="noopener noreferrer"
-                className={`group flex items-center gap-4 rounded-xl border p-4 transition-all w-full sm:w-[calc(50%-1rem)] md:w-auto md:flex-1 ${item.path !== '#' ? 'border-white/10 bg-surface hover:bg-white/5 hover:border-primary/50 cursor-pointer' : 'border-white/5 bg-surface/50 cursor-default opacity-50'}`}
-              >
-                <div className="text-3xl bg-white/5 p-3 rounded-lg group-hover:scale-110 transition-transform">{item.icon}</div>
-                <div className="text-left">
-                  <div className="font-bold text-white mb-1">{item.platform}</div>
-                  <div className="text-xs text-gray-400">{item.specs}</div>
-                </div>
-              </a>
-            ))}
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">
+              Download <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Aetheria AI</span>
+            </h2>
+            <p className="text-xl max-w-2xl mx-auto text-gray-400">
+              Select your target environment and download the application.
+            </p>
           </div>
 
-          <div className="mt-16">
-            <Link href="/auth/signup" className="bg-primary text-black px-10 py-4 font-bold rounded-xl text-lg hover:bg-primary-dark inline-flex items-center gap-2 transition-all shadow-glow">
-              Create Free Account
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </Link>
+          <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 max-w-4xl mx-auto">
+            {/* Windows Download */}
+            <div className="flex-1 bg-surface/50 border border-white/10 rounded-2xl p-10 flex flex-col items-center text-center hover:border-primary/50 transition-all group">
+              <svg className="w-20 h-20 text-[#00a4ef] mb-6 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+              <h3 className="text-2xl font-bold text-white mb-2">Windows</h3>
+              <p className="text-gray-400 mb-8">Windows 10 and 11 (64-bit)</p>
+              <a href="https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.21/Aetheria.AI.Setup.1.2.21.exe" className="mt-auto w-full bg-white/10 hover:bg-white/20 text-white border border-white/10 px-6 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                Download .exe
+              </a>
+            </div>
+
+            {/* Linux Download */}
+            <div className="flex-1 bg-surface/50 border border-white/10 rounded-2xl p-10 flex flex-col items-center text-center hover:border-accent/50 transition-all group">
+              <svg className="w-20 h-20 text-white mb-6 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 448 512"><path d="M220.8 123.3c1-.5 1.8-1.7 3-1.7 1.1 0 2.8 1.5 3.5 1.9 1.4 1.1 2.8 2.1 4.3 3.2 2.1 1.6 4.3 3.4 6.2 5.3 4.6 4.3 7.8 9.8 10.7 15.6 2.3 4.6 4.6 9.3 6.3 14.3 1.9 5.3 2.9 10.9 4 16.4 1 5.3 1.4 10.9 2.1 16.2.7 5.7 1.4 11.5 1.4 17.3 0 7.3-.6 14.7-1.4 22-.7 5.7-1.4 11.5-2.6 17.1-.9 4.6-2.1 9.2-3.4 13.7-1.4 4.3-3.1 8.4-5 12.5-2.3 5-4.8 9.9-7.9 14.4-2.8 4.3-5.9 8.4-9.6 12-3.2 3.2-6.9 6-10.7 8.5-3.8 2.5-8.1 4.5-12.5 6-4.5 1.4-9.2 2.1-14.1 2.1-4.8 0-9.6-.7-14.1-2.1-4.4-1.5-8.7-3.5-12.5-6-3.8-2.5-7.5-5.3-10.7-8.5-3.7-3.6-6.8-7.7-9.6-12-3.1-4.5-5.6-9.4-7.9-14.4-1.9-4.1-3.6-8.2-5-12.5-1.3-4.5-2.5-9.1-3.4-13.7-1.2-5.6-1.9-11.4-2.6-17.1-.8-7.3-1.4-14.7-1.4-22 0-5.8.7-11.6 1.4-17.3.7-5.3 1.1-10.9 2.1-16.2 1.1-5.5 2.1-11.1 4-16.4 1.7-5 4-9.7 6.3-14.3 2.9-5.8 6.1-11.3 10.7-15.6 1.9-1.9 4.1-3.7 6.2-5.3 1.5-1.1 2.9-2.1 4.3-3.2.7-.4 2.4-1.9 3.5-1.9 1.2 0 2 .9 3 1.4zM416 304.6c0 23.3-13.3 44.5-34.1 54.3-21.7 10.1-47.5 9-68.2-2.9-20.7-11.9-33.7-33.8-33.7-57.8 0-23.3 13.3-44.5 34.1-54.3 21.7-10.1 47.5-9 68.2 2.9 20.7 11.9 33.7 33.8 33.7 57.8zM167.2 304.6c0 23.9-13 45.9-33.7 57.8-20.7 11.9-46.5 13-68.2 2.9-20.8-9.8-34.1-31-34.1-54.3 0-23.9 13-45.9 33.7-57.8 20.7-11.9 46.5-13 68.2-2.9 20.8 9.8 34.1 31 34.1 54.3zM349.3 478.4c-22.3 19.3-52.6 28.5-82.6 25-29.4-3.4-55.8-20.3-71.7-45.7-15.5-24.9-19-55.8-9.4-83.6 9.3-27 30.6-48.8 57.1-58.4 27.2-9.8 58.1-6.1 82.6 10 24.3 15.9 40.5 42.1 43.6 71.3 3.2 30.1-6.7 59.5-27.1 81.4z" /></svg>
+              <h3 className="text-2xl font-bold text-white mb-2">Linux</h3>
+              <p className="text-gray-400 mb-8">Debian, Ubuntu (.deb)</p>
+              <a href="https://github.com/GodBoii/AI-OS-website/releases" className="mt-auto w-full bg-white/10 hover:bg-white/20 text-white border border-white/10 px-6 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                Download .deb
+              </a>
+            </div>
           </div>
         </div>
       </section>
