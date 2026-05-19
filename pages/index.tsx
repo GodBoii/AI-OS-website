@@ -54,20 +54,20 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/5 -z-10"></div>
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold mb-4 md:mb-6">
               Download <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Aetheria AI</span>
             </h2>
-            <p className="text-xl max-w-2xl mx-auto text-gray-400">
+            <p className="text-base md:text-xl max-w-2xl mx-auto text-gray-400">
               Select your target environment and download the application.
             </p>
           </div>
 
-          <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-center items-stretch gap-6 md:gap-8 max-w-4xl mx-auto">
             {/* Windows Download */}
-            <div className="flex-1 bg-surface/50 border border-white/10 rounded-2xl p-10 flex flex-col items-center text-center hover:border-primary/50 transition-all group">
-              <FaWindows className="w-20 h-20 text-[#00a4ef] mb-6 group-hover:scale-110 transition-transform" />
-              <h3 className="text-2xl font-bold text-white mb-2">Windows</h3>
-              <p className="text-gray-400 mb-8">Windows 10 and 11 (64-bit)</p>
+            <div className="flex-1 bg-surface/50 border border-white/10 rounded-2xl p-6 md:p-10 flex flex-col items-center text-center hover:border-primary/50 transition-all group">
+              <FaWindows className="w-14 h-14 md:w-20 md:h-20 text-[#00a4ef] mb-4 md:mb-6 group-hover:scale-110 transition-transform" />
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-2">Windows</h3>
+              <p className="text-gray-400 mb-6 md:mb-8 text-sm md:text-base">Windows 10 and 11 (64-bit)</p>
               <a href="https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.21/Aetheria.AI.Setup.1.2.21.exe" className="mt-auto w-full bg-white/10 hover:bg-white/20 text-white border border-white/10 px-6 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                 Download .exe
@@ -75,10 +75,10 @@ export default function Home() {
             </div>
 
             {/* Linux Download */}
-            <div className="flex-1 bg-surface/50 border border-white/10 rounded-2xl p-10 flex flex-col items-center text-center hover:border-accent/50 transition-all group">
-              <FaLinux className="w-20 h-20 text-white mb-6 group-hover:scale-110 transition-transform" />
-              <h3 className="text-2xl font-bold text-white mb-2">Linux</h3>
-              <p className="text-gray-400 mb-8">Debian, Ubuntu (.deb)</p>
+            <div className="flex-1 bg-surface/50 border border-white/10 rounded-2xl p-6 md:p-10 flex flex-col items-center text-center hover:border-accent/50 transition-all group">
+              <FaLinux className="w-14 h-14 md:w-20 md:h-20 text-white mb-4 md:mb-6 group-hover:scale-110 transition-transform" />
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-2">Linux</h3>
+              <p className="text-gray-400 mb-6 md:mb-8 text-sm md:text-base">Debian, Ubuntu (.deb)</p>
               <a href="https://github.com/GodBoii/AI-OS-website/releases" className="mt-auto w-full bg-white/10 hover:bg-white/20 text-white border border-white/10 px-6 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                 Download .deb
