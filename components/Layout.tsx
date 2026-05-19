@@ -133,7 +133,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div ref={sidebarRef} className={`md:hidden bg-surface/95 backdrop-blur-xl absolute w-full left-0 animate-slide-down shadow-2xl ${scrolled ? 'mt-4 rounded-3xl mx-4 w-[calc(100%-2rem)] border border-white/10' : 'border-t border-white/5'}`}>
+          <div ref={sidebarRef} className={`md:hidden bg-surface/95 backdrop-blur-xl absolute top-full left-0 animate-slide-down shadow-2xl ${scrolled ? 'mt-2 rounded-3xl mx-4 w-[calc(100%-2rem)] border border-white/10' : 'border-t border-white/5 w-full'}`}>
             <div className="p-4 space-y-2 flex flex-col">
               {navLinks.map((link) => (
                 <Link

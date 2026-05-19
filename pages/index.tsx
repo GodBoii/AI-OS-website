@@ -90,26 +90,26 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
         <div className="container mx-auto px-4 text-center relative z-10">
 
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-8 max-w-5xl mx-auto leading-tight animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            The AI Assistant That <br />
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 sm:mb-8 max-w-5xl mx-auto leading-tight animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            The AI Assistant That <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-yellow-accent">Replaces Human Execution</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-gray-400 mb-12 max-w-4xl mx-auto animate-slide-up leading-relaxed" style={{ animationDelay: '0.2s' }}>
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-400 mb-8 sm:mb-12 max-w-4xl mx-auto animate-slide-up leading-relaxed px-2" style={{ animationDelay: '0.2s' }}>
             Aetheria doesn't just answer questions. It writes end-to-end code, deploys websites, controls your computer workspace, and natively integrates with your favorite tools to execute complex workflows autonomously.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-24 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-            <Link href="/auth/signup" className="bg-primary text-black font-bold hover:bg-primary-dark hover:-translate-y-1 transition-all rounded-xl text-lg px-8 py-4 w-full sm:w-auto shadow-glow">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 sm:mb-24 animate-slide-up px-2" style={{ animationDelay: '0.3s' }}>
+            <Link href="/auth/signup" className="bg-primary text-black font-bold hover:bg-primary-dark hover:-translate-y-1 transition-all rounded-xl text-base sm:text-lg px-8 py-4 w-full sm:w-auto shadow-glow flex justify-center">
               Get Started Free
             </Link>
-            <Link href="#download" className="bg-surface-light border border-white/10 text-white font-medium hover:bg-white/10 hover:-translate-y-1 transition-all rounded-xl text-lg px-8 py-4 w-full sm:w-auto">
+            <Link href="#download" className="bg-surface-light border border-white/10 text-white font-medium hover:bg-white/10 hover:-translate-y-1 transition-all rounded-xl text-base sm:text-lg px-8 py-4 w-full sm:w-auto flex justify-center">
               Download App
             </Link>
           </div>
 
           {/* Main Visual Collage with Parallax Scroll */}
-          <div className="relative mx-auto max-w-6xl h-[300px] sm:h-[400px] md:h-[650px] animate-slide-up mt-12" style={{ animationDelay: '0.4s' }}>
+          <div className="relative mx-auto max-w-6xl h-[200px] sm:h-[350px] md:h-[650px] animate-slide-up mt-8 sm:mt-12" style={{ animationDelay: '0.4s' }}>
             
              {/* Center Main Image - Original home_page.png */}
              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] md:w-4/5 z-20">
