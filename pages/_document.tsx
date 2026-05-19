@@ -6,9 +6,9 @@ export default function Document() {
             <Head>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-                <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+                <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
             </Head>
-            <body className="bg-white text-black antialiased selection:bg-black selection:text-white">
+            <body className="bg-[#050505] text-[#E2E8F0] antialiased selection:bg-primary/30 selection:text-white">
                 <Main />
                 <NextScript />
             </body>
