@@ -86,66 +86,42 @@ export default function Home() {
       </Head>
 
       {/* HERO SECTION */}
-      <section className="relative pt-32 pb-32 overflow-hidden">
+      <section className="relative pt-24 pb-20 overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
         <div className="container mx-auto px-4 text-center relative z-10">
 
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 sm:mb-8 max-w-5xl mx-auto leading-tight animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4 sm:mb-6 max-w-4xl mx-auto leading-tight animate-slide-up" style={{ animationDelay: '0.1s' }}>
             The AI Assistant That <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-yellow-accent">Replaces Human Execution</span>
           </h1>
 
-          <p className="text-lg sm:text-xl md:text-2xl text-gray-400 mb-8 sm:mb-12 max-w-4xl mx-auto animate-slide-up leading-relaxed px-2" style={{ animationDelay: '0.2s' }}>
+          <p className="text-lg sm:text-xl text-gray-400 mb-8 sm:mb-12 max-w-3xl mx-auto animate-slide-up leading-relaxed px-2" style={{ animationDelay: '0.2s' }}>
             Aetheria doesn't just answer questions. It writes end-to-end code, deploys websites, controls your computer workspace, and natively integrates with your favorite tools to execute complex workflows autonomously.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 sm:mb-24 animate-slide-up px-2" style={{ animationDelay: '0.3s' }}>
-            <Link href="/auth/signup" className="bg-primary text-black font-bold hover:bg-primary-dark hover:-translate-y-1 transition-all rounded-xl text-base sm:text-lg px-8 py-4 w-full sm:w-auto shadow-glow flex justify-center">
-              Get Started Free
-            </Link>
-            <Link href="#download" className="bg-surface-light border border-white/10 text-white font-medium hover:bg-white/10 hover:-translate-y-1 transition-all rounded-xl text-base sm:text-lg px-8 py-4 w-full sm:w-auto flex justify-center">
-              Download App
-            </Link>
-          </div>
-
           {/* Main Visual Collage with Parallax Scroll */}
-          <div className="relative mx-auto max-w-6xl h-[200px] sm:h-[350px] md:h-[650px] animate-slide-up mt-8 sm:mt-12" style={{ animationDelay: '0.4s' }}>
+          <div className="relative mx-auto max-w-6xl flex justify-center animate-slide-up" style={{ animationDelay: '0.3s' }}>
             
-             {/* Center Main Image - Original home_page.png */}
-             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] md:w-4/5 z-20">
-               <img src="/home_page.png" alt="Aetheria Workspace" className="w-full rounded-2xl border border-white/10 shadow-2xl bg-surface" />
-             </div>
-             
-             {/* Left floating image - Integrations */}
+             {/* Left floating image */}
              <div 
-               className="hidden md:block absolute top-[25%] -left-[2%] w-[30%] z-30 transition-transform duration-75 ease-out"
+               className="hidden md:block absolute top-0 -left-12 w-[35%] z-10 transition-transform duration-75 ease-out"
                style={{ transform: `translateY(${scrollY * -0.15}px)` }}
              >
-               <img src="/integrations.png" alt="Integrations" className="w-full rounded-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-surface" />
+               <img src="/coding-workspace-croped.png" alt="Coding Workspace" className="w-full rounded-2xl border border-white/10 shadow-2xl bg-surface" />
              </div>
              
-             {/* Right floating image - Computer Workspace */}
+             {/* Right floating image */}
              <div 
-               className="hidden md:block absolute top-[40%] -right-[2%] w-[35%] z-30 transition-transform duration-75 ease-out"
+               className="hidden md:block absolute top-12 -right-12 w-[40%] z-10 transition-transform duration-75 ease-out"
                style={{ transform: `translateY(${scrollY * -0.25}px)` }}
              >
-               <img src="/computer-workspace-croped.png" alt="Computer Workspace" className="w-full rounded-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-surface" />
+               <img src="/computer-workspace-croped.png" alt="Computer Workspace" className="w-full rounded-2xl border border-white/10 shadow-2xl bg-surface" />
              </div>
 
-             {/* Top Right floating image - Account/Settings (Tucked behind) */}
-             <div 
-               className="hidden lg:block absolute top-[5%] -right-[5%] w-[22%] z-10 transition-transform duration-75 ease-out opacity-70"
-               style={{ transform: `translateY(${scrollY * -0.05}px)` }}
-             >
-               <img src="/account-croped.png" alt="Account settings" className="w-full rounded-xl border border-white/10 shadow-xl bg-surface" />
-             </div>
-
-             {/* Bottom Left floating image - Coding Workspace */}
-             <div 
-               className="hidden md:block absolute top-[60%] left-[5%] w-[28%] z-30 transition-transform duration-75 ease-out"
-               style={{ transform: `translateY(${scrollY * -0.2}px)` }}
-             >
-               <img src="/coding-workspace-croped.png" alt="Coding Workspace" className="w-full rounded-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-surface" />
+             {/* Center Main Image - Original home_page.png */}
+             <div className="relative w-[100%] md:w-[95%] z-20 mt-8 md:mt-12 transition-transform duration-75 ease-out"
+                  style={{ transform: `translateY(${scrollY * -0.05}px)` }}>
+               <img src="/home_page.png" alt="Aetheria Workspace" className="w-full rounded-2xl border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.6)] bg-surface" />
              </div>
           </div>
         </div>

@@ -45,11 +45,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
   }, [mobileMenuOpen]);
 
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/playbook', label: 'Playbook' },
-    { href: '/#features', label: 'Features' },
+    { href: '/#for-you', label: 'For You' },
     { href: '/#download', label: 'Download' },
-    { href: '/#about', label: 'About' },
+    { href: '/#investor', label: 'Investor' },
   ];
 
   return (
@@ -101,7 +99,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
                     Dashboard
                   </Link>
                   <button onClick={() => { supabase.auth.signOut(); router.push('/'); }} className={`px-5 py-2 text-sm font-medium transition-all rounded-full ${
-                    scrolled ? 'text-red-400 hover:bg-red-500/10' : 'bg-red-500/10 text-red-400 hover:bg-red-500/20 backdrop-blur-md border border-red-500/10'
+                    scrolled ? 'text-purple-400 hover:bg-purple-500/10' : 'bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 backdrop-blur-md border border-purple-500/10'
                   }`}>
                     Sign Out
                   </button>
@@ -149,7 +147,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
               {user ? (
                 <>
                   <Link href="/dashboard" className="block px-4 py-3 text-center rounded-xl bg-white/10 text-white font-medium">Dashboard</Link>
-                  <button onClick={() => { supabase.auth.signOut(); router.push('/'); }} className="block w-full px-4 py-3 text-center rounded-xl text-red-400 hover:bg-red-500/10 font-medium mt-2">Sign Out</button>
+                  <button onClick={() => { supabase.auth.signOut(); router.push('/'); }} className="block w-full px-4 py-3 text-center rounded-xl text-purple-400 hover:bg-purple-500/10 font-medium mt-2">Sign Out</button>
                 </>
               ) : (
                 <>
