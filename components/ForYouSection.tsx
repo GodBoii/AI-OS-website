@@ -15,13 +15,13 @@ const IntegrationsAccordion = ({
   const [hoveredImage, setHoveredImage] = useState(false);
 
   return (
-    <div className={`py-24 grid lg:grid-cols-2 gap-16 items-center ${reverse ? 'lg:flex-row-reverse' : ''}`}>
+    <div className={`py-12 md:py-24 grid lg:grid-cols-2 gap-8 md:gap-16 items-center`}>
       {/* Text Column */}
-      <div className="flex flex-col justify-center">
-        <h2 className="text-5xl md:text-6xl font-bold mb-6 text-white leading-[1.1] tracking-tight">
+      <div className={`flex flex-col justify-center ${reverse ? 'lg:order-2' : 'lg:order-1'}`}>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 text-white leading-[1.1] tracking-tight">
           {title}
         </h2>
-        <p className="text-xl text-gray-400 mb-12 leading-relaxed">
+        <p className="text-base md:text-xl text-gray-400 mb-8 md:mb-12 leading-relaxed">
           {subtitle}
         </p>
 
@@ -62,7 +62,7 @@ const IntegrationsAccordion = ({
 
       {/* Image Column */}
       <div 
-        className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden bg-surface-light border border-white/5 shadow-2xl group cursor-crosshair"
+        className={`relative w-full aspect-[4/3] rounded-3xl overflow-hidden bg-surface-light border border-white/5 shadow-2xl group cursor-crosshair ${reverse ? 'lg:order-1 order-first' : 'lg:order-2'}`}
         onMouseEnter={() => setHoveredImage(true)}
         onMouseLeave={() => setHoveredImage(false)}
       >
