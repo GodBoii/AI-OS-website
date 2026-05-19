@@ -99,29 +99,11 @@ export default function Home() {
             Aetheria doesn't just answer questions. It writes end-to-end code, deploys websites, controls your computer workspace, and natively integrates with your favorite tools to execute complex workflows autonomously.
           </p>
 
-          {/* Main Visual Collage with Parallax Scroll */}
+          {/* Main Visual Image with Parallax Scroll */}
           <div className="relative mx-auto max-w-6xl flex justify-center animate-slide-up" style={{ animationDelay: '0.3s' }}>
-            
-             {/* Left floating image */}
-             <div 
-               className="hidden md:block absolute top-0 -left-12 w-[35%] z-10 transition-transform duration-75 ease-out"
-               style={{ transform: `translateY(${scrollY * -0.15}px)` }}
-             >
-               <img src="/coding-workspace-croped.png" alt="Coding Workspace" className="w-full rounded-2xl border border-white/10 shadow-2xl bg-surface" />
-             </div>
-             
-             {/* Right floating image */}
-             <div 
-               className="hidden md:block absolute top-12 -right-12 w-[40%] z-10 transition-transform duration-75 ease-out"
-               style={{ transform: `translateY(${scrollY * -0.25}px)` }}
-             >
-               <img src="/computer-workspace-croped.png" alt="Computer Workspace" className="w-full rounded-2xl border border-white/10 shadow-2xl bg-surface" />
-             </div>
-
-             {/* Center Main Image - Original home_page.png */}
              <div className="relative w-[100%] md:w-[95%] z-20 mt-8 md:mt-12 transition-transform duration-75 ease-out"
                   style={{ transform: `translateY(${scrollY * -0.05}px)` }}>
-               <img src="/home_page.png" alt="Aetheria Workspace" className="w-full rounded-2xl border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.6)] bg-surface" />
+               <img src="/landing_page.png" alt="Aetheria Workspace" className="w-full rounded-2xl border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.6)] bg-surface" />
              </div>
           </div>
         </div>
