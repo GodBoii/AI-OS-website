@@ -1,72 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-neo-bg text-neo-text overflow-x-hidden;
+    @apply bg-neo-bg text-neo-text overflow-x-hidden font-sans;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-bold uppercase tracking-tight;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight text-white;
   }
 }
 
 @layer components {
 
-  /* Brutalist Button */
+  /* Modern Glass Button */
   .btn-brutal {
-    @apply px-6 py-3 border-2 border-black font-bold uppercase tracking-wider bg-white shadow-brutal transition-all duration-200 active:shadow-none active:translate-x-[4px] active:translate-y-[4px] hover:bg-neo-lime text-black !important;
+    @apply px-6 py-3 rounded-lg font-semibold tracking-wide transition-all duration-300 backdrop-blur-md border border-white/10 shadow-lg text-white !important;
+  }
+  
+  .btn-brutal:hover {
+    @apply -translate-y-1 shadow-glow;
   }
 
   .btn-brutal-primary {
-    @apply bg-neo-blue text-white hover:bg-blue-600;
+    @apply bg-primary/90 text-white hover:bg-primary-dark border-primary/50 shadow-glow;
   }
 
   .btn-brutal-dark {
-    @apply bg-black text-white hover:bg-gray-800 shadow-[4px_4px_0px_0px_#888];
+    @apply bg-surface text-white hover:bg-surface-light border-border-color;
   }
 
-  /* Brutalist Input */
+  /* Modern Input */
   .input-brutal {
-    @apply w-full px-4 py-3 border-2 border-black bg-white focus:outline-none focus:ring-0 focus:shadow-brutal transition-all font-mono;
+    @apply w-full px-4 py-3 rounded-lg border border-border-color bg-surface text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all font-mono;
   }
 
-  /* Brutalist Card */
+  /* Modern Glass Card */
   .card-brutal {
-    @apply border-2 border-black bg-white shadow-brutal p-6 transition-all;
+    @apply rounded-xl border border-border-color bg-surface-light/50 backdrop-blur-sm p-8 transition-all duration-300;
   }
 
   .card-brutal:hover {
-    @apply shadow-brutal-lg -translate-y-1;
-  }
-
-  /* Utilities */
-  .border-b-3 {
-    border-bottom-width: 3px;
+    @apply shadow-glow -translate-y-2 border-primary/30;
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar for Dark Theme */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #fff;
-  border-left: 2px solid #000;
+  background: #050505;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #000;
-  border: 2px solid #fff;
+  background: #262626;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #333;
+  background: #3b82f6;
 }
