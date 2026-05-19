@@ -116,8 +116,8 @@ export default function Dashboard() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-neo-bg">
         <div className="text-center">
-          <div className="w-20 h-20 border-8 border-black border-t-neo-lime rounded-full animate-spin mx-auto mb-4" />
-          <p className="font-mono uppercase tracking-widest text-sm animate-pulse">Initializing...</p>
+          <div className="w-16 h-16 border-4 border-white/10 border-t-primary rounded-full animate-spin mx-auto mb-6 shadow-glow" />
+          <p className="font-mono text-primary text-sm uppercase tracking-widest animate-pulse">Initializing Workspace</p>
         </div>
       </div>
     );
@@ -179,129 +179,143 @@ export default function Dashboard() {
   return (
     <Layout>
       <Head>
-        <title>DASHBOARD // Aetheria AI</title>
+        <title>Dashboard | Aetheria AI</title>
         <link rel="icon" href="/icon.ico" />
         <meta name="description" content="Aetheria AI user dashboard — downloads, usage telemetry, and account management." />
       </Head>
 
-      <div className="bg-neo-bg min-h-screen pb-20">
-        <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="bg-neo-bg min-h-screen pb-20 relative overflow-hidden pt-12">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+        <div className="max-w-7xl mx-auto px-4 py-12 relative z-10">
 
           {/* ── Page Header ─────────────────────────────────────────────────── */}
-          <div className="mb-12 border-l-8 border-black pl-6 flex flex-wrap justify-between items-start gap-4">
+          <div className="mb-12 flex flex-wrap justify-between items-start gap-4">
             <div>
-              <h1 className="text-5xl md:text-6xl font-black uppercase mb-2">Command Center</h1>
-              <p className="text-xl font-mono text-gray-600">
-                Welcome back, <span className="font-bold text-black">{displayName}</span>.
+              <h1 className="text-4xl md:text-5xl font-bold mb-2 text-white">Command Center</h1>
+              <p className="text-lg text-gray-400">
+                Welcome back, <span className="text-primary font-semibold">{displayName}</span>.
               </p>
             </div>
             <button
               onClick={handleSignOut}
-              className="btn-brutal bg-white border-2 border-black hover:bg-black hover:text-white text-sm uppercase self-end"
+              className="px-6 py-2 rounded-lg font-medium text-red-400 hover:text-white hover:bg-red-500/20 transition-all border border-red-500/30"
             >
               Sign Out
             </button>
           </div>
 
           {/* ── Top Row: Identity | Downloads | Subscription ───────────────── */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
             {/* Identity Card */}
-            <div className="card-brutal bg-white group hover:bg-black hover:text-white transition-colors">
-              <h3 className="text-2xl font-black uppercase mb-6 border-b-4 border-black group-hover:border-white pb-2">
-                Identity
-              </h3>
-              <div className="space-y-4 font-mono">
+            <div className="card-brutal p-8">
+              <div className="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
+                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                </div>
+                <h3 className="text-xl font-bold text-white">Identity</h3>
+              </div>
+              <div className="space-y-5">
                 <div>
-                  <span className="text-xs uppercase font-bold text-gray-500 group-hover:text-gray-400">Name</span>
-                  <p className="font-bold text-lg">{user?.user_metadata?.name || 'Unknown'}</p>
+                  <span className="text-xs uppercase font-semibold text-gray-500 tracking-wider">Name</span>
+                  <p className="font-medium text-gray-200 mt-1">{user?.user_metadata?.name || 'Unknown'}</p>
                 </div>
                 <div>
-                  <span className="text-xs uppercase font-bold text-gray-500 group-hover:text-gray-400">Email</span>
-                  <p className="font-bold break-words">{user?.email}</p>
+                  <span className="text-xs uppercase font-semibold text-gray-500 tracking-wider">Email</span>
+                  <p className="font-medium text-gray-200 mt-1 break-all">{user?.email}</p>
                 </div>
                 <div>
-                  <span className="text-xs uppercase font-bold text-gray-500 group-hover:text-gray-400">Auth Method</span>
-                  <p className="font-bold uppercase">
-                    {user?.email ? '✓ Email' : '✓ OAuth'}
+                  <span className="text-xs uppercase font-semibold text-gray-500 tracking-wider">Auth Method</span>
+                  <p className="font-medium text-gray-200 mt-1 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    {user?.email ? 'Email' : 'OAuth'}
                   </p>
                 </div>
                 <div>
-                  <span className="text-xs uppercase font-bold text-gray-500 group-hover:text-gray-400">Status</span>
-                  <p className="text-neo-lime font-bold uppercase bg-black group-hover:bg-neo-lime group-hover:text-black inline-block px-2">
+                  <span className="text-xs uppercase font-semibold text-gray-500 tracking-wider">Status</span>
+                  <p className="text-emerald-400 font-medium text-sm mt-1 bg-emerald-400/10 inline-flex items-center gap-2 px-2 py-1 rounded border border-emerald-400/20">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                     Active Agent
                   </p>
-                </div>
-                <div>
-                  <span className="text-xs uppercase font-bold text-gray-500 group-hover:text-gray-400">User ID</span>
-                  <p className="text-xs break-all opacity-50">{user?.id}</p>
                 </div>
               </div>
             </div>
 
             {/* Downloads Card */}
-            <div className="card-brutal bg-neo-yellow">
-              <h3 className="text-2xl font-black uppercase mb-2 border-b-4 border-black pb-2">Binaries</h3>
-              <p className="font-mono mb-4 text-sm bg-white border border-black inline-block px-2">
-                Latest: v1.2.21
-              </p>
+            <div className="card-brutal p-8">
+              <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center text-accent">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Binaries</h3>
+                </div>
+                <span className="text-xs font-mono bg-white/10 text-gray-300 px-2 py-1 rounded border border-white/10">v1.2.21</span>
+              </div>
               <div className="space-y-3">
                 {platforms.map((platform) => (
                   <button
                     key={platform.name}
                     onClick={() => handleDownload(platform)}
                     disabled={!platform.available}
-                    className={`w-full py-3 border-2 border-black font-bold uppercase shadow-brutal-sm active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all flex items-center justify-center gap-3 ${
+                    className={`w-full p-3 rounded-xl border transition-all flex items-center gap-4 text-left ${
                       platform.available
-                        ? 'bg-white hover:bg-black hover:text-white'
-                        : 'bg-gray-300 opacity-50 cursor-not-allowed'
+                        ? 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 hover:-translate-y-0.5 group text-white'
+                        : 'border-white/5 bg-transparent opacity-50 cursor-not-allowed text-gray-500'
                     }`}
                   >
-                    <span className="text-xl">{platform.emoji}</span>
-                    <span className="text-left">
-                      <span className="block text-sm">{platform.available ? `Get for ${platform.name}` : `${platform.name} // Locked`}</span>
-                      <span className="block text-[10px] font-mono font-normal opacity-70">{platform.desc}</span>
+                    <span className="text-2xl bg-white/5 w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">{platform.emoji}</span>
+                    <span className="flex-1">
+                      <span className="block font-semibold text-sm">{platform.available ? `Download for ${platform.name}` : `${platform.name} (Locked)`}</span>
+                      <span className="block text-xs opacity-60 mt-0.5">{platform.desc}</span>
                     </span>
+                    {platform.available && (
+                      <svg className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                    )}
                   </button>
                 ))}
               </div>
             </div>
 
             {/* Subscription / Access Level Card */}
-            <div className="card-brutal bg-neo-pink">
-              <h3 className="text-2xl font-black uppercase mb-4 border-b-4 border-black pb-2">Access Level</h3>
+            <div className="card-brutal p-8">
+              <div className="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
+                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </div>
+                <h3 className="text-xl font-bold text-white">Access Level</h3>
+              </div>
 
               {profileLoading ? (
-                <div className="flex items-center justify-center h-32">
-                  <div className="w-8 h-8 border-4 border-black border-t-white rounded-full animate-spin" />
+                <div className="flex items-center justify-center h-48">
+                  <div className="w-8 h-8 border-2 border-white/10 border-t-primary rounded-full animate-spin" />
                 </div>
               ) : (
-                <div className="space-y-3">
-
+                <div className="space-y-4">
                   {/* ── FREE tier ─────────────────────────────────────────── */}
-                  <div className={`border-2 border-black p-4 relative transition-all ${
+                  <div className={`rounded-xl border p-5 relative transition-all ${
                     profile.plan_type === 'free'
-                      ? 'bg-neo-lime shadow-brutal-sm'
-                      : 'bg-white opacity-70 hover:opacity-100'
+                      ? 'bg-primary/10 border-primary/30 shadow-glow-sm'
+                      : 'bg-surface border-white/10 hover:border-white/20 opacity-60 hover:opacity-100'
                   }`}>
                     {profile.plan_type === 'free' && (
-                      <div className="absolute -top-3 -right-3 bg-black text-neo-lime px-2 py-1 text-xs font-bold uppercase">
-                        ✓ Active
+                      <div className="absolute top-4 right-4 flex items-center gap-1.5 text-primary text-xs font-bold uppercase tracking-wider">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Active
                       </div>
                     )}
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-black uppercase text-lg">Free</span>
-                      <span className="font-mono font-bold text-sm">₹0/mo</span>
+                    <div className="flex flex-col mb-4">
+                      <span className="font-bold text-lg text-white">Free</span>
+                      <span className="text-gray-400 text-sm mt-1">₹0/mo • 50k tokens/day</span>
                     </div>
-                    <p className="font-mono text-xs text-gray-600 mb-3">50,000 tokens/day</p>
                     {profile.plan_type === 'free' ? (
-                      <div className="w-full py-2 bg-black text-neo-lime font-bold uppercase text-center text-xs tracking-widest">
+                      <div className="w-full py-2 bg-primary/20 text-primary font-semibold rounded text-center text-sm border border-primary/20">
                         Current Plan
                       </div>
                     ) : (
                       <button
                         onClick={() => window.open('https://aetheriai.online/#pricing', '_blank')}
-                        className="w-full py-2 border-2 border-black hover:bg-black hover:text-white font-bold uppercase transition-colors text-sm"
+                        className="w-full py-2 rounded border border-white/20 text-gray-300 hover:bg-white/10 hover:text-white font-medium transition-colors text-sm"
                       >
                         Downgrade
                       </button>
@@ -309,148 +323,120 @@ export default function Dashboard() {
                   </div>
 
                   {/* ── PRO tier ──────────────────────────────────────────── */}
-                  <div className={`border-2 border-black p-4 relative transition-all ${
+                  <div className={`rounded-xl border p-5 relative transition-all ${
                     profile.plan_type === 'pro'
-                      ? 'bg-neo-lime shadow-brutal-sm'
-                      : 'bg-white opacity-90 hover:opacity-100'
+                      ? 'bg-primary/10 border-primary/30 shadow-glow-sm'
+                      : 'bg-surface border-white/10 hover:border-white/20'
                   }`}>
                     {profile.plan_type !== 'pro' && (
-                      <div className="absolute -top-3 -right-3 bg-black text-white px-2 py-1 text-xs font-bold uppercase transform rotate-12">
-                        Popular
+                      <div className="absolute -top-3 right-4 bg-primary text-white px-3 py-0.5 rounded-full text-xs font-bold tracking-wider">
+                        POPULAR
                       </div>
                     )}
                     {profile.plan_type === 'pro' && (
-                      <div className="absolute -top-3 -right-3 bg-black text-neo-lime px-2 py-1 text-xs font-bold uppercase">
-                        ✓ Active
+                      <div className="absolute top-4 right-4 flex items-center gap-1.5 text-primary text-xs font-bold uppercase tracking-wider">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Active
                       </div>
                     )}
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-black uppercase text-lg">Pro</span>
-                      <span className="font-mono font-bold text-sm">₹428/mo</span>
+                    <div className="flex flex-col mb-4">
+                      <span className="font-bold text-lg text-white">Pro</span>
+                      <span className="text-gray-400 text-sm mt-1">₹428/mo • 5M tokens/mo</span>
                     </div>
-                    <p className="font-mono text-xs text-gray-600 mb-3">5,000,000 tokens/month</p>
                     {profile.plan_type === 'pro' ? (
-                      <div className="w-full py-2 bg-black text-neo-lime font-bold uppercase text-center text-xs tracking-widest">
+                      <div className="w-full py-2 bg-primary/20 text-primary font-semibold rounded text-center text-sm border border-primary/20">
                         Current Plan
                       </div>
                     ) : profile.plan_type === 'free' ? (
                       <button
                         onClick={() => window.open('https://aetheriai.online/#pricing', '_blank')}
-                        className="w-full py-2 bg-black text-white hover:bg-gray-800 font-bold uppercase transition-colors text-sm"
+                        className="w-full py-2 rounded bg-white text-black hover:bg-gray-200 font-semibold transition-colors text-sm"
                       >
                         Upgrade to Pro
                       </button>
                     ) : (
                       <button
                         onClick={() => window.open('https://aetheriai.online/#pricing', '_blank')}
-                        className="w-full py-2 border-2 border-black hover:bg-black hover:text-white font-bold uppercase transition-colors text-sm"
+                        className="w-full py-2 rounded border border-white/20 text-gray-300 hover:bg-white/10 hover:text-white font-medium transition-colors text-sm"
                       >
                         Downgrade to Pro
                       </button>
                     )}
                   </div>
-
-                  {/* ── ELITE tier ────────────────────────────────────────── */}
-                  <div className={`border-2 border-black p-4 relative transition-all ${
-                    profile.plan_type === 'elite'
-                      ? 'bg-neo-lime shadow-brutal-sm'
-                      : 'bg-white opacity-70 hover:opacity-100'
-                  }`}>
-                    {profile.plan_type === 'elite' && (
-                      <div className="absolute -top-3 -right-3 bg-black text-neo-lime px-2 py-1 text-xs font-bold uppercase">
-                        ✓ Active
-                      </div>
-                    )}
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-black uppercase text-lg">Elite</span>
-                      <span className="font-mono font-bold text-sm">₹4,428/mo</span>
-                    </div>
-                    <p className="font-mono text-xs text-gray-600 mb-3">50,000,000 tokens/month</p>
-                    {profile.plan_type === 'elite' ? (
-                      <div className="w-full py-2 bg-black text-neo-lime font-bold uppercase text-center text-xs tracking-widest">
-                        Current Plan
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() => window.open('https://aetheriai.online/#pricing', '_blank')}
-                        className="w-full py-2 bg-black text-white hover:bg-gray-800 font-bold uppercase transition-colors text-sm"
-                      >
-                        Upgrade to Elite
-                      </button>
-                    )}
-                  </div>
-
-                  {/* ── Renewal date (if subscribed) ─────────────────────── */}
-                  {profile.current_period_end && profile.plan_type !== 'free' && (
-                    <p className="font-mono text-[10px] text-center text-gray-700 pt-1">
-                      Renews {new Date(profile.current_period_end).toLocaleDateString('en-IN', {
-                        day: 'numeric', month: 'short', year: 'numeric'
-                      })}
-                    </p>
-                  )}
-
                 </div>
               )}
             </div>
           </div>
 
           {/* ── Usage Telemetry Section ──────────────────────────────────────── */}
-          <div className="mt-12">
-            <div className="flex flex-wrap gap-4 mb-6 items-center">
-              <div>
-                <h2 className="text-3xl font-black uppercase">System Telemetry</h2>
-                <p className="font-mono text-xs text-gray-500 mt-1">
-                  Powered by Convex — real-time token usage from Aetheria AI
-                </p>
-              </div>
-              {/* Period Selector */}
-              <div className="flex space-x-2 bg-white border-2 border-black p-1 ml-auto">
-                {(['7days', '30days', '90days', 'all'] as TimePeriod[]).map((period) => (
-                  <button
-                    key={period}
-                    id={`period-${period}`}
-                    onClick={() => setTimePeriod(period)}
-                    className={`px-4 py-2 text-xs font-bold uppercase transition-colors ${
-                      timePeriod === period ? 'bg-black text-white' : 'hover:bg-gray-200 text-black'
-                    }`}
-                  >
-                    {period === 'all' ? 'All Time' : period}
-                  </button>
-                ))}
-              </div>
-              <button
-                onClick={fetchConvexUsage}
-                disabled={usageLoading}
-                className="px-4 py-2 border-2 border-black font-bold text-xs uppercase hover:bg-black hover:text-white transition-colors disabled:opacity-50"
-                title="Refresh data"
-              >
-                {usageLoading ? '⟳ Syncing...' : '⟳ Refresh'}
-              </button>
-            </div>
-
-            {usageError ? (
-              <div className="card-brutal bg-red-50 border-red-400">
-                <h3 className="text-xl font-black text-red-600 mb-3 uppercase">Telemetry Error</h3>
-                <div className="font-mono p-4 border-2 border-red-400 bg-white mb-4 text-red-600 text-sm">
-                  <p><strong>Error:</strong> {usageError}</p>
-                  <p className="mt-2 text-xs text-gray-500">
-                    Make sure CONVEX_URL is set correctly in .env.local.
+          <div className="mt-8">
+            <div className="card-brutal p-8">
+              <div className="flex flex-wrap gap-6 mb-8 items-end justify-between border-b border-white/10 pb-6">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                    </div>
+                    <h2 className="text-2xl font-bold text-white">System Telemetry</h2>
+                  </div>
+                  <p className="text-sm text-gray-400">
+                    Real-time token usage analytics powered by Convex.
                   </p>
                 </div>
-                <button
-                  onClick={fetchConvexUsage}
-                  className="px-6 py-3 bg-red-500 text-white font-bold uppercase hover:bg-red-600 border-2 border-black shadow-brutal"
-                >
-                  Retry Connection
-                </button>
+
+                <div className="flex items-center gap-4">
+                  {/* Period Selector */}
+                  <div className="flex bg-surface-light p-1 rounded-lg border border-white/5">
+                    {(['7days', '30days', '90days', 'all'] as TimePeriod[]).map((period) => (
+                      <button
+                        key={period}
+                        id={`period-${period}`}
+                        onClick={() => setTimePeriod(period)}
+                        className={`px-4 py-1.5 text-xs font-medium rounded-md transition-all ${
+                          timePeriod === period 
+                            ? 'bg-white/10 text-white shadow-sm' 
+                            : 'text-gray-400 hover:text-white hover:bg-white/5'
+                        }`}
+                      >
+                        {period === 'all' ? 'All Time' : period === '7days' ? '7D' : period === '30days' ? '30D' : '90D'}
+                      </button>
+                    ))}
+                  </div>
+                  <button
+                    onClick={fetchConvexUsage}
+                    disabled={usageLoading}
+                    className="p-2 rounded-lg border border-white/10 text-gray-400 hover:text-white hover:bg-white/5 transition-all disabled:opacity-50"
+                    title="Refresh data"
+                  >
+                    <svg className={`w-4 h-4 ${usageLoading ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                  </button>
+                </div>
               </div>
-            ) : (
-              <UsageCard
-                usageData={usageData}
-                isLoading={usageLoading}
-                timePeriod={timePeriod}
-              />
-            )}
+
+              {usageError ? (
+                <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6 flex flex-col items-center justify-center text-center">
+                  <div className="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 mb-4">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-red-400 mb-2">Telemetry Error</h3>
+                  <p className="text-gray-300 text-sm max-w-md mb-6">{usageError}</p>
+                  <button
+                    onClick={fetchConvexUsage}
+                    className="px-6 py-2 bg-red-500/20 text-red-400 font-medium rounded-lg hover:bg-red-500/30 border border-red-500/30 transition-all"
+                  >
+                    Retry Connection
+                  </button>
+                </div>
+              ) : (
+                <div className="opacity-90 hover:opacity-100 transition-opacity">
+                  <UsageCard
+                    usageData={usageData}
+                    isLoading={usageLoading}
+                    timePeriod={timePeriod}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
