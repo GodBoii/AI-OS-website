@@ -5,30 +5,37 @@ export default function Contact() {
   return (
     <Layout>
       <Head>
-        <title>CONTACT // Aetheria</title>
+        <title>Contact | Aetheria AI</title>
         <meta name="description" content="Secure line for Aetheria AI inquiries." />
       </Head>
-      <div className="bg-neo-bg min-h-screen">
+      <div className="bg-neo-bg min-h-screen pt-12 relative overflow-hidden">
+        {/* Subtle background glow effect */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/10 blur-[100px] rounded-full pointer-events-none -z-10"></div>
         <div className="container mx-auto px-4 py-20 max-w-2xl text-center">
           <div className="mb-12">
-            <div className="w-24 h-24 bg-black text-white flex items-center justify-center mx-auto mb-6 text-4xl shadow-brutal">
-              ✉
+            <div className="w-20 h-20 bg-surface border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-4xl shadow-glow">
+              ✉️
             </div>
-            <h1 className="text-6xl font-black uppercase mb-4">Contact</h1>
-            <p className="font-mono text-xl border-y-2 border-black py-4">Secure communication channels.</p>
+            <h1 className="text-5xl font-bold mb-4 tracking-tight text-white">Get in Touch</h1>
+            <p className="text-gray-400 text-lg">Secure communication channels for inquiries and support.</p>
           </div>
 
-          <div className="card-brutal p-8 text-left space-y-6">
+          <div className="card-brutal p-8 text-left space-y-8 bg-surface-light/50 backdrop-blur-md rounded-2xl border border-white/10">
             <div>
-              <span className="text-xs font-bold uppercase bg-neo-lime px-2">Email Protocol</span>
-              <a href="mailto:prajwalghadge2005@gmail.com" className="block text-2xl font-black hover:text-neo-blue break-all">prajwalghadge2005@gmail.com</a>
+              <span className="text-xs font-semibold uppercase text-primary mb-2 block tracking-wider">Email Protocol</span>
+              <a href="mailto:prajwalghadge2005@gmail.com" className="block text-xl sm:text-2xl font-bold text-white hover:text-primary transition-colors break-all">
+                prajwalghadge2005@gmail.com
+              </a>
             </div>
             <div>
-              <span className="text-xs font-bold uppercase bg-neo-pink px-2 text-white">Direct Line</span>
-              <a href="tel:9619039912" className="block text-2xl font-black hover:text-neo-blue">9619039912</a>
+              <span className="text-xs font-semibold uppercase text-accent mb-2 block tracking-wider">Direct Line</span>
+              <a href="tel:9619039912" className="block text-xl sm:text-2xl font-bold text-white hover:text-accent transition-colors">
+                9619039912
+              </a>
             </div>
-            <div className="border-t-2 border-black pt-4 font-mono text-xs">
-              SYSTEM_DEV: Prajwal Ghadge
+            <div className="border-t border-white/10 pt-6 mt-4 flex items-center justify-between">
+              <span className="font-mono text-xs text-gray-500">SYSTEM_DEV</span>
+              <span className="font-semibold text-sm text-gray-300">Prajwal Ghadge</span>
             </div>
           </div>
         </div>

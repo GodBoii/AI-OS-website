@@ -68,41 +68,48 @@ export default function Signup() {
   return (
     <>
       <Head>
-        <title>SIGNUP // Aetheria AI</title>
+        <title>Create Account | Aetheria AI</title>
         <link rel="icon" href="/icon.ico" />
       </Head>
-      <div className="min-h-screen flex flex-col justify-center py-12 px-4 bg-neo-bg">
-        <div className="absolute top-0 left-0 p-6">
-          <Link href="/" className="font-black uppercase text-xl border-b-2 border-black hover:bg-black hover:text-white transition-colors px-1">
-            ← Return
+      <div className="min-h-screen flex flex-col justify-center py-12 px-4 bg-neo-bg relative overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-accent/20 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 blur-[150px] rounded-full pointer-events-none -z-10"></div>
+
+        <div className="absolute top-0 left-0 p-6 z-10">
+          <Link href="/" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm font-medium">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            Return
           </Link>
         </div>
 
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="text-center mb-10">
-            <div className="w-20 h-20 bg-neo-pink border-4 border-black flex items-center justify-center mx-auto mb-6 shadow-brutal">
-              <span className="text-4xl text-white">★</span>
+        <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-surface border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-glow">
+              <svg className="w-8 h-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
             </div>
-            <h2 className="text-5xl font-black uppercase tracking-tighter">Initialize</h2>
-            <p className="mt-4 font-mono text-gray-600">
-              Already initialized?{' '}
-              <Link href="/auth/login" className="underline font-bold hover:bg-black hover:text-white px-1">
-                Identify
+            <h2 className="text-4xl font-bold tracking-tight text-white mb-2">Create Account</h2>
+            <p className="text-gray-400">
+              Already have an account?{' '}
+              <Link href="/auth/login" className="text-accent hover:text-accent-light font-medium transition-colors">
+                Sign in
               </Link>
             </p>
           </div>
         </div>
 
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white border-4 border-black p-8 shadow-brutal-lg">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+          <div className="bg-surface-light/50 backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-xl">
             {error && (
-              <div className="bg-red-50 border-2 border-red-500 text-red-600 px-4 py-3 mb-6 font-bold text-sm">
-                {error}
+              <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 mb-6 rounded-lg text-sm flex items-start gap-3">
+                <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                <span>{error}</span>
               </div>
             )}
             {success && (
-              <div className="bg-neo-lime border-2 border-black text-black px-4 py-3 mb-6 font-bold text-sm">
-                ✅ {success}
+              <div className="bg-emerald-500/10 border border-emerald-500/50 text-emerald-400 px-4 py-3 mb-6 rounded-lg text-sm flex items-start gap-3">
+                <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                <span>{success}</span>
               </div>
             )}
 
@@ -111,31 +118,31 @@ export default function Signup() {
               id="google-signup-btn"
               onClick={handleGoogleSignup}
               disabled={googleLoading || loading}
-              className="w-full flex items-center justify-center gap-3 py-3 px-4 border-2 border-black bg-white hover:bg-gray-50 font-bold uppercase transition-all shadow-brutal-sm active:shadow-none active:translate-x-[2px] active:translate-y-[2px] disabled:opacity-50 disabled:cursor-not-allowed mb-6"
+              className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-white font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed mb-8"
             >
               {googleLoading ? (
-                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
               ) : (
                 <GoogleIcon />
               )}
-              {googleLoading ? 'CONNECTING...' : 'Continue with Google'}
+              {googleLoading ? 'Connecting...' : 'Continue with Google'}
             </button>
 
             {/* Divider */}
-            <div className="relative mb-6">
+            <div className="relative mb-8">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t-2 border-black border-dashed" />
+                <div className="w-full border-t border-white/10" />
               </div>
               <div className="relative flex justify-center">
-                <span className="bg-white px-4 font-mono text-xs text-gray-500 uppercase">or email</span>
+                <span className="bg-surface-light px-4 text-xs text-gray-500 uppercase tracking-widest">or continue with email</span>
               </div>
             </div>
 
             {/* Email/Password Form */}
-            <form className="space-y-6" onSubmit={handleSignup}>
+            <form className="space-y-5" onSubmit={handleSignup}>
               <div>
-                <label htmlFor="name" className="block text-sm font-black uppercase mb-1">
-                  Designation (Name)
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                  Full Name
                 </label>
                 <input
                   id="name"
@@ -143,13 +150,13 @@ export default function Signup() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="input-brutal"
+                  className="input-brutal w-full bg-black/50 border-white/10 text-white placeholder-gray-600 focus:border-accent focus:ring-1 focus:ring-accent rounded-xl px-4 py-3 transition-all"
                   placeholder="John Doe"
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-black uppercase mb-1">
-                  Email Protocol
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                  Email Address
                 </label>
                 <input
                   id="email"
@@ -157,13 +164,13 @@ export default function Signup() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="input-brutal"
-                  placeholder="user@domain.com"
+                  className="input-brutal w-full bg-black/50 border-white/10 text-white placeholder-gray-600 focus:border-accent focus:ring-1 focus:ring-accent rounded-xl px-4 py-3 transition-all"
+                  placeholder="you@example.com"
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block text-sm font-black uppercase mb-1">
-                  Passkey
+                <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                  Password
                 </label>
                 <input
                   id="password"
@@ -171,7 +178,7 @@ export default function Signup() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="input-brutal"
+                  className="input-brutal w-full bg-black/50 border-white/10 text-white placeholder-gray-600 focus:border-accent focus:ring-1 focus:ring-accent rounded-xl px-4 py-3 transition-all"
                   placeholder="••••••••"
                 />
               </div>
@@ -179,9 +186,9 @@ export default function Signup() {
                 id="email-signup-btn"
                 type="submit"
                 disabled={loading || googleLoading}
-                className="w-full btn-brutal bg-neo-lime text-black hover:bg-black hover:text-white shadow-brutal disabled:opacity-50"
+                className="w-full btn-brutal bg-accent hover:bg-accent-light text-white rounded-xl py-3 text-sm font-semibold tracking-wide disabled:opacity-50 mt-2 transition-colors border-0"
               >
-                {loading ? 'CREATING...' : 'ESTABLISH LINK'}
+                {loading ? 'Creating Account...' : 'Create Account'}
               </button>
             </form>
           </div>
