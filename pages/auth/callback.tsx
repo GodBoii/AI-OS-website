@@ -91,21 +91,22 @@ export default function AuthCallback() {
   if (status === 'error') {
     return (
       <>
-        <Head><title>AUTH ERROR // Aetheria AI</title></Head>
-        <div className="min-h-screen flex flex-col items-center justify-center bg-neo-bg px-4">
-          <div className="text-center max-w-md">
-            <div className="w-20 h-20 bg-red-400 border-4 border-black flex items-center justify-center mx-auto mb-6 shadow-brutal">
-              <span className="text-4xl">✕</span>
+        <Head><title>Authentication Error | Aetheria AI</title></Head>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-neo-bg px-4 relative overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-500/10 blur-[100px] rounded-full pointer-events-none -z-10"></div>
+          <div className="text-center max-w-md bg-surface border border-red-500/30 p-8 rounded-2xl shadow-xl backdrop-blur-md">
+            <div className="w-16 h-16 bg-red-500/20 border border-red-500/50 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-glow">
+              <svg className="w-8 h-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             </div>
-            <h2 className="text-3xl font-black uppercase tracking-tighter mb-4">Auth Failed</h2>
-            <div className="bg-white border-2 border-black p-4 font-mono text-sm text-red-600 mb-6 text-left">
+            <h2 className="text-2xl font-bold tracking-tight mb-4 text-white">Authentication Failed</h2>
+            <div className="bg-black/50 border border-white/10 rounded-xl p-4 font-mono text-sm text-red-400 mb-8 text-left overflow-auto">
               {errorMsg}
             </div>
             <button
               onClick={() => router.push('/auth/login')}
-              className="btn-brutal bg-black text-white hover:bg-neo-lime hover:text-black shadow-brutal"
+              className="w-full btn-brutal px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl transition-all"
             >
-              Back to Login
+              Return to Login
             </button>
           </div>
         </div>
@@ -116,20 +117,21 @@ export default function AuthCallback() {
   return (
     <>
       <Head>
-        <title>AUTH // Aetheria AI</title>
+        <title>Authenticating... | Aetheria AI</title>
       </Head>
-      <div className="min-h-screen flex flex-col items-center justify-center bg-neo-bg">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-neo-bg relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-primary/20 blur-[100px] rounded-full pointer-events-none -z-10"></div>
         <div className="text-center">
-          <div className="w-20 h-20 bg-neo-lime border-4 border-black flex items-center justify-center mx-auto mb-6 shadow-brutal animate-bounce">
-            <span className="text-4xl">⚡</span>
+          <div className="w-20 h-20 bg-surface border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-glow animate-pulse">
+            <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
           </div>
-          <h2 className="text-3xl font-black uppercase tracking-tighter mb-4">Authenticating...</h2>
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-3 h-3 bg-black rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-            <div className="w-3 h-3 bg-black rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-            <div className="w-3 h-3 bg-black rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+          <h2 className="text-2xl font-bold tracking-tight mb-4 text-white">Authenticating</h2>
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
           </div>
-          <p className="font-mono text-gray-500 text-sm">Establishing secure channel...</p>
+          <p className="font-mono text-primary/70 text-sm tracking-widest uppercase">Establishing secure channel</p>
         </div>
       </div>
     </>
