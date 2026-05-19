@@ -184,21 +184,21 @@ export default function Dashboard() {
         <meta name="description" content="Aetheria AI user dashboard — downloads, usage telemetry, and account management." />
       </Head>
 
-      <div className="bg-neo-bg min-h-screen pb-20 relative overflow-hidden pt-12">
+      <div className="bg-neo-bg min-h-screen pb-20 relative overflow-hidden pt-6 md:pt-12">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
-        <div className="max-w-7xl mx-auto px-4 py-12 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 py-6 md:py-12 relative z-10">
 
           {/* ── Page Header ─────────────────────────────────────────────────── */}
-          <div className="mb-12 flex flex-wrap justify-between items-start gap-4">
+          <div className="mb-8 md:mb-12 flex flex-wrap justify-between items-start gap-3 md:gap-4">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-2 text-white">Command Center</h1>
-              <p className="text-lg text-gray-400">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-1 md:mb-2 text-white">Command Center</h1>
+              <p className="text-base md:text-lg text-gray-400">
                 Welcome back, <span className="text-primary font-semibold">{displayName}</span>.
               </p>
             </div>
             <button
               onClick={handleSignOut}
-              className="px-6 py-2 rounded-lg font-medium text-red-400 hover:text-white hover:bg-red-500/20 transition-all border border-red-500/30"
+              className="px-4 md:px-6 py-2 rounded-lg font-medium text-red-400 hover:text-white hover:bg-red-500/20 transition-all border border-red-500/30 text-sm md:text-base"
             >
               Sign Out
             </button>
@@ -208,7 +208,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
             {/* Identity Card */}
-            <div className="card-brutal p-8">
+            <div className="card-brutal p-5 md:p-8">
               <div className="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
                 <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
@@ -242,7 +242,7 @@ export default function Dashboard() {
             </div>
 
             {/* Downloads Card */}
-            <div className="card-brutal p-8">
+            <div className="card-brutal p-5 md:p-8">
               <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center text-accent">
@@ -278,7 +278,7 @@ export default function Dashboard() {
             </div>
 
             {/* Subscription / Access Level Card */}
-            <div className="card-brutal p-8">
+            <div className="card-brutal p-5 md:p-8">
               <div className="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
                 <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
@@ -369,9 +369,9 @@ export default function Dashboard() {
           </div>
 
           {/* ── Usage Telemetry Section ──────────────────────────────────────── */}
-          <div className="mt-8">
-            <div className="card-brutal p-8">
-              <div className="flex flex-wrap gap-6 mb-8 items-end justify-between border-b border-white/10 pb-6">
+          <div className="mt-6 md:mt-8">
+            <div className="card-brutal p-5 md:p-8">
+              <div className="flex flex-wrap gap-4 md:gap-6 mb-6 md:mb-8 items-end justify-between border-b border-white/10 pb-4 md:pb-6">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
@@ -384,7 +384,7 @@ export default function Dashboard() {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 md:gap-4 flex-wrap">
                   {/* Period Selector */}
                   <div className="flex bg-surface-light p-1 rounded-lg border border-white/5">
                     {(['7days', '30days', '90days', 'all'] as TimePeriod[]).map((period) => (
@@ -392,13 +392,13 @@ export default function Dashboard() {
                         key={period}
                         id={`period-${period}`}
                         onClick={() => setTimePeriod(period)}
-                        className={`px-4 py-1.5 text-xs font-medium rounded-md transition-all ${
+                        className={`px-2.5 md:px-4 py-1.5 text-xs font-medium rounded-md transition-all ${
                           timePeriod === period 
                             ? 'bg-white/10 text-white shadow-sm' 
                             : 'text-gray-400 hover:text-white hover:bg-white/5'
                         }`}
                       >
-                        {period === 'all' ? 'All Time' : period === '7days' ? '7D' : period === '30days' ? '30D' : '90D'}
+                        {period === 'all' ? 'All' : period === '7days' ? '7D' : period === '30days' ? '30D' : '90D'}
                       </button>
                     ))}
                   </div>

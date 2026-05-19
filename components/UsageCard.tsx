@@ -316,7 +316,7 @@ const UsageCard: React.FC<UsageCardProps> = ({ usageData, isLoading, timePeriod 
           </div>
         </div>
 
-        <div className="h-72 bg-black/30 border border-white/5 rounded-xl p-4 backdrop-blur-sm">
+        <div className="h-52 sm:h-72 bg-black/30 border border-white/5 rounded-xl p-3 md:p-4 backdrop-blur-sm">
           {hasData ? (
             chartMode === 'bar' ? (
               <Bar data={chartData} options={chartOptions} />
@@ -333,7 +333,7 @@ const UsageCard: React.FC<UsageCardProps> = ({ usageData, isLoading, timePeriod 
         </div>
       </div>
 
-      {/* ── Daily Breakdown Table ────────────────────────────────────────────── */}
+      {/* ── Daily Breakdown ────────────────────────────────────────────────────── */}
       <div className="relative z-10">
         <h4 className="text-lg font-bold mb-4 text-white flex items-center gap-2">
           Daily Breakdown
@@ -344,76 +344,117 @@ const UsageCard: React.FC<UsageCardProps> = ({ usageData, isLoading, timePeriod 
             <p className="font-mono text-sm text-gray-500">No usage records found for this period.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto bg-surface-light border border-white/10 rounded-xl">
-            <table className="w-full text-sm font-mono">
-              <thead>
-                <tr className="bg-black/50 text-gray-400 text-xs uppercase tracking-wider">
-                  <th className="py-4 px-5 text-left font-semibold">Date</th>
-                  <th className="py-4 px-5 text-right font-semibold">
-                    <span className="text-primary flex items-center justify-end gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary"></div> Input</span>
-                  </th>
-                  <th className="py-4 px-5 text-right font-semibold">
-                    <span className="text-accent flex items-center justify-end gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent"></div> Output</span>
-                  </th>
-                  <th className="py-4 px-5 text-right font-semibold">
-                    <span className="text-emerald-400 flex items-center justify-end gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-400"></div> Total</span>
-                  </th>
-                  <th className="py-4 px-5 text-right font-semibold text-gray-500">Ratio In/Out</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-300">
-                {tableRows.map((row, idx) => {
-                  const pct = row.total_tokens > 0
-                    ? Math.round((row.input_tokens / row.total_tokens) * 100)
-                    : 50;
-                  return (
-                    <tr
-                      key={row._id}
-                      className="border-b border-white/5 hover:bg-white/5 transition-colors"
-                    >
-                      <td className="py-3 px-5 text-left font-medium whitespace-nowrap text-white">
-                        {fmtDate(row.day_key)}
-                        <span className="text-[10px] text-gray-500 ml-3">{row.day_key}</span>
-                      </td>
-                      <td className="py-3 px-5 text-right text-gray-400">
-                        {fmt(row.input_tokens)}
-                      </td>
-                      <td className="py-3 px-5 text-right text-gray-400">
-                        {fmt(row.output_tokens)}
-                      </td>
-                      <td className="py-3 px-5 text-right font-bold text-white">
-                        {fmt(row.total_tokens)}
-                      </td>
-                      <td className="py-3 px-5">
-                        <div className="flex items-center justify-end gap-3">
-                          <div className="h-1.5 w-24 bg-white/10 rounded-full overflow-hidden flex">
-                            <div className="h-full bg-primary" style={{ width: `${pct}%` }} />
-                            <div className="h-full bg-accent flex-1" />
+          <>
+            {/* Mobile card list (hidden on sm+) */}
+            <div className="sm:hidden space-y-2">
+              {tableRows.map((row) => {
+                const pct = row.total_tokens > 0
+                  ? Math.round((row.input_tokens / row.total_tokens) * 100)
+                  : 50;
+                return (
+                  <div key={row._id} className="bg-surface-light border border-white/5 rounded-xl p-3.5">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-mono text-xs font-bold text-white">{fmtDate(row.day_key)}</span>
+                      <span className="text-[10px] text-gray-500 font-mono">{row.day_key}</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 text-center mb-2.5">
+                      <div>
+                        <p className="text-[10px] uppercase text-primary font-bold tracking-wider mb-0.5">In</p>
+                        <p className="font-mono text-xs text-gray-300">{fmtK(row.input_tokens)}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase text-accent font-bold tracking-wider mb-0.5">Out</p>
+                        <p className="font-mono text-xs text-gray-300">{fmtK(row.output_tokens)}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase text-emerald-400 font-bold tracking-wider mb-0.5">Total</p>
+                        <p className="font-mono text-xs font-bold text-white">{fmtK(row.total_tokens)}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="h-1 flex-1 bg-white/10 rounded-full overflow-hidden flex">
+                        <div className="h-full bg-primary" style={{ width: `${pct}%` }} />
+                        <div className="h-full bg-accent flex-1" />
+                      </div>
+                      <span className="text-[10px] text-gray-500 font-mono w-8 text-right">{pct}% in</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Desktop table (hidden on mobile) */}
+            <div className="hidden sm:block overflow-x-auto bg-surface-light border border-white/10 rounded-xl">
+              <table className="w-full text-sm font-mono">
+                <thead>
+                  <tr className="bg-black/50 text-gray-400 text-xs uppercase tracking-wider">
+                    <th className="py-4 px-5 text-left font-semibold">Date</th>
+                    <th className="py-4 px-5 text-right font-semibold">
+                      <span className="text-primary flex items-center justify-end gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary"></div> Input</span>
+                    </th>
+                    <th className="py-4 px-5 text-right font-semibold">
+                      <span className="text-accent flex items-center justify-end gap-2"><div className="w-1.5 h-1.5 rounded-full bg-accent"></div> Output</span>
+                    </th>
+                    <th className="py-4 px-5 text-right font-semibold">
+                      <span className="text-emerald-400 flex items-center justify-end gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-400"></div> Total</span>
+                    </th>
+                    <th className="py-4 px-5 text-right font-semibold text-gray-500">Ratio In/Out</th>
+                  </tr>
+                </thead>
+                <tbody className="text-gray-300">
+                  {tableRows.map((row) => {
+                    const pct = row.total_tokens > 0
+                      ? Math.round((row.input_tokens / row.total_tokens) * 100)
+                      : 50;
+                    return (
+                      <tr
+                        key={row._id}
+                        className="border-b border-white/5 hover:bg-white/5 transition-colors"
+                      >
+                        <td className="py-3 px-5 text-left font-medium whitespace-nowrap text-white">
+                          {fmtDate(row.day_key)}
+                          <span className="text-[10px] text-gray-500 ml-3">{row.day_key}</span>
+                        </td>
+                        <td className="py-3 px-5 text-right text-gray-400">
+                          {fmt(row.input_tokens)}
+                        </td>
+                        <td className="py-3 px-5 text-right text-gray-400">
+                          {fmt(row.output_tokens)}
+                        </td>
+                        <td className="py-3 px-5 text-right font-bold text-white">
+                          {fmt(row.total_tokens)}
+                        </td>
+                        <td className="py-3 px-5">
+                          <div className="flex items-center justify-end gap-3">
+                            <div className="h-1.5 w-24 bg-white/10 rounded-full overflow-hidden flex">
+                              <div className="h-full bg-primary" style={{ width: `${pct}%` }} />
+                              <div className="h-full bg-accent flex-1" />
+                            </div>
+                            <span className="text-[10px] text-gray-500 w-6 text-right">{pct}%</span>
                           </div>
-                          <span className="text-[10px] text-gray-500 w-6 text-right">{pct}%</span>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-              <tfoot>
-                <tr className="bg-black/60 font-bold text-xs uppercase tracking-wider">
-                  <td className="py-4 px-5 text-gray-400">Period Total</td>
-                  <td className="py-4 px-5 text-right text-primary">
-                    {fmt(periodTotals.input)}
-                  </td>
-                  <td className="py-4 px-5 text-right text-accent">
-                    {fmt(periodTotals.output)}
-                  </td>
-                  <td className="py-4 px-5 text-right text-emerald-400">
-                    {fmt(periodTotals.total)}
-                  </td>
-                  <td className="py-4 px-5" />
-                </tr>
-              </tfoot>
-            </table>
-          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+                <tfoot>
+                  <tr className="bg-black/60 font-bold text-xs uppercase tracking-wider">
+                    <td className="py-4 px-5 text-gray-400">Period Total</td>
+                    <td className="py-4 px-5 text-right text-primary">
+                      {fmt(periodTotals.input)}
+                    </td>
+                    <td className="py-4 px-5 text-right text-accent">
+                      {fmt(periodTotals.output)}
+                    </td>
+                    <td className="py-4 px-5 text-right text-emerald-400">
+                      {fmt(periodTotals.total)}
+                    </td>
+                    <td className="py-4 px-5" />
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </>
         )}
       </div>
     </div>
