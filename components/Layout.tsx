@@ -45,7 +45,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   }, [mobileMenuOpen]);
 
   const navLinks = [
-    { href: '/#for-you', label: 'For You' },
+    { href: '/for-you', label: 'For You' },
     { href: '/#download', label: 'Download' },
     { href: '/#investor', label: 'Investor' },
   ];
