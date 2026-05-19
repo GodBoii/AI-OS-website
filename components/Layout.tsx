@@ -208,7 +208,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 <li><Link href="/#features" className="text-gray-400 hover:text-white transition-colors">Features</Link></li>
                 <li><Link href="/#download" className="text-gray-400 hover:text-white transition-colors">Download App</Link></li>
                 <li><Link href="/pricing" className="text-gray-400 hover:text-white transition-colors">Pricing</Link></li>
-                <li><a href="https://github.com/GodBoii/AI-OS-website/releases" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors flex items-center">Changelog <span className="ml-2 px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/20 text-primary border border-primary/20">New</span></a></li>
+                <li><Link href="/changelog" className="text-gray-400 hover:text-white transition-colors flex items-center">Changelog <span className="ml-2 px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/20 text-primary border border-primary/20">New</span></Link></li>
               </ul>
             </div>
 
