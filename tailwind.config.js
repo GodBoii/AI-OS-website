@@ -6,27 +6,45 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Space Grotesk"', 'sans-serif'],
+        sans: ['"Inter"', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
-        'neo-bg': '#ffffff',
-        'neo-text': '#000000',
-        'neo-yellow': '#FBbf24', // Standard yellow for now, or maybe sharper
-        'neo-lime': '#DBFF00',
-        'neo-mint': '#00FFA3',
-        'neo-blue': '#4D79FF',
-        'neo-pink': '#FF4D9B',
+        'neo-bg': '#050505',
+        'neo-text': '#E2E8F0',
+        'primary': '#faf9f6', // cream white
+        'primary-dark': '#e8e6e1',
+        'accent': '#a855f7', // subtle purple
+        'yellow-accent': '#eab308',
+        'surface': '#111111',
+        'surface-light': '#1a1a1a',
+        'border-color': '#262626',
       },
       boxShadow: {
-        'brutal': '4px 4px 0px 0px #000000',
-        'brutal-lg': '8px 8px 0px 0px #000000',
-        'brutal-sm': '2px 2px 0px 0px #000000',
+        'glow': '0 0 20px -5px rgba(250, 249, 246, 0.3)',
+        'glow-lg': '0 0 30px -5px rgba(250, 249, 246, 0.4)',
+        'glow-accent': '0 0 20px -5px rgba(168, 85, 247, 0.4)',
+        'glow-yellow': '0 0 20px -5px rgba(234, 179, 8, 0.4)',
       },
-      borderWidth: {
-        '3': '3px',
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-mesh': 'radial-gradient(circle at 50% 50%, #1a1a1a 0%, #050505 100%)',
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'slide-up': 'slideUp 0.5s ease-out forwards',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        }
       }
     },
   },
   plugins: [],
-} 
+}
