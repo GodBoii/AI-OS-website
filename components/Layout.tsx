@@ -47,7 +47,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const navLinks = [
     { href: '/for-you', label: 'For You' },
     { href: '/#download', label: 'Download' },
-    { href: '/#investor', label: 'Investor' },
+    { href: '/investor', label: 'Investor' },
   ];
 
   return (
@@ -166,64 +166,78 @@ const Layout = ({ children }: { children: ReactNode }) => {
         {children}
       </main>
 
-      <footer className="bg-surface border-t border-white/5 py-16 relative overflow-hidden">
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
-        <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <div className="grid md:grid-cols-4 gap-12">
-            <div className="col-span-1 md:col-span-1">
-              <div className="flex items-center mb-6">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center mr-3 font-bold text-xs text-white shadow-glow-accent">
-                  AI
-                </div>
-                <span className="text-xl font-bold tracking-tight text-white">Aetheria AI</span>
-              </div>
-              <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-                The operating system for the next generation of intelligence. Seamless, powerful, and built for the future.
+      <footer className="bg-[#050505] border-t border-white/10 pt-24 pb-12 relative overflow-hidden mt-12">
+        {/* Subtle background glow effect */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[500px] bg-primary/10 blur-[150px] rounded-full pointer-events-none -z-10"></div>
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
+            
+            {/* Brand & Mission */}
+            <div className="lg:col-span-2">
+              <Link href="/" className="flex items-center mb-6 group">
+                <img src="/icon.ico" alt="Logo" className="w-10 h-10 mr-3 transition-transform group-hover:scale-105 drop-shadow-md" />
+                <span className="text-2xl font-bold tracking-tight text-white">Aetheria AI</span>
+              </Link>
+              <p className="text-gray-400 text-sm leading-relaxed mb-8 pr-4">
+                We are a cutting-edge startup building the autonomous operating system for the next generation of artificial intelligence. Seamless, powerful, and designed to automate the future.
               </p>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-white mb-6">Product</h4>
-              <ul className="space-y-4 text-sm text-gray-400">
-                <li><Link href="/#features" className="hover:text-primary transition-colors">Features</Link></li>
-                <li><Link href="/#download" className="hover:text-primary transition-colors">Download App</Link></li>
-                <li><Link href="/dashboard" className="hover:text-primary transition-colors">Web Workspace</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-white mb-6">Resources</h4>
-              <ul className="space-y-4 text-sm text-gray-400">
-                <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
-                <li><Link href="/playbook" className="hover:text-primary transition-colors">Documentation</Link></li>
-                <li><a href="#" className="hover:text-primary transition-colors">API Reference</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-white mb-6">Creator</h4>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full overflow-hidden border border-white/10">
-                  <img src="/Prajwal.jpg" alt="Prajwal" className="w-full h-full object-cover" />
-                </div>
-                <div>
-                  <p className="font-medium text-white">Prajwal</p>
-                  <div className="flex space-x-3 mt-1 text-gray-400 text-sm">
-                    <a href="https://github.com/GodBoii" target="_blank" className="hover:text-primary transition-colors">GitHub</a>
-                    <a href="https://www.instagram.com/prajwal_._7/?hl=en" target="_blank" className="hover:text-primary transition-colors">Instagram</a>
-                  </div>
-                </div>
+              {/* Social Icons */}
+              <div className="flex space-x-4">
+                <a href="https://youtube.com/@aetheriaai.007?si=cWgv0Rcvh-X3kA1l" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all border border-white/5">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/aetheria._.ai?igsh=MnhsZW5hbG9xNDkz" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(225,48,108,0.3)] transition-all border border-white/5">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                </a>
+                <a href="https://www.threads.com/@aetheria._.ai" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-all border border-white/5">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M16.51 11.216c0-.508-.094-1.01-.274-1.488-.415-1.107-1.196-2.023-2.225-2.614-1.144-.658-2.52-.942-4.004-.81-1.49.13-2.855.77-3.834 1.785-1.026 1.066-1.597 2.443-1.597 3.93 0 1.54.582 2.946 1.637 3.99 1.077 1.066 2.5 1.642 4.024 1.642 1.603 0 3.097-.624 4.135-1.722l-1.395-1.197c-.71.743-1.63 1.135-2.656 1.135-1.05 0-2.036-.42-2.812-1.18-.755-.742-1.18-1.748-1.21-2.846h6.702c.033-.187.05-.38.05-.58v-.045zm-6.608-1.385c.108-1.013.916-1.815 1.944-1.928.918-.1 1.764.335 2.19 1.143.19.36.29.76.29 1.18v.25H9.902zm8.118-2.673c-.982-1.6-2.457-2.82-4.14-3.414-1.802-.634-3.793-.727-5.632-.26C6.34 3.96 4.706 5.097 3.633 6.643 2.502 8.274 1.92 10.222 1.92 12.25c0 2.052.593 4.015 1.743 5.65 1.085 1.544 2.738 2.68 4.652 3.193 1.816.485 3.792.413 5.58-.2 1.69-.583 3.17-1.79 4.16-3.393.99-1.598 1.51-3.513 1.51-5.467v-3.785h-2.12v3.785c0 1.6-.426 3.175-1.24 4.488-.813 1.31-2.023 2.298-3.407 2.775-1.46.5-3.076.56-4.56.16-1.567-.42-2.916-1.35-3.805-2.617-.942-1.34-1.428-2.948-1.428-4.637 0-1.66.5-3.253 1.428-4.59.882-1.266 2.22-2.195 3.77-2.624 1.5-.41 3.12-.346 4.58.17 1.366.48 2.564 1.47 3.36 2.77.81 1.31 1.233 2.87 1.233 4.47v.143h2.12c0-2.027-.518-3.974-1.51-5.572z"/></svg>
+                </a>
+                <a href="https://x.com/Aetheria__ai" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(29,155,240,0.3)] transition-all border border-white/5">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
               </div>
             </div>
+
+            {/* Links Columns */}
+            <div className="lg:col-span-1">
+              <h4 className="text-white font-semibold mb-6 text-sm tracking-wider uppercase">Product</h4>
+              <ul className="space-y-3.5 text-sm">
+                <li><Link href="/#features" className="text-gray-400 hover:text-white transition-colors">Features</Link></li>
+                <li><Link href="/#download" className="text-gray-400 hover:text-white transition-colors">Download App</Link></li>
+                <li><Link href="/pricing" className="text-gray-400 hover:text-white transition-colors">Pricing</Link></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors flex items-center">Changelog <span className="ml-2 px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/20 text-primary border border-primary/20">New</span></a></li>
+              </ul>
+            </div>
+
+            <div className="lg:col-span-1">
+              <h4 className="text-white font-semibold mb-6 text-sm tracking-wider uppercase">Company</h4>
+              <ul className="space-y-3.5 text-sm">
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                <li><Link href="/careers" className="text-gray-400 hover:text-white transition-colors flex items-center">Careers <span className="ml-2 px-1.5 py-0.5 rounded text-[10px] font-bold bg-green-500/20 text-green-400 border border-green-500/20">Hiring</span></Link></li>
+                <li><Link href="/contact" className="text-gray-400 hover:text-white transition-colors">Contact</Link></li>
+              </ul>
+            </div>
+            
           </div>
 
-          <div className="border-t border-white/5 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
-            <div>© {new Date().getFullYear()} Aetheria AI. All rights reserved.</div>
-            <div className="mt-4 md:mt-0 flex flex-wrap gap-6 justify-center">
+          {/* Bottom Bar */}
+          <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="text-gray-500 text-sm flex items-center">
+              © {new Date().getFullYear()} Aetheria AI Inc. All rights reserved.
+            </div>
+            
+            <div className="flex flex-wrap gap-6 items-center text-sm text-gray-500">
               <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+              <a href="#" className="hover:text-white transition-colors flex items-center">
+                <div className="w-2 h-2 rounded-full bg-green-500 mr-2 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+                All systems operational
+              </a>
             </div>
           </div>
+          
         </div>
       </footer>
     </div>
