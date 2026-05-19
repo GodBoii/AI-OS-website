@@ -8,7 +8,7 @@ export default function Terms() {
         <title>Terms of Service | Aetheria AI</title>
         <meta name="description" content="Terms of Service for Aetheria AI" />
       </Head>
-      <div className="bg-neo-bg min-h-screen py-20 font-sans relative overflow-hidden pt-32">
+      <div className="bg-neo-bg min-h-screen py-20 font-sans relative overflow-hidden pt-24 md:pt-32">
         {/* Background Effects */}
         <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-accent/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
         <div className="absolute bottom-1/4 left-0 w-[600px] h-[600px] bg-primary/10 blur-[150px] rounded-full pointer-events-none -z-10"></div>
@@ -19,8 +19,8 @@ export default function Terms() {
             <p className="font-mono text-sm bg-accent/10 text-accent inline-flex px-3 py-1 rounded-full border border-accent/20 font-medium">v1.0.0 EFFECTIVE IMMEDIATELY</p>
           </header>
 
-          <div className="space-y-12">
-            <section className="bg-surface-light/50 backdrop-blur-md border border-white/10 p-8 rounded-2xl shadow-xl">
+          <div className="space-y-8 md:space-y-12">
+            <section className="bg-surface-light/50 backdrop-blur-md border border-white/10 p-5 md:p-8 rounded-2xl shadow-xl">
               <h2 className="text-2xl md:text-3xl font-bold mb-6 flex items-center text-white">
                 <span className="w-10 h-10 bg-primary/20 text-primary rounded-xl flex items-center justify-center text-lg font-semibold mr-4 shadow-glow-sm">01</span>
                 Acceptance
@@ -61,7 +61,7 @@ export default function Terms() {
               </div>
             </section>
 
-            <section className="bg-surface border border-white/10 rounded-2xl p-8 relative overflow-hidden">
+            <section className="bg-surface border border-white/10 rounded-2xl p-5 md:p-8 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[50px] rounded-full pointer-events-none"></div>
               <h2 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
                 <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
