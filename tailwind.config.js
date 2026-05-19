@@ -12,8 +12,9 @@ module.exports = {
       colors: {
         'neo-bg': '#050505',
         'neo-text': '#E2E8F0',
-        'primary': '#faf9f6', // cream white
-        'primary-dark': '#e8e6e1',
+        'white': '#faf9f6', // cream white override
+        'primary': '#F7E7D4', // cream wood white
+        'primary-dark': '#e8d5bf',
         'accent': '#a855f7', // subtle purple
         'yellow-accent': '#eab308',
         'surface': '#111111',
