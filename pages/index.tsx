@@ -109,121 +109,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SHOWCASE SECTION */}
-      <section className="py-24 relative">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="order-2 lg:order-1 relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent blur-[80px] -z-10 rounded-full"></div>
-              <img src="/computer-workspace.png" alt="Computer Workspace Full" className="rounded-2xl border border-white/10 shadow-glow" />
-            </div>
-            <div className="order-1 lg:order-2">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">Designed for <span className="text-primary">Doers</span></h2>
-              <p className="text-lg text-gray-400 mb-8 leading-relaxed">
-                Aetheria isn't just a chat interface. It provides an Ubuntu sandbox terminal and a full computer workspace. The AI agents have real agency to execute scripts, deploy subdomains, and iterate on solutions alongside you.
-              </p>
-              <ul className="space-y-4">
-                {[
-                  'Full control over a local computer workspace',
-                  'Seamless integration with GitHub, Vercel, and Supabase',
-                  'Writes and deploys production-ready code autonomously'
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-gray-300">
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-primary shrink-0">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURES GRID */}
-      <section id="features" className="py-24 bg-surface-light/30 relative">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Unfair Advantages</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg">Built from the ground up to give you an edge in productivity and autonomous execution.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, i) => (
-              <div key={i} className="bg-surface border border-white/5 p-8 rounded-2xl hover:bg-surface-light hover:border-white/10 transition-colors group">
-                <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
-                <p className="text-gray-400 leading-relaxed text-sm">
-                  {feature.desc}
-                </p>
+      {/* MINIMAL FEATURES SECTION */}
+      <section id="features" className="py-24 relative z-10 border-t border-white/5 bg-surface/20">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="grid md:grid-cols-3 gap-12 lg:gap-16">
+            <div className="group">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6 border border-primary/20 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              <h3 className="text-xl font-bold text-white mb-3 tracking-tight">Full System Control</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Native filesystem access, Ubuntu sandbox terminal, and complete computer workspace control natively.
+              </p>
+            </div>
+            
+            <div className="group">
+              <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent mb-6 border border-accent/20 group-hover:scale-110 group-hover:bg-accent/20 transition-all duration-300">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3 tracking-tight">End-to-End Execution</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Writes code, provisions subdomains, and hosts your websites directly from the app autonomously.
+              </p>
+            </div>
 
-      {/* COMPARISON TABLE */}
-      <section id="advantages" className="py-24 relative">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Dominate The Competition</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg">Why leading teams are switching to Aetheria.</p>
-          </div>
-
-          <div className="rounded-2xl border border-white/10 bg-surface-light overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-white/10 bg-white/5">
-                    <th className="p-6 text-sm font-semibold text-gray-400 w-1/4">Capability</th>
-                    <th className="p-6 text-lg font-bold text-white w-1/3">Aetheria AI</th>
-                    <th className="p-6 text-sm font-semibold text-gray-500">Traditional Chatbots</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
-                  <tr className="hover:bg-white/5 transition-colors">
-                    <td className="p-6 text-gray-300 font-medium">Architecture</td>
-                    <td className="p-6 text-primary font-semibold flex items-center gap-2">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                      Multi-Agent Swarm
-                    </td>
-                    <td className="p-6 text-gray-500">Single Instance</td>
-                  </tr>
-                  <tr className="hover:bg-white/5 transition-colors">
-                    <td className="p-6 text-gray-300 font-medium">Execution</td>
-                    <td className="p-6 text-primary font-semibold flex items-center gap-2">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                      Native System Access
-                    </td>
-                    <td className="p-6 text-gray-500">Sandboxed Text Only</td>
-                  </tr>
-                  <tr className="hover:bg-white/5 transition-colors">
-                    <td className="p-6 text-gray-300 font-medium">Integrations</td>
-                    <td className="p-6 text-primary font-semibold flex items-center gap-2">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                      Drive, GitHub, Vercel, etc.
-                    </td>
-                    <td className="p-6 text-gray-500">None / Very Limited</td>
-                  </tr>
-                  <tr className="hover:bg-white/5 transition-colors">
-                    <td className="p-6 text-gray-300 font-medium">Context Window</td>
-                    <td className="p-6 text-primary font-semibold flex items-center gap-2">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                      Infinite (Stateful)
-                    </td>
-                    <td className="p-6 text-gray-500">Limited (Stateless)</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div className="group">
+              <div className="w-12 h-12 rounded-2xl bg-yellow-accent/10 flex items-center justify-center text-yellow-accent mb-6 border border-yellow-accent/20 group-hover:scale-110 group-hover:bg-yellow-accent/20 transition-all duration-300">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3 tracking-tight">Local Privacy</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Powerful on-device processing capabilities ensuring your sensitive data never leaves your environment.
+              </p>
             </div>
           </div>
         </div>
       </section>
+
+
 
       {/* DOWNLOAD SECTION */}
       <section id="download" className="py-24 relative overflow-hidden">
