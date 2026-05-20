@@ -123,9 +123,9 @@ export default function Dashboard() {
     {
       name: 'Windows',
       icon: <FaWindows className="w-5 h-5 text-[#00a4ef]/80" />,
-      desc: '64-bit installer (v1.2.21)',
-      filename: 'Aetheria.AI.Setup.1.2.21.exe',
-      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.21/Aetheria.AI.Setup.1.2.21.exe',
+      desc: '64-bit installer (v1.2.22)',
+      filename: 'Aetheria.AI.Setup.1.2.22.exe',
+      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.22/Aetheria.AI.Setup.1.2.22.exe',
       available: true,
     },
     {
@@ -241,7 +241,7 @@ export default function Dashboard() {
                   <DownloadCloud className="w-4 h-4 text-white/50" />
                   <h3 className="text-sm font-medium tracking-wide text-white/80">Binaries</h3>
                 </div>
-                <span className="text-[10px] font-mono text-white/30 tracking-widest px-2 py-1 border border-white/10 rounded">v1.2.21</span>
+                <span className="text-[10px] font-mono text-white/30 tracking-widest px-2 py-1 border border-white/10 rounded">v1.2.22</span>
               </div>
               <div className="space-y-3">
                 {platforms.map((platform) => (
