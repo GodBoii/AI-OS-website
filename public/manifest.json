@@ -1,0 +1,16 @@
+{
+  "name": "Aetheria AI",
+  "short_name": "Aetheria",
+  "description": "The AI Operating System for autonomous execution and orchestration.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "icons": [
+    {
+      "src": "/icon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

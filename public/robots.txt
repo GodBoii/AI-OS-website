@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow indexing of auth/console pages
+Disallow: /dashboard
+Disallow: /auth/
+
+Sitemap: https://aetheria.ai/sitemap.xml
