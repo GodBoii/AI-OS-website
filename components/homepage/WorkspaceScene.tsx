@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { Layers, ShieldCheck, Cpu, Code2 } from 'lucide-react';
+import { Layers, ShieldCheck, Cpu } from 'lucide-react';
 
 export default function WorkspaceScene() {
   const ref = useRef<HTMLDivElement>(null);
@@ -53,70 +53,14 @@ export default function WorkspaceScene() {
               </div>
             </div>
             
-            <div className="flex-1 p-8 grid grid-cols-3 gap-6 relative">
-              {/* Left Canvas Area */}
-              <div className="col-span-2 rounded-xl border border-white/[0.03] bg-white/[0.01] p-6 flex flex-col relative overflow-hidden">
-                {/* Simulated Canvas Grid */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:1rem_1rem]" />
-                
-                <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-8">
-                     <div className="w-8 h-8 rounded bg-white/5 flex items-center justify-center">
-                        <Code2 className="w-4 h-4 text-white/50" />
-                     </div>
-                     <div>
-                        <div className="text-sm text-white/80 font-medium">Architecture Review</div>
-                        <div className="text-[10px] text-white/40 font-mono uppercase">Agent: ID_492</div>
-                     </div>
-                  </div>
-                  
-                  {/* Simulated Code Blocks rendering */}
-                  <div className="space-y-3">
-                    <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 3, repeat: Infinity }} className="h-4 w-3/4 bg-white/5 rounded" />
-                    <div className="h-4 w-1/2 bg-white/[0.02] rounded" />
-                    <div className="h-4 w-5/6 bg-white/[0.02] rounded" />
-                    <div className="h-4 w-2/3 bg-white/[0.02] rounded" />
-                    
-                    <motion.div 
-                      initial={{ width: '0%' }}
-                      whileInView={{ width: '100%' }}
-                      transition={{ duration: 2, delay: 0.5 }}
-                      className="h-32 mt-6 bg-gradient-to-r from-accent-violet/[0.05] to-transparent rounded border-l-2 border-accent-violet/30"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Sidebar */}
-              <div className="col-span-1 flex flex-col gap-6">
-                <div className="flex-1 rounded-xl border border-white/[0.03] bg-white/[0.01] p-5 flex flex-col justify-between">
-                   <div className="text-xs text-white/50 uppercase tracking-widest font-mono">System Load</div>
-                   <div className="flex items-end gap-1 h-16 mt-4">
-                     {[...Array(12)].map((_, i) => (
-                       <motion.div 
-                         key={i}
-                         className="flex-1 bg-white/10 rounded-t-sm"
-                         animate={{ height: [`${Math.random() * 30 + 10}%`, `${Math.random() * 80 + 20}%`, `${Math.random() * 30 + 10}%`] }}
-                         transition={{ duration: 1.5 + Math.random(), repeat: Infinity }}
-                       />
-                     ))}
-                   </div>
-                </div>
-                
-                <div className="h-32 rounded-xl border border-white/[0.03] bg-white/[0.01] p-5">
-                   <div className="text-xs text-white/50 uppercase tracking-widest font-mono mb-4">Active Threads</div>
-                   <div className="space-y-3">
-                     <div className="flex items-center gap-2">
-                       <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                       <div className="h-2 flex-1 bg-white/5 rounded" />
-                     </div>
-                     <div className="flex items-center gap-2">
-                       <div className="w-1.5 h-1.5 rounded-full bg-accent-cyan animate-pulse" />
-                       <div className="h-2 w-2/3 bg-white/5 rounded" />
-                     </div>
-                   </div>
-                </div>
-              </div>
+            <div className="flex-1 relative overflow-hidden bg-[#050505]">
+              <img 
+                src="/home-page.png" 
+                alt="Aetheria Workspace Command Center" 
+                className="w-full h-full object-cover object-top opacity-90 transition-opacity duration-500 hover:opacity-100"
+              />
+              {/* Subtle gradient overlay to blend the screenshot into the dark theme */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
             </div>
           </div>
 
