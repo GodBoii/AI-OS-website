@@ -46,7 +46,7 @@ export default function DownloadPage() {
               <h3 className="text-2xl font-medium text-white mb-3">Windows</h3>
               <p className="text-white/40 font-light mb-12 text-sm tracking-wide">Windows 10 and 11 (64-bit)</p>
               <a 
-                href="https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.23/Aetheria.AI.Setup.1.2.23.exe" 
+                href="https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.24/Aetheria.AI.Setup.1.2.24.exe" 
                 className="mt-auto w-full px-6 py-4 rounded-xl border border-white/10 bg-white/[0.02] text-white/80 font-medium tracking-wide hover:bg-white/10 hover:text-white hover:border-white/20 transition-all flex items-center justify-center gap-3 group-hover:shadow-[0_0_20px_rgba(0,164,239,0.2)]"
               >
                 <DownloadCloud className="w-4 h-4 text-white/50" />
