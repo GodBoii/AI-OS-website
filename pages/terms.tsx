@@ -1,13 +1,13 @@
-import Head from 'next/head';
+import SEO from '../components/SEO';
 import Layout from '../components/Layout';
 
 export default function Terms() {
   return (
     <Layout>
-      <Head>
-        <title>Terms of Service | Aetheria AI</title>
-        <meta name="description" content="Terms of Service for Aetheria AI" />
-      </Head>
+      <SEO 
+        title="Terms of Service | Aetheria AI"
+        description="Review the terms and conditions for using the Aetheria AI application, platform, and cloud orchestration services."
+      />
       <div className="bg-neo-bg min-h-screen py-20 font-sans relative overflow-hidden pt-24 md:pt-32">
         {/* Background Effects */}
         <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-accent/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
