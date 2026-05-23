@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
+import SEO from '../../components/SEO';
 import { supabase } from '../../lib/supabaseClient';
 
 /**
@@ -91,7 +91,7 @@ export default function AuthCallback() {
   if (status === 'error') {
     return (
       <>
-        <Head><title>Authentication Error | Aetheria AI</title></Head>
+        <SEO title="Authentication Error | Aetheria AI" noIndex={true} />
         <div className="min-h-screen flex flex-col items-center justify-center bg-neo-bg px-4 relative overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-500/10 blur-[100px] rounded-full pointer-events-none -z-10"></div>
           <div className="text-center max-w-md bg-surface border border-red-500/30 p-8 rounded-2xl shadow-xl backdrop-blur-md">
@@ -116,9 +116,7 @@ export default function AuthCallback() {
 
   return (
     <>
-      <Head>
-        <title>Authenticating... | Aetheria AI</title>
-      </Head>
+      <SEO title="Authenticating... | Aetheria AI" noIndex={true} />
       <div className="min-h-screen flex flex-col items-center justify-center bg-neo-bg relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-primary/20 blur-[100px] rounded-full pointer-events-none -z-10"></div>
         <div className="text-center">

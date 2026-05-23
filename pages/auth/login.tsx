@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Head from 'next/head';
+import SEO from '../../components/SEO';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { supabase } from '../../lib/supabaseClient';
@@ -64,10 +64,7 @@ export default function Login() {
 
   return (
     <>
-      <Head>
-        <title>Login | Aetheria AI</title>
-        <link rel="icon" href="/icon.ico" />
-      </Head>
+      <SEO title="Login | Aetheria AI" noIndex={true} />
       <div className="min-h-screen flex flex-col justify-center py-12 px-4 bg-neo-bg relative overflow-hidden">
         {/* Background Effects */}
         <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-primary/20 blur-[120px] rounded-full pointer-events-none -z-10"></div>
