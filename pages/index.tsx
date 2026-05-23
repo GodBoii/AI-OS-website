@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import SEO from '../components/SEO';
 import SmoothScroll from '../components/homepage/SmoothScroll';
 import Header from '../components/homepage/Header';
 import HeroScene from '../components/homepage/HeroScene';
@@ -10,10 +10,11 @@ import Footer from '../components/homepage/Footer';
 export default function Home() {
   return (
     <SmoothScroll>
-      <Head>
-        <title>Aetheria AI | The AI Operating System</title>
-        <meta name="description" content="Execution at Machine Speed. Aetheria doesn't just answer—it builds, deploys, and orchestrates autonomously." />
-      </Head>
+      <SEO 
+        title="Aetheria AI | The Autonomous AI Operating System"
+        description="Execution at Machine Speed. Aetheria doesn't just answer—it builds, deploys, and orchestrates autonomous agent workflows across devices."
+        schemaType="Organization"
+      />
       
       <main className="bg-black text-white min-h-screen relative selection:bg-white/20 selection:text-white">
         
