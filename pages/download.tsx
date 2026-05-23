@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import SEO from '../components/SEO';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
 import { DownloadCloud } from 'lucide-react';
@@ -7,10 +7,11 @@ import { FaWindows, FaLinux } from 'react-icons/fa6';
 export default function DownloadPage() {
   return (
     <Layout>
-      <Head>
-        <title>Download | Aetheria AI</title>
-        <meta name="description" content="Select your target environment and download the Aetheria AI application." />
-      </Head>
+      <SEO 
+        title="Download Aetheria AI | Cross-Platform Agent OS"
+        description="Get the Aetheria AI native client for Android, iOS, macOS, and Windows. Run specialized agents locally and orchestrate workflows at machine speed."
+        schemaType="SoftwareApplication"
+      />
 
       <div className="container mx-auto px-4 max-w-5xl py-20" style={{ perspective: 1200 }}>
         <div className="text-center mb-24">

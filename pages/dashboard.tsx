@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
+import SEO from '../components/SEO';
 import { useRouter } from 'next/router';
 import { supabase, User, getCurrentSession } from '../lib/supabaseClient';
 import UsageCard, { ConvexUsageData } from '../components/UsageCard';
@@ -170,10 +170,11 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <Head>
-        <title>Dashboard | Aetheria AI</title>
-        <meta name="description" content="Aetheria AI user dashboard — downloads, usage telemetry, and account management." />
-      </Head>
+      <SEO 
+        title="Dashboard | Aetheria AI"
+        description="Aetheria AI user dashboard — downloads, usage telemetry, and account management."
+        noIndex={true}
+      />
 
       <div className="min-h-screen pb-24 relative overflow-hidden">
         {/* Subtle ambient lighting */}
