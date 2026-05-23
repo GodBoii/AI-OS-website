@@ -1,14 +1,14 @@
 import React from 'react';
-import Head from 'next/head';
+import SEO from '../components/SEO';
 import Layout from '../components/Layout';
 
 export default function Pricing() {
   return (
     <Layout>
-      <Head>
-        <title>Pricing | Aetheria AI</title>
-        <meta name="description" content="Choose the perfect plan for your AI workflows." />
-      </Head>
+      <SEO 
+        title="Pricing Plans | Aetheria AI"
+        description="Simple, transparent pricing. Choose the right tier for local and cloud agent execution. Start building and deploying autonomously today."
+      />
 
       <div className="min-h-screen pt-24 md:pt-32 pb-24 px-4 md:px-6 flex flex-col items-center justify-center relative overflow-hidden">
         {/* Background Effects */}

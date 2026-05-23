@@ -1,13 +1,13 @@
-import Head from 'next/head';
+import SEO from '../components/SEO';
 import Layout from '../components/Layout';
 
 export default function Privacy() {
   return (
     <Layout>
-      <Head>
-        <title>Privacy Policy | Aetheria AI</title>
-        <meta name="description" content="Privacy Policy for Aetheria AI" />
-      </Head>
+      <SEO 
+        title="Privacy Policy | Aetheria AI"
+        description="Learn how Aetheria AI handles and secures your personal information, local files, and data integrations."
+      />
       <div className="bg-neo-bg min-h-screen py-20 font-sans relative overflow-hidden pt-24 md:pt-32">
         {/* Background Effects */}
         <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
