@@ -1,14 +1,14 @@
 import React from 'react';
-import Head from 'next/head';
+import SEO from '../components/SEO';
 import Layout from '../components/Layout';
 
 export default function Investor() {
   return (
     <Layout>
-      <Head>
-        <title>Investor Relations | Aetheria AI</title>
-        <meta name="description" content="Invest in Aetheria AI. We are building the autonomous operating system for the next generation of artificial intelligence." />
-      </Head>
+      <SEO 
+        title="Investor Relations | Aetheria AI"
+        description="Partner with Aetheria AI. Participate in our Seed round and invest in the future of autonomous agent execution and cross-platform orchestration."
+      />
 
       <div className="relative pt-24 md:pt-32 pb-20 overflow-hidden min-h-screen flex flex-col justify-center">
         {/* Ambient background glows */}

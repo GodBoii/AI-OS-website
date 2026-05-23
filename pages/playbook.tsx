@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Head from 'next/head';
+import SEO from '../components/SEO';
 import Layout from '../components/Layout';
 import DetailedPlaybook from '../components/DetailedPlaybook';
 
@@ -7,10 +7,10 @@ export default function Playbook() {
     const [showDetailed, setShowDetailed] = useState(false);
     return (
         <Layout>
-            <Head>
-                <title>The Playbook | Aetheria AI</title>
-                <meta name="description" content="Our roadmap, financial projections, and master plan for Aetheria AI." />
-            </Head>
+            <SEO 
+                title="The Playbook | Aetheria AI"
+                description="Our mission, product roadmap, financial projections, and master plan for Aetheria AI. Building the agentic future in public."
+            />
 
             <div className="bg-neo-bg text-white font-sans pb-24 relative overflow-hidden">
                 {/* Background effects */}
