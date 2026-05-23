@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
+import SEO from '../components/SEO';
 import Layout from '../components/Layout';
 
 export default function Changelog() {
@@ -35,10 +35,10 @@ export default function Changelog() {
 
   return (
     <Layout>
-      <Head>
-        <title>Changelog | Aetheria AI</title>
-        <meta name="description" content="Latest updates and releases for Aetheria AI" />
-      </Head>
+      <SEO 
+        title="Changelog | Aetheria AI"
+        description="Track updates, features, improvements, and changes on the Aetheria AI operating system and workspace platform."
+      />
 
       <div className="min-h-screen pt-8 pb-24 relative overflow-hidden">
         {/* Background Glow */}

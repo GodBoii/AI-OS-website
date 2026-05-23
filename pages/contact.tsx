@@ -1,13 +1,13 @@
-import Head from 'next/head';
+import SEO from '../components/SEO';
 import Layout from '../components/Layout';
 
 export default function Contact() {
   return (
     <Layout>
-      <Head>
-        <title>Contact | Aetheria AI</title>
-        <meta name="description" content="Secure line for Aetheria AI inquiries." />
-      </Head>
+      <SEO 
+        title="Contact Us | Aetheria AI"
+        description="Get in touch with Aetheria AI. Contact the founders, request a pitch deck, or explore partnership opportunities."
+      />
       <div className="bg-neo-bg min-h-screen pt-12 relative overflow-hidden">
         {/* Subtle background glow effect */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/10 blur-[100px] rounded-full pointer-events-none -z-10"></div>
