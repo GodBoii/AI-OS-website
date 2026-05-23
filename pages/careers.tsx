@@ -1,15 +1,15 @@
 import React from 'react';
-import Head from 'next/head';
+import SEO from '../components/SEO';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 
 export default function Careers() {
   return (
     <Layout>
-      <Head>
-        <title>Careers | Aetheria AI</title>
-        <meta name="description" content="Join our team to build the future of AI operating systems." />
-      </Head>
+      <SEO 
+        title="Careers | Aetheria AI"
+        description="Join the team building the future of autonomous execution. Explore open opportunities like Video Editor and help democratize AI orchestration."
+      />
 
       <div className="min-h-screen pt-24 md:pt-32 pb-24 px-4 md:px-6 flex flex-col items-center justify-center relative overflow-hidden">
         {/* Background Effects */}
