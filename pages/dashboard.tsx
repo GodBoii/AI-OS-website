@@ -18,6 +18,16 @@ interface UserProfile {
   _error?: string;
 }
 
+interface Platform {
+  name: string;
+  icon: React.ReactNode;
+  desc: string;
+  filename?: string;
+  path?: string;
+  available: boolean;
+  isRedirect?: boolean;
+}
+
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -119,7 +129,7 @@ export default function Dashboard() {
     );
   }
 
-  const platforms = [
+  const platforms: Platform[] = [
     {
       name: 'Windows',
       icon: <FaWindows className="w-5 h-5 text-[#00a4ef]/80" />,
@@ -137,12 +147,12 @@ export default function Dashboard() {
       available: true,
     },
     {
-      name: 'iOS / Android',
+      name: 'Android',
       icon: <FaAndroid className="w-5 h-5 text-emerald-500/80" />,
-      desc: 'PWA Mobile',
-      path: 'https://aetheria-ai-mobile.vercel.app/',
+      desc: 'Mobile App',
+      filename: 'Aetheria.apk',
+      path: 'https://github.com/GodBoii/AI-OS-website/releases/download/v0.0.1/Aetheria.apk',
       available: true,
-      isRedirect: true,
     },
     {
       name: 'macOS',

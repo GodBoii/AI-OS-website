@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useEffect } from 'react';
+import Link from 'next/link';
 
 function SeamlessVideo({ src, className, maxOpacity = 0.7 }: { src: string; className?: string; maxOpacity?: number }) {
   const videoRef1 = useRef<HTMLVideoElement>(null);
