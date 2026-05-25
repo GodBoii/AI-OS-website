@@ -2,7 +2,7 @@ import SEO from '../components/SEO';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
 import { DownloadCloud } from 'lucide-react';
-import { FaWindows, FaLinux } from 'react-icons/fa6';
+import { FaWindows, FaLinux, FaAndroid } from 'react-icons/fa6';
 
 export default function DownloadPage() {
   return (
@@ -13,7 +13,7 @@ export default function DownloadPage() {
         schemaType="SoftwareApplication"
       />
 
-      <div className="container mx-auto px-4 max-w-5xl py-20" style={{ perspective: 1200 }}>
+      <div className="container mx-auto px-4 max-w-6xl py-20" style={{ perspective: 1200 }}>
         <div className="text-center mb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -32,14 +32,14 @@ export default function DownloadPage() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto" style={{ transformStyle: 'preserve-3d' }}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto" style={{ transformStyle: 'preserve-3d' }}>
           {/* Windows Download */}
           <motion.div 
             initial={{ opacity: 0, rotateX: 10, y: 30 }}
             animate={{ opacity: 1, rotateX: 0, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
             whileHover={{ scale: 1.02, rotateX: 5, y: -5 }}
-            className="glass-panel rounded-3xl p-10 flex flex-col items-center text-center border-white/[0.05] bg-[#0a0a0a]/90 group relative overflow-hidden"
+            className="glass-panel rounded-3xl p-8 flex flex-col items-center text-center border-white/[0.05] bg-[#0a0a0a]/90 group relative overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-[#00a4ef]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <div className="relative z-10 w-full flex flex-col items-center flex-1">
@@ -56,13 +56,36 @@ export default function DownloadPage() {
             </div>
           </motion.div>
 
+          {/* Android Download */}
+          <motion.div 
+            initial={{ opacity: 0, rotateX: 10, y: 30 }}
+            animate={{ opacity: 1, rotateX: 0, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            whileHover={{ scale: 1.02, rotateX: 5, y: -5 }}
+            className="glass-panel rounded-3xl p-8 flex flex-col items-center text-center border-white/[0.05] bg-[#0a0a0a]/90 group relative overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-[#3ddc84]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="relative z-10 w-full flex flex-col items-center flex-1">
+              <FaAndroid className="w-16 h-16 text-[#3ddc84]/80 mb-8 group-hover:text-[#3ddc84] transition-colors" />
+              <h3 className="text-2xl font-medium text-white mb-3">Android</h3>
+              <p className="text-white/40 font-light mb-12 text-sm tracking-wide">Android 8.0 and higher (.apk)</p>
+              <a 
+                href="https://github.com/GodBoii/AI-OS-website/releases/download/v0.0.1/Aetheria.apk" 
+                className="mt-auto w-full px-6 py-4 rounded-xl border border-white/10 bg-white/[0.02] text-white/80 font-medium tracking-wide hover:bg-white/10 hover:text-white hover:border-white/20 transition-all flex items-center justify-center gap-3 group-hover:shadow-[0_0_20px_rgba(61,220,132,0.2)]"
+              >
+                <DownloadCloud className="w-4 h-4 text-white/50" />
+                Download .apk
+              </a>
+            </div>
+          </motion.div>
+
           {/* Linux Download */}
           <motion.div 
             initial={{ opacity: 0, rotateX: 10, y: 30 }}
             animate={{ opacity: 1, rotateX: 0, y: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
             whileHover={{ scale: 1.02, rotateX: 5, y: -5 }}
-            className="glass-panel rounded-3xl p-10 flex flex-col items-center text-center border-white/[0.05] bg-[#0a0a0a]/90 group relative overflow-hidden"
+            className="glass-panel rounded-3xl p-8 flex flex-col items-center text-center border-white/[0.05] bg-[#0a0a0a]/90 group relative overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <div className="relative z-10 w-full flex flex-col items-center flex-1">
