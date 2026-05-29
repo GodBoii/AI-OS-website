@@ -47,7 +47,7 @@ const SEO: React.FC<SEOProps> = ({
           '@id': `${siteUrl}/#organization`,
           'name': 'Aetheria AI',
           'url': siteUrl,
-          'logo': `${siteUrl}/icon.ico`,
+          'logo': `${siteUrl}/icon-192.png`,
           'sameAs': [
             'https://twitter.com/AetheriaAI',
             'https://github.com/AetheriaAI'
