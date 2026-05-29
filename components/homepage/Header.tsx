@@ -42,7 +42,7 @@ export default function Header() {
       <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <img src="/icon.ico" alt="Aetheria AI Logo" className="w-8 h-8 transition-transform group-hover:scale-105 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]" />
+          <img src="/icon-192.png" alt="Aetheria AI Logo" className="w-8 h-8 transition-transform group-hover:scale-105 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]" />
           <span className="text-lg font-bold tracking-tight text-white/90">
             Aetheria AI
           </span>

@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-3 mb-6 group">
-              <img src="/icon.ico" alt="Aetheria AI Logo" className="w-10 h-10 transition-transform group-hover:scale-105 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]" />
+              <img src="/icon-192.png" alt="Aetheria AI Logo" className="w-10 h-10 transition-transform group-hover:scale-105 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]" />
               <span className="text-2xl font-bold tracking-tight text-white/90">
                 Aetheria AI
               </span>
