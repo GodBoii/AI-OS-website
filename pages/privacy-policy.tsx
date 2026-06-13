@@ -65,8 +65,8 @@ export default function Privacy() {
               </h2>
               <div className="font-mono text-sm space-y-3 text-gray-400">
                 <div className="text-gray-300">Prajwal Ghadge</div>
-                <a href="mailto:prajwalghadge2005@gmail.com" className="flex items-center gap-2 hover:text-primary transition-colors">
-                  <span className="w-4 h-4 text-center">✉</span> prajwalghadge2005@gmail.com
+                <a href="mailto:aetheria.ai28@gmail.com" className="flex items-center gap-2 hover:text-primary transition-colors">
+                  <span className="w-4 h-4 text-center">✉</span> aetheria.ai28@gmail.com
                 </a>
                 <a href="tel:9619039912" className="flex items-center gap-2 hover:text-primary transition-colors">
                   <span className="w-4 h-4 text-center">☏</span> 9619039912
