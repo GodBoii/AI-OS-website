@@ -58,10 +58,10 @@ export default function Investor() {
               We are actively looking for strategic partners and visionaries to lead our Seed round. If you understand the shift from generative AI to agentic execution, we want to talk.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="mailto:founders@aetheria.ai" className="px-8 py-4 bg-primary text-black font-bold rounded-full hover:bg-primary-dark hover:scale-105 transition-all shadow-glow whitespace-nowrap">
+              <a href="mailto:aetheria.ai28@gmail.com" className="px-8 py-4 bg-primary text-black font-bold rounded-full hover:bg-primary-dark hover:scale-105 transition-all shadow-glow whitespace-nowrap">
                 Request Pitch Deck
               </a>
-              <a href="mailto:founders@aetheria.ai" className="px-8 py-4 bg-white/5 text-white font-bold rounded-full border border-white/10 hover:bg-white/10 hover:scale-105 transition-all whitespace-nowrap">
+              <a href="mailto:aetheria.ai28@gmail.com" className="px-8 py-4 bg-white/5 text-white font-bold rounded-full border border-white/10 hover:bg-white/10 hover:scale-105 transition-all whitespace-nowrap">
                 Contact Founders
               </a>
             </div>

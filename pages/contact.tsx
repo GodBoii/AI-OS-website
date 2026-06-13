@@ -23,8 +23,8 @@ export default function Contact() {
           <div className="card-brutal p-5 md:p-8 text-left space-y-6 md:space-y-8 bg-surface-light/50 backdrop-blur-md rounded-2xl border border-white/10">
             <div>
               <span className="text-xs font-semibold uppercase text-primary mb-2 block tracking-wider">Email Protocol</span>
-              <a href="mailto:prajwalghadge2005@gmail.com" className="block text-xl sm:text-2xl font-bold text-white hover:text-primary transition-colors break-all">
-                prajwalghadge2005@gmail.com
+              <a href="mailto:aetheria.ai28@gmail.com" className="block text-xl sm:text-2xl font-bold text-white hover:text-primary transition-colors break-all">
+                aetheria.ai28@gmail.com
               </a>
             </div>
             <div>
