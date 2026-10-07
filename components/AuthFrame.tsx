@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import { ArrowLeft } from "lucide-react";
 import { BrandMark } from "./homepage/Header";
 
 export default function AuthFrame({
@@ -17,26 +18,25 @@ export default function AuthFrame({
           <BrandMark />
           <span>aetheria</span>
         </Link>
-        <div>
-          <span className="eyebrow">YOUR IDEAS HAVE PLACES TO GO.</span>
+        <div className="auth-art-copy">
+          <span className="eyebrow">YOUR NEXT WORKSPACE</span>
           <h2>
-            Less someday.
+            BIG IDEAS.
             <br />
-            More <span className="serif-word">today.</span>
+            <span>REAL MOVES.</span>
           </h2>
-          <p>
-            A workspace for the things
-            <br />
-            you've been meaning to do.
-          </p>
+          <p>Your ideas, your tools, and a little mechanical help.</p>
         </div>
-        <div className="auth-orbit" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-          <ArrowUpRight />
+        <div className="auth-visual" aria-hidden="true">
+          <Image
+            src="/operator-hand.png"
+            width={1122}
+            height={1402}
+            alt=""
+            sizes="(max-width: 800px) 1px, 40vw"
+          />
         </div>
-        <span className="auth-art-note">AETHERIA / INTELLIGENCE IN MOTION</span>
+        <span className="auth-art-note">HUMAN DIRECTION / AETHERIA AI</span>
       </aside>
       <section className="auth-form-area">
         <Link href="/" className="auth-back">
