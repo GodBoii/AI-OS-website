@@ -5,12 +5,12 @@ export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-cta">
-        <span className="eyebrow">YOUR MOVE.</span>
+        <span className="studio-label">Less someday. More today.</span>
         <div className="footer-heading">
           <h2>
-            Your next idea.
+            OVER TO YOU.
             <br />
-            Give it <span className="serif-word">a workspace.</span>
+            <span>MAKE YOUR MOVE.</span>
           </h2>
           <Link
             href="/download"
@@ -21,7 +21,7 @@ export default function Footer() {
           </Link>
         </div>
         <div className="footer-cta-bottom">
-          <p>Give your ideas an operating system.</p>
+          <p>Got something in mind? Give it a workspace.</p>
           <Link href="/download">
             Get Aetheria <ArrowUpRight size={18} />
           </Link>
@@ -29,7 +29,7 @@ export default function Footer() {
       </div>
       <div className="footer-navigation">
         <Link href="/" className="footer-wordmark">
-          aetheria✳
+          <img src="/icon.png" width={34} height={34} alt="" /> aetheria
         </Link>
         <nav aria-label="Footer navigation">
           <Link href="/contact">Say hello ↗</Link>
