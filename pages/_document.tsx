@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta name="theme-color" content="#f5f4ef" />
+        <meta name="theme-color" content="#121411" />
         <link rel="shortcut icon" href="/icon.ico" />
         <link rel="icon" type="image/x-icon" href="/icon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png" />
