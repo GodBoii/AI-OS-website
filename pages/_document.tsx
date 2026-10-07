@@ -1,24 +1,26 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
-    return (
-        <Html lang="en">
-            <Head>
-                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-                <meta name="theme-color" content="#050505" />
-                <link rel="shortcut icon" href="/favicon.ico" />
-                <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png" />
-                <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
-                <link rel="apple-touch-icon" href="/apple-icon.png" />
-                <link rel="manifest" href="/manifest.json" />
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-                <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-            </Head>
-            <body className="bg-[#050505] text-[#E2E8F0] antialiased selection:bg-primary/30 selection:text-white">
-                <Main />
-                <NextScript />
-            </body>
-        </Html>
-    )
+  return (
+    <Html lang="en">
+      <Head>
+        <meta name="theme-color" content="#f5f4ef" />
+        <link rel="shortcut icon" href="/icon.ico" />
+        <link rel="icon" type="image/x-icon" href="/icon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="192x192"
+          href="/icon-192.png"
+        />
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
+      </Head>
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
 }

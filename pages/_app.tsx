@@ -1,18 +1,32 @@
-import React from 'react';
-import { AppProps } from 'next/app';
-import { Inter_Tight } from 'next/font/google';
-import '../styles/globals.css';
+import React from "react";
+import { AppProps } from "next/app";
+import { Space_Grotesk, DM_Sans, Instrument_Serif } from "next/font/google";
+import "../styles/globals.css";
+import "../styles/stellar.css";
+import { MotionConfig } from "framer-motion";
 
-const interTight = Inter_Tight({
-  subsets: ['latin'],
-  variable: '--font-inter-tight',
+const display = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+});
+const body = DM_Sans({ subsets: ["latin"], variable: "--font-body" });
+const serif = Instrument_Serif({
+  weight: "400",
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-serif",
+  adjustFontFallback: false,
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <main className={`${interTight.variable} font-sans`}>
-      <Component {...pageProps} />
-    </main>
+    <div
+      className={`${display.variable} ${body.variable} ${serif.variable} site-root`}
+    >
+      <MotionConfig reducedMotion="user">
+        <Component {...pageProps} />
+      </MotionConfig>
+    </div>
   );
 }
 

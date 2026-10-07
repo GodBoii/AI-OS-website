@@ -1,187 +1,262 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
-import { Terminal, GitPullRequest, Rocket } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { useReducedMotion } from "framer-motion";
+import {
+  ArrowUpRight,
+  ArrowRight,
+  Check,
+  Code2,
+  Mail,
+  Search,
+  RotateCcw,
+} from "lucide-react";
+import Link from "next/link";
 
-const TypingText = ({ texts, delay = 0 }: { texts: string[], delay?: number }) => {
-  const [index, setIndex] = useState(0);
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % texts.length);
-    }, 2500);
-    return () => clearInterval(timer);
-  }, [texts]);
-
-  return (
-    <motion.div
-      key={index}
-      initial={{ opacity: 0, y: 5 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -5 }}
-      transition={{ duration: 0.3, delay }}
-      className="text-white/70 truncate"
-    >
-      {texts[index]}
-    </motion.div>
-  );
-};
-
+const workflows = [
+  {
+    id: "build",
+    name: "Build something",
+    icon: Code2,
+    prompt: "Build a personal portfolio. Make it feel like me.",
+    agent: "Builder agent",
+    steps: [
+      "Map out the pages and visual direction",
+      "Write the components and responsive styles",
+      "Prepare a preview for your review",
+    ],
+    result: "Your next idea, ready for its first preview.",
+    file: "portfolio / preview.tsx",
+    lines: [
+      "export default function Portfolio() {",
+      "  return (",
+      '    <main className="your-next-big-thing">',
+      '      <Intro name="You" />',
+      "      <SelectedWork />",
+      "      <LetsTalk />",
+      "    </main>",
+      "  );",
+      "}",
+    ],
+  },
+  {
+    id: "research",
+    name: "Connect the dots",
+    icon: Search,
+    prompt: "Research my competitors. Find the gaps worth building for.",
+    agent: "Research agent",
+    steps: [
+      "Find the relevant products and sources",
+      "Compare capabilities and positioning",
+      "Organize the findings into a brief",
+    ],
+    result: "The useful bits, with sources attached.",
+    file: "research / opportunity-brief.md",
+    lines: [
+      "# Find your opening",
+      "",
+      "01  Map the alternatives",
+      "02  Compare what they actually do",
+      "03  Trace every claim to its source",
+      "",
+      "## The deliverable",
+      "A research brief you can act on.",
+      "Your next move is yours.",
+    ],
+  },
+  {
+    id: "organize",
+    name: "Clear the busywork",
+    icon: Mail,
+    prompt: "Sort my project updates and draft a weekly summary.",
+    agent: "Workspace agent",
+    steps: [
+      "Collect updates from connected tools",
+      "Group decisions, blockers, and next steps",
+      "Draft the summary for your approval",
+    ],
+    result: "A weekly update, ready for your final say.",
+    file: "workspace / weekly-update.md",
+    lines: [
+      "# This week, in one place",
+      "",
+      "## Decisions made",
+      "The context behind the next steps.",
+      "",
+      "## Needs your attention",
+      "Blockers, owners, and open questions.",
+      "",
+      "Draft only. You decide when to send.",
+    ],
+  },
+];
 export default function ExecutionScene() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-
-  const y1 = useTransform(scrollYProgress, [0, 1], [50, -50]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [120, -120]);
-  const z1 = useTransform(scrollYProgress, [0, 1], [0, 50]);
-  
+  const [selected, setSelected] = useState(workflows[0]);
+  const [playback, setPlayback] = useState<
+    { kind: "idle" } | { kind: "playing"; step: number } | { kind: "complete" }
+  >({ kind: "idle" });
+  const reduced = useReducedMotion();
+  const ran = playback.kind === "complete";
+  useEffect(() => {
+    if (playback.kind !== "playing") return;
+    const timer = setTimeout(
+      () =>
+        setPlayback(
+          playback.step >= 3
+            ? { kind: "complete" }
+            : { kind: "playing", step: playback.step + 1 },
+        ),
+      450,
+    );
+    return () => clearTimeout(timer);
+  }, [playback]);
   return (
-    <section ref={ref} className="relative py-40 w-full min-h-screen bg-[#020202]" style={{ perspective: 1200 }}>
-      {/* Background Atmosphere */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505] to-[#020202] pointer-events-none" />
-
-      <div className="container mx-auto px-4 max-w-6xl relative z-10">
-        <div className="text-center mb-32">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-          >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-white mb-8 tracking-tight">
-              Execution <span className="text-white/30">Made Real.</span>
-            </h2>
-            <p className="text-xl text-white/40 font-light max-w-2xl mx-auto tracking-wide leading-relaxed">
-              Not just concepts. Watch Aetheria read repositories, execute commands, and orchestrate active deployment pipelines in real time.
-            </p>
-          </motion.div>
+    <section id="playground" className="playground section-pad">
+      <div className="section-heading">
+        <div>
+          <span className="eyebrow">A THOUGHT. A PLAN. A FIRST STEP.</span>
+          <h2>
+            Less explaining.
+            <br />
+            More <span className="serif-word">making it happen.</span>
+          </h2>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative transform-style-3d">
-          
-          {/* Terminal / CLI Panel */}
-          <motion.div 
-            style={{ y: y1, translateZ: z1 }} 
-            className="glass-panel rounded-3xl p-6 flex flex-col h-[400px] border-white/[0.04] bg-[#0a0a0a]/80"
+        <p>
+          Code, research, daily work.
+          <br />
+          One place to set things in motion.
+          <br />
+          <span className="demo-note">
+            Try an interactive workflow preview below.
+          </span>
+        </p>
+      </div>
+      <div className="workflow-switch" aria-label="Choose a workflow">
+        {workflows.map((flow) => (
+          <button
+            key={flow.id}
+            aria-pressed={selected.id === flow.id}
+            onClick={() => {
+              setSelected(flow);
+              setPlayback({ kind: "idle" });
+            }}
           >
-            <div className="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
-              <div className="flex items-center gap-2 text-white/40 text-xs font-mono uppercase tracking-widest">
-                <Terminal className="w-4 h-4 text-accent-violet/70" />
-                sys_terminal
-              </div>
-              <motion.div animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity }} className="w-1.5 h-1.5 bg-accent-violet rounded-full" />
+            <flow.icon size={18} />
+            {flow.name}
+            <ArrowUpRight size={16} />
+          </button>
+        ))}
+      </div>
+      <div className="workbench">
+        <div className="workbench-command">
+          <div className="bench-label">
+            <span className="status-dot" /> AETHERIA / WORKFLOW PREVIEW{" "}
+            <span>↗</span>
+          </div>
+          <div className="prompt-bubble">
+            <span className="eyebrow">YOUR IDEA</span>
+            <p>{selected.prompt}</p>
+          </div>
+          <div className="agent-heading">
+            <span className="agent-avatar">a</span>
+            <div>
+              {selected.agent}
+              <small>
+                {ran
+                  ? "Preview complete"
+                  : playback.kind === "playing"
+                    ? "Playing the workflow example"
+                    : "Ready when you are"}
+              </small>
             </div>
-            
-            <div className="font-mono text-xs space-y-3 flex-1 overflow-hidden relative mask-image-b">
-              <div className="text-white/30">{">"} aetheria run agent --task "refactor auth"</div>
-              <TypingText 
-                texts={[
-                  "[SYS] Analyzing dependency tree...",
-                  "[SYS] Spawning sub-agent (ID: x7f2)...",
-                  "[SYS] Modifying src/lib/auth.ts...",
-                  "[SYS] Running localized unit tests..."
-                ]} 
-              />
-              <TypingText 
-                texts={[
-                  "...",
-                  "[INFO] Abstract syntax tree generated.",
-                  "[INFO] Refactor constraints verified.",
-                  "..."
-                ]} 
-                delay={1.2}
-              />
-              <div className="absolute bottom-0 w-full h-12 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
-            </div>
-          </motion.div>
-
-          {/* Code / Git Sync Panel */}
-          <motion.div 
-            style={{ y: y2, scale: 1.05 }} 
-            className="glass-panel rounded-3xl p-6 relative z-10 bg-[#0c0c0c]/90 border-white/[0.08] flex flex-col h-[450px] shadow-[0_0_80px_-15px_rgba(255,255,255,0.05)]"
+            <span className="agent-status">
+              {ran
+                ? "COMPLETE"
+                : playback.kind === "playing"
+                  ? "PREVIEW"
+                  : "READY"}
+            </span>
+          </div>
+          <ol className="workflow-steps">
+            {selected.steps.map((step, i) => (
+              <li key={step}>
+                <span
+                  className={
+                    ran || (playback.kind === "playing" && playback.step > i)
+                      ? "step-check checked"
+                      : "step-check"
+                  }
+                >
+                  {ran || (playback.kind === "playing" && playback.step > i) ? (
+                    <Check size={13} />
+                  ) : (
+                    `0${i + 1}`
+                  )}
+                </span>
+                {step}
+              </li>
+            ))}
+          </ol>
+          <button
+            className="run-button"
+            disabled={playback.kind === "playing"}
+            onClick={() =>
+              setPlayback(
+                ran
+                  ? { kind: "idle" }
+                  : reduced
+                    ? { kind: "complete" }
+                    : { kind: "playing", step: 0 },
+              )
+            }
           >
-            <div className="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
-              <div className="flex items-center gap-2 text-white/40 text-xs font-mono uppercase tracking-widest">
-                <GitPullRequest className="w-4 h-4 text-white/70" />
-                repo_sync
-              </div>
-            </div>
-
-            <div className="flex-1 flex flex-col gap-4 font-mono text-xs">
-              <div className="bg-white/[0.02] border border-white/[0.03] p-4 rounded-xl">
-                <div className="flex justify-between text-white/30 mb-2">
-                  <span>src/components/auth/Login.tsx</span>
-                  <span className="text-emerald-400/50">+42 -12</span>
-                </div>
-                <div className="space-y-1">
-                  <div className="text-white/20">- const token = localStorage.getItem('t')</div>
-                  <div className="text-emerald-400/80">+ const {"{ session }"} = await supabase.auth.getSession()</div>
-                </div>
-              </div>
-
-              <div className="mt-auto space-y-2">
-                 <div className="flex justify-between text-white/40">
-                   <span>Committing changes...</span>
-                   <span>68%</span>
-                 </div>
-                 <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                   <motion.div 
-                     className="h-full bg-white/40 rounded-full"
-                     animate={{ width: ['0%', '100%', '0%'] }}
-                     transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
-                   />
-                 </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Deployment / Infrastructure Panel */}
-          <motion.div 
-            style={{ y: y1, translateZ: z1 }} 
-            className="glass-panel rounded-3xl p-6 flex flex-col h-[400px] border-white/[0.04] bg-[#0a0a0a]/80"
-          >
-            <div className="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
-              <div className="flex items-center gap-2 text-white/40 text-xs font-mono uppercase tracking-widest">
-                <Rocket className="w-4 h-4 text-accent-cyan/70" />
-                edge_deploy
-              </div>
-              <div className="text-accent-cyan/50 text-[10px]">US-EAST-1</div>
-            </div>
-
-            <div className="font-mono text-xs space-y-4 flex-1">
-              <div className="space-y-2">
-                <div className="text-white/30 flex justify-between">
-                  <span>Building static assets</span>
-                  <span className="text-emerald-400/70">DONE</span>
-                </div>
-                <div className="text-white/30 flex justify-between">
-                  <span>Optimizing chunks</span>
-                  <span className="text-emerald-400/70">DONE</span>
-                </div>
-                <div className="text-white/60 flex justify-between">
-                  <span>Propagating to edge</span>
-                  <span className="animate-pulse text-accent-cyan">ACTIVE</span>
-                </div>
-              </div>
-
-              <div className="mt-8 relative h-24 border border-white/5 rounded-xl bg-white/[0.01] overflow-hidden flex items-end">
-                {/* Simulated activity chart */}
-                <div className="w-full flex items-end gap-1 px-2 h-full py-2 opacity-30">
-                  {[...Array(20)].map((_, i) => (
-                    <motion.div 
-                      key={i}
-                      className="flex-1 bg-accent-cyan/40 rounded-t-sm"
-                      animate={{ height: [`${Math.random() * 40 + 10}%`, `${Math.random() * 80 + 20}%`, `${Math.random() * 40 + 10}%`] }}
-                      transition={{ duration: 2 + Math.random() * 2, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
+            {ran
+              ? "Reset preview"
+              : playback.kind === "playing"
+                ? "Playing preview…"
+                : "Run this preview"}
+            {ran ? <RotateCcw size={17} /> : <ArrowRight size={19} />}
+          </button>
         </div>
+        <div className="workbench-output">
+          <div className="output-toolbar">
+            <span>
+              <Code2 size={15} /> {selected.file}
+            </span>
+            <span className="preview-badge">
+              {ran ? "OUTPUT READY" : "EXAMPLE OUTPUT"}
+            </span>
+          </div>
+          <div className="code-preview">
+            {selected.lines.map((line, i) => (
+              <div key={`${selected.id}-${i}`}>
+                <span>{i + 1}</span>
+                <code>{line || " "}</code>
+              </div>
+            ))}
+          </div>
+          <div
+            className={ran ? "output-result complete" : "output-result"}
+            aria-live="polite"
+          >
+            <span className="result-icon">
+              {ran ? <Check size={23} /> : <Code2 size={23} />}
+            </span>
+            <div>
+              <small>{ran ? "THAT’S THE IDEA." : "YOUR IDEA GOES HERE."}</small>
+              <p>
+                {ran
+                  ? selected.result
+                  : "A little direction. A lot of possibility."}
+              </p>
+            </div>
+            <ArrowUpRight size={22} />
+          </div>
+        </div>
+      </div>
+      <div className="section-footnote">
+        <span>ILLUSTRATIVE PREVIEW. REAL WORK HAPPENS IN THE APP.</span>
+        <Link href="/for-you">
+          Explore the possibilities <ArrowUpRight size={17} />
+        </Link>
       </div>
     </section>
   );

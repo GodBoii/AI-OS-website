@@ -1,43 +1,46 @@
-import SEO from '../components/SEO';
-import Layout from '../components/Layout';
+import SEO from "../components/SEO";
+import Layout from "../components/Layout";
+import { ArrowUpRight } from "lucide-react";
 
 export default function Contact() {
   return (
     <Layout>
-      <SEO 
-        title="Contact Us | Aetheria AI"
-        description="Get in touch with Aetheria AI. Contact the founders, request a pitch deck, or explore partnership opportunities."
+      <SEO
+        title="Say hello | Aetheria AI"
+        description="Contact Aetheria AI for product support, partnerships, or a conversation with the founder."
       />
-      <div className="bg-neo-bg min-h-screen pt-12 relative overflow-hidden">
-        {/* Subtle background glow effect */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/10 blur-[100px] rounded-full pointer-events-none -z-10"></div>
-        <div className="container mx-auto px-4 py-20 max-w-2xl text-center">
-          <div className="mb-10 md:mb-12">
-            <div className="w-16 h-16 md:w-20 md:h-20 bg-surface border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl md:text-4xl shadow-glow">
-              ✉️
-            </div>
-            <h1 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight text-white">Get in Touch</h1>
-            <p className="text-gray-400 text-base md:text-lg">Secure communication channels for inquiries and support.</p>
-          </div>
-
-          <div className="card-brutal p-5 md:p-8 text-left space-y-6 md:space-y-8 bg-surface-light/50 backdrop-blur-md rounded-2xl border border-white/10">
-            <div>
-              <span className="text-xs font-semibold uppercase text-primary mb-2 block tracking-wider">Email Protocol</span>
-              <a href="mailto:aetheria.ai28@gmail.com" className="block text-xl sm:text-2xl font-bold text-white hover:text-primary transition-colors break-all">
-                aetheria.ai28@gmail.com
-              </a>
-            </div>
-            <div>
-              <span className="text-xs font-semibold uppercase text-accent mb-2 block tracking-wider">Direct Line</span>
-              <a href="tel:9619039912" className="block text-xl sm:text-2xl font-bold text-white hover:text-accent transition-colors">
-                9619039912
-              </a>
-            </div>
-            <div className="border-t border-white/10 pt-6 mt-4 flex items-center justify-between">
-              <span className="font-mono text-xs text-gray-500">SYSTEM_DEV</span>
-              <span className="font-semibold text-sm text-gray-300">Prajwal Ghadge</span>
-            </div>
-          </div>
+      <div className="company-page contact-page section-pad">
+        <span className="eyebrow">THE OTHER SIDE OF THE SCREEN.</span>
+        <div className="contact-intro">
+          <h1>
+            Talk to
+            <br />a <span className="serif-word">human.</span>
+          </h1>
+          <span className="contact-symbol" aria-hidden="true">
+            ↗
+          </span>
+        </div>
+        <p className="company-description">
+          A question, a stubborn bug, a wild idea.
+          <br />
+          We're listening.
+        </p>
+        <div className="contact-rows">
+          <a href="mailto:aetheria.ai28@gmail.com">
+            <span>01 / EMAIL</span>
+            <strong>aetheria.ai28@gmail.com</strong>
+            <ArrowUpRight />
+          </a>
+          <a href="tel:9619039912">
+            <span>02 / DIRECT LINE</span>
+            <strong>96190 39912</strong>
+            <ArrowUpRight />
+          </a>
+        </div>
+        <div className="contact-signoff">
+          <span className="eyebrow">THE PERSON BEHIND AETHERIA</span>
+          <p>Prajwal Ghadge</p>
+          <span>Founder & developer</span>
         </div>
       </div>
     </Layout>

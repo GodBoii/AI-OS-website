@@ -1,160 +1,152 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useEffect } from 'react';
-import Link from 'next/link';
+import Link from "next/link";
+import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import {
+  ArrowUpRight,
+  ArrowRight,
+  Code2,
+  Monitor,
+  MessageSquare,
+  Play,
+  CornerDownLeft,
+} from "lucide-react";
 
-function SeamlessVideo({ src, className, maxOpacity = 0.7 }: { src: string; className?: string; maxOpacity?: number }) {
-  const videoRef1 = useRef<HTMLVideoElement>(null);
-  const videoRef2 = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const v1 = videoRef1.current;
-    const v2 = videoRef2.current;
-    if (!v1 || !v2) return;
-
-    // Set initial opacities
-    v1.style.opacity = String(maxOpacity);
-    v2.style.opacity = '0';
-
-    // Start playing video 1
-    v1.play().catch(() => {});
-
-    let activeVideo = 1;
-    let fadeInitiated = false;
-    const fadeDuration = 0.8; // seconds to crossfade
-
-    const handleTimeUpdate = () => {
-      const active = activeVideo === 1 ? v1 : v2;
-      const inactive = activeVideo === 1 ? v2 : v1;
-
-      const duration = active.duration;
-      const currentTime = active.currentTime;
-
-      if (!duration || isNaN(duration)) return;
-
-      const timeLeft = duration - currentTime;
-
-      // Start pre-playing the inactive video when active video is near end
-      if (timeLeft <= fadeDuration && !fadeInitiated) {
-        fadeInitiated = true;
-        inactive.currentTime = 0;
-        inactive.play().catch(() => {});
-      }
-
-      // Perform crossfade
-      if (timeLeft <= fadeDuration) {
-        const progress = (fadeDuration - timeLeft) / fadeDuration;
-        const boundedProgress = Math.min(Math.max(progress, 0), 1);
-        active.style.opacity = String(maxOpacity * (1 - boundedProgress));
-        inactive.style.opacity = String(maxOpacity * boundedProgress);
-      }
-    };
-
-    const handleEnded = () => {
-      const active = activeVideo === 1 ? v1 : v2;
-      const inactive = activeVideo === 1 ? v2 : v1;
-
-      // Stop and reset the ended video
-      active.pause();
-      active.currentTime = 0;
-      active.style.opacity = '0';
-
-      // Make sure the now-active video is at max opacity
-      inactive.style.opacity = String(maxOpacity);
-
-      // Switch active index
-      activeVideo = activeVideo === 1 ? 2 : 1;
-      fadeInitiated = false;
-    };
-
-    v1.addEventListener('timeupdate', handleTimeUpdate);
-    v1.addEventListener('ended', handleEnded);
-    v2.addEventListener('timeupdate', handleTimeUpdate);
-    v2.addEventListener('ended', handleEnded);
-
-    return () => {
-      v1.removeEventListener('timeupdate', handleTimeUpdate);
-      v1.removeEventListener('ended', handleEnded);
-      v2.removeEventListener('timeupdate', handleTimeUpdate);
-      v2.removeEventListener('ended', handleEnded);
-    };
-  }, [src, maxOpacity]);
-
-  return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden">
-      <video
-        ref={videoRef1}
-        src={src}
-        muted
-        playsInline
-        preload="auto"
-        className={`${className} absolute inset-0 transition-opacity duration-100`}
-      />
-      <video
-        ref={videoRef2}
-        src={src}
-        muted
-        playsInline
-        preload="auto"
-        className={`${className} absolute inset-0 transition-opacity duration-100`}
-      />
-    </div>
-  );
-}
+const views = [
+  {
+    id: "conversation",
+    label: "Conversation",
+    icon: MessageSquare,
+    image: "/home-page.png",
+    title: "Start with what you have in mind.",
+    description:
+      "Think out loud. Keep your projects and conversations together.",
+  },
+  {
+    id: "code",
+    label: "Code workspace",
+    icon: Code2,
+    image: "/coding-worspace.png",
+    title: "Go from conversation to code.",
+    description:
+      "Bring the repository, terminal, and deployment into your workspace.",
+  },
+  {
+    id: "computer",
+    label: "Computer workspace",
+    icon: Monitor,
+    image: "/computer-workspace.png",
+    title: "Put your computer in the loop.",
+    description:
+      "Choose the scope and permissions for work across your desktop.",
+  },
+];
 
 export default function HeroScene() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start'],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '60%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const [view, setView] = useState(views[0]);
+  const reduced = useReducedMotion();
   return (
-    <section ref={ref} className="relative h-[110vh] w-full flex flex-col items-center justify-center overflow-hidden bg-[#020202]">
-      {/* Ambient Depth Background with Video */}
-      <motion.div 
-        className="absolute inset-0 z-0 pointer-events-none"
-        style={{ y, opacity }}
-      >
-        {/* Background Video with seamless loop */}
-        <SeamlessVideo 
-          src="/landing.mp4" 
-          className="absolute inset-0 w-full h-full object-cover" 
-          maxOpacity={0.7} 
-        />
-
-        {/* Ambient Glows to tint the scene */}
-        <div className="w-[800px] h-[800px] bg-accent-violet/10 rounded-full blur-[150px] absolute top-[-20%] right-[-10%]" />
-        <div className="w-[1000px] h-[1000px] bg-accent-cyan/5 rounded-full blur-[150px] absolute bottom-[-30%] left-[-20%]" />
-        
-        {/* Dark Vignette Overlays to blend the video and ensure text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020202]/40 to-[#020202]" />
-      </motion.div>
-
-      {/* Content */}
-      <div className="z-10 text-center px-4 max-w-5xl mx-auto flex flex-col items-center mt-32">
-        <motion.div
-          initial={{ opacity: 0, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, filter: 'blur(0px)' }}
-          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-medium tracking-tight mb-8 text-white leading-[1.1] relative">
-            The AI <span className="text-white/40 mix-blend-plus-lighter">Operating</span><br/>System
-          </h1>
-          <p className="text-xl md:text-2xl text-white/40 font-light max-w-2xl mx-auto mb-16 tracking-wide leading-relaxed">
-            Execution at machine speed. A spatial orchestration engine that builds, deploys, and solves autonomously.
-          </p>
-          
-        </motion.div>
+    <section className="cinema-hero" aria-labelledby="hero-title">
+      <div className="hero-atmosphere" aria-hidden="true">
+        <div className="horizon-light" />
+        <span className="star-point star-a" />
+        <span className="star-point star-b" />
+        <span className="star-point star-c" />
       </div>
-
-      {/* Bottom Scroll Indicator */}
-      <motion.div 
-        animate={{ y: [0, 10, 0], opacity: [0.3, 0.7, 0.3] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 w-px h-16 bg-gradient-to-b from-white/30 to-transparent z-20"
-      />
+      <div className="cinema-hero-content">
+        <span className="product-kicker">
+          <span /> THE AI OPERATING SYSTEM
+        </span>
+        <motion.h1
+          id="hero-title"
+          initial={reduced ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduced ? 0 : 0.5 }}
+        >
+          A little less artificial.
+          <br />A lot more <span>capable.</span>
+        </motion.h1>
+        <p>
+          Aetheria connects your ideas to your computer.
+          <br />
+          One workspace to think, build, and get things done.
+        </p>
+        <div className="cinema-hero-actions">
+          <Link href="/download" className="stellar-button">
+            Get Aetheria <ArrowUpRight size={18} />
+          </Link>
+          <a href="#playground" className="watch-button">
+            <span>
+              <Play size={11} fill="currentColor" />
+            </span>
+            Explore it in action
+          </a>
+        </div>
+        <span className="hero-availability">
+          Windows, Linux & Android <span>·</span> Start with the free plan
+        </span>
+      </div>
+      <div className="product-theatre">
+        <div className="theatre-topbar">
+          <div>
+            <img src="/icon.png" width={22} height={22} alt="" />
+            <span>Aetheria</span>
+            <span className="theatre-context">Your workspace</span>
+          </div>
+          <span className="theatre-caption">ACTUAL APP / INTERACTIVE TOUR</span>
+          <span className="theatre-window-controls" aria-hidden="true">
+            − &nbsp; □ &nbsp; ×
+          </span>
+        </div>
+        <div className="theatre-display">
+          <img
+            key={view.id}
+            className="theatre-screenshot"
+            src={view.image}
+            width={1920}
+            height={1080}
+            alt={`Aetheria ${view.label.toLowerCase()} screenshot`}
+            decoding="async"
+          />
+          <div className="theatre-caption-panel" aria-live="polite">
+            <span className="caption-star">
+              <img src="/icon.png" width={35} height={35} alt="" />
+            </span>
+            <div>
+              <h2>{view.title}</h2>
+              <p>{view.description}</p>
+            </div>
+            <a href="#playground" aria-label="Try a workflow example">
+              <ArrowRight size={20} />
+            </a>
+          </div>
+        </div>
+        <div className="theatre-bottom">
+          <div
+            className="theatre-switch"
+            aria-label="Choose a workspace preview"
+          >
+            {views.map((item) => (
+              <button
+                key={item.id}
+                aria-pressed={view.id === item.id}
+                onClick={() => setView(item)}
+              >
+                <item.icon size={15} />
+                {item.label}
+              </button>
+            ))}
+          </div>
+          <span className="theatre-hint">
+            <CornerDownLeft size={13} /> YOUR TOOLS. YOUR DIRECTION.
+          </span>
+        </div>
+      </div>
+      <div className="hero-closing">
+        <span>Built for work that doesn't fit in a chat box.</span>
+        <a href="#possibilities">
+          See what's possible <ArrowRight size={16} />
+        </a>
+      </div>
     </section>
   );
 }

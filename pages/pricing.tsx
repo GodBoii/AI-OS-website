@@ -1,94 +1,103 @@
-import React from 'react';
-import SEO from '../components/SEO';
-import Layout from '../components/Layout';
+import SEO from "../components/SEO";
+import Layout from "../components/Layout";
+import Link from "next/link";
+import { ArrowUpRight, Check } from "lucide-react";
 
+const plans = [
+  {
+    name: "Core",
+    price: "0",
+    budget: "50,000",
+    interval: "tokens every day",
+    description: "For a first idea and a little daily help.",
+    cta: "Start with Core",
+    href: "/auth/signup",
+    tag: "A GOOD PLACE TO START",
+  },
+  {
+    name: "Pro",
+    price: "428",
+    budget: "5 million",
+    interval: "tokens every month",
+    description: "For the projects you keep coming back to.",
+    cta: "Ask about Pro",
+    href: "mailto:aetheria.ai28@gmail.com?subject=Aetheria%20Pro%20plan",
+    tag: "ROOM TO BUILD",
+  },
+  {
+    name: "Elite",
+    price: "4,428",
+    budget: "50 million",
+    interval: "tokens every month",
+    description: "For work that needs a bigger runway.",
+    cta: "Ask about Elite",
+    href: "mailto:aetheria.ai28@gmail.com?subject=Aetheria%20Elite%20plan",
+    tag: "KEEP GOING",
+  },
+];
 export default function Pricing() {
   return (
     <Layout>
-      <SEO 
-        title="Pricing Plans | Aetheria AI"
-        description="Simple, transparent pricing. Choose the right tier for local and cloud agent execution. Start building and deploying autonomously today."
+      <SEO
+        title="Pricing | Aetheria AI"
+        description="Compare Core, Pro, and Elite token allowances and monthly pricing for Aetheria AI."
       />
-
-      <div className="min-h-screen pt-24 md:pt-32 pb-24 px-4 md:px-6 flex flex-col items-center justify-center relative overflow-hidden">
-        {/* Background Effects */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[600px] bg-primary/10 blur-[150px] rounded-full pointer-events-none -z-10"></div>
-        
-        <div className="max-w-6xl w-full mx-auto">
-          <div className="text-center mb-10 md:mb-16 relative z-10">
-            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold tracking-tight text-white mb-4 md:mb-6">Choose your plan</h1>
-            <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
-              Subscriptions are billed monthly through Razorpay. Upgrade anytime to scale your intelligence.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 relative z-10 items-start md:items-stretch">
-            {/* Core Plan */}
-            <div className="bg-[#0f1115]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-6 md:p-8 flex flex-col relative transition-transform hover:scale-105 duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.5)] overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent pointer-events-none"></div>
-              <div className="mb-6 relative z-10">
-                <span className="inline-block px-3 py-1 bg-white/5 border border-white/10 text-gray-300 text-xs font-bold tracking-wider uppercase rounded-full mb-4">Core</span>
-                <h3 className="text-2xl font-bold text-white mb-4">Core</h3>
-                <div className="flex items-baseline mb-4">
-                  <span className="text-4xl font-extrabold text-white">Rs 0</span>
-                  <span className="text-gray-500 ml-2">/month</span>
+      <div className="pricing-page section-pad">
+        <div className="pricing-intro">
+          <span className="eyebrow">SMALL STARTS. BIG POSSIBILITIES.</span>
+          <h1>
+            Find your
+            <br />
+            <span className="serif-word">working rhythm.</span>
+          </h1>
+          <p>
+            Start with Core. Give bigger projects more room when you need it.
+          </p>
+        </div>
+        <div className="plan-grid">
+          {plans.map((plan) => (
+            <article
+              className={`plan-panel ${plan.name === "Pro" ? "plan-featured" : ""}`}
+              key={plan.name}
+            >
+              <span className="eyebrow">{plan.tag}</span>
+              <h2>{plan.name}</h2>
+              <p className="plan-description">{plan.description}</p>
+              <div className="plan-price">
+                <span>₹</span>
+                {plan.price}
+                <small>/ month</small>
+              </div>
+              <div className="plan-allowance">
+                <Check size={18} />
+                <div>
+                  <strong>{plan.budget}</strong>
+                  <span>{plan.interval}</span>
                 </div>
-                <p className="text-sm text-gray-400 h-auto md:h-10">For evaluation and light daily usage.</p>
               </div>
-              <div className="mt-4 mb-8 flex-grow relative z-10">
-                <div className="text-sm text-white font-medium">50,000 tokens/day</div>
-              </div>
-              <button className="relative z-10 w-full py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium transition-all border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-                Current plan
-              </button>
-            </div>
-
-            {/* Pro Plan — no negative translate on mobile to avoid visual clipping */}
-            <div className="bg-[#121110]/80 backdrop-blur-xl border border-yellow-500/30 rounded-3xl p-6 md:p-8 flex flex-col relative transition-transform hover:scale-105 duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.5)] overflow-hidden md:-translate-y-4">
-              <div className="absolute inset-0 bg-gradient-to-b from-yellow-500/10 to-transparent pointer-events-none"></div>
-              <div className="absolute -top-[100px] -left-[100px] w-[200px] h-[200px] bg-yellow-500/20 blur-[80px] rounded-full pointer-events-none"></div>
-              
-              <div className="mb-6 relative z-10">
-                <span className="inline-block px-3 py-1 bg-yellow-500/20 border border-yellow-500/30 text-yellow-500 text-xs font-bold tracking-wider uppercase rounded-full mb-4 shadow-[0_0_10px_rgba(234,179,8,0.2)]">Most Popular</span>
-                <h3 className="text-2xl font-bold text-white mb-4">Pro</h3>
-                <div className="flex items-baseline mb-4">
-                  <span className="text-4xl font-extrabold text-white">Rs 428</span>
-                  <span className="text-gray-500 ml-2">/month</span>
-                </div>
-                <p className="text-sm text-gray-400 h-auto md:h-10">For steady builder workflows and larger token budgets.</p>
-              </div>
-              <div className="mt-4 mb-8 flex-grow relative z-10">
-                <div className="text-sm text-white font-medium">5,000,000 tokens/month</div>
-              </div>
-              <button className="relative z-10 w-full py-3.5 rounded-xl bg-white text-black font-bold transition-all hover:bg-gray-100 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:scale-[1.02]">
-                Upgrade to Pro
-              </button>
-            </div>
-
-            {/* Elite Plan */}
-            <div className="bg-[#130f14]/80 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-6 md:p-8 flex flex-col relative transition-transform hover:scale-105 duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.5)] overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-transparent pointer-events-none"></div>
-              <div className="mb-6 relative z-10">
-                <span className="inline-block px-3 py-1 bg-purple-500/20 border border-purple-500/30 text-purple-400 text-xs font-bold tracking-wider uppercase rounded-full mb-4 shadow-[0_0_10px_rgba(168,85,247,0.2)]">High Capacity</span>
-                <h3 className="text-2xl font-bold text-white mb-4">Elite</h3>
-                <div className="flex items-baseline mb-4">
-                  <span className="text-4xl font-extrabold text-white">Rs 4,428</span>
-                  <span className="text-gray-500 ml-2">/month</span>
-                </div>
-                <p className="text-sm text-gray-400 h-auto md:h-10">For sustained, high-volume work across coding and automation.</p>
-              </div>
-              <div className="mt-4 mb-8 flex-grow relative z-10">
-                <div className="text-sm text-white font-medium">50,000,000 tokens/month</div>
-              </div>
-              <button className="relative z-10 w-full py-3.5 rounded-xl bg-white text-black font-bold transition-all hover:bg-gray-100 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:scale-[1.02]">
-                Upgrade to Elite
-              </button>
-            </div>
-          </div>
-
-          <div className="mt-10 md:mt-12 text-center text-gray-500 text-sm max-w-lg mx-auto relative z-10">
-            Your current usage and renewal window will update after payment verification.
-          </div>
+              {plan.href.startsWith("/") ? (
+                <Link className="plan-cta" href={plan.href}>
+                  {plan.cta}
+                  <ArrowUpRight size={19} />
+                </Link>
+              ) : (
+                <a className="plan-cta" href={plan.href}>
+                  {plan.cta}
+                  <ArrowUpRight size={19} />
+                </a>
+              )}
+            </article>
+          ))}
+        </div>
+        <div className="pricing-note">
+          <span>THE DETAILS</span>
+          <p>
+            Contact the Aetheria team about paid plan availability and billing.
+            Your account shows your active plan and token usage.
+          </p>
+          <Link href="/contact" className="text-cta">
+            Talk to a human <ArrowUpRight size={17} />
+          </Link>
         </div>
       </div>
     </Layout>

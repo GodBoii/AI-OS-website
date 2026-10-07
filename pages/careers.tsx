@@ -1,67 +1,55 @@
-import React from 'react';
-import SEO from '../components/SEO';
-import Link from 'next/link';
-import Layout from '../components/Layout';
+import SEO from "../components/SEO";
+import Layout from "../components/Layout";
+import Link from "next/link";
+import { ArrowUpRight, Film } from "lucide-react";
 
 export default function Careers() {
   return (
     <Layout>
-      <SEO 
+      <SEO
         title="Careers | Aetheria AI"
-        description="Join the team building the future of autonomous execution. Explore open opportunities like Video Editor and help democratize AI orchestration."
+        description="Help build Aetheria AI. Explore our video editor opening and contact the team."
       />
-
-      <div className="min-h-screen pt-24 md:pt-32 pb-24 px-4 md:px-6 flex flex-col items-center justify-center relative overflow-hidden">
-        {/* Background Effects */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[500px] bg-green-500/10 blur-[150px] rounded-full pointer-events-none -z-10"></div>
-        <div className="absolute top-1/2 right-0 w-full max-w-md h-[400px] bg-primary/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
-
-        <div className="max-w-4xl w-full mx-auto relative z-10">
-          <div className="text-center mb-10 md:mb-16">
-            <span className="inline-block px-4 py-1.5 bg-green-500/10 border border-green-500/20 text-green-400 font-bold tracking-widest uppercase rounded-full mb-6 shadow-[0_0_15px_rgba(34,197,94,0.2)] text-xs md:text-sm">
-              We're Hiring
-            </span>
-            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold tracking-tight text-white mb-4 md:mb-6">Build the future with us</h1>
-            <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
-              Aetheria AI is on a mission to democratize intelligence. We're looking for passionate individuals who want to craft extraordinary experiences.
-            </p>
+      <div className="company-page careers-page section-pad">
+        <span className="eyebrow">SMALL TEAM. PLENTY TO MAKE.</span>
+        <h1>
+          Bring your
+          <br />
+          <span className="serif-word">particular weird.</span>
+        </h1>
+        <p className="company-description">
+          We're building a different way to work with computers.
+          <br />
+          Help us tell that story.
+        </p>
+        <article className="job-opening">
+          <div className="job-number">
+            <Film size={28} />
+            <span>OPEN ROLE / 01</span>
           </div>
-
-          <div className="bg-[#0c0f12]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-6 md:p-10 shadow-2xl relative overflow-hidden group hover:border-white/20 transition-colors">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            
-            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-8">
-              <div>
-                <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <h3 className="text-xl md:text-2xl font-bold text-white">Video Editor</h3>
-                  <span className="px-2.5 py-1 bg-white/10 text-white text-xs font-semibold rounded-lg">Full-time / Contract</span>
-                </div>
-                <p className="text-gray-400 text-sm md:text-base max-w-xl">
-                  We're looking for an incredibly talented Video Editor to help tell the story of Aetheria AI. You'll be responsible for creating high-end promotional videos, feature showcases, and social media content with a premium, cinematic tech aesthetic.
-                </p>
-                
-                <div className="mt-5 flex flex-wrap gap-3">
-                  <span className="px-3 py-1.5 bg-white/5 border border-white/5 rounded-full text-xs text-gray-300">Remote</span>
-                  <span className="px-3 py-1.5 bg-white/5 border border-white/5 rounded-full text-xs text-gray-300">Premiere Pro / DaVinci</span>
-                  <span className="px-3 py-1.5 bg-white/5 border border-white/5 rounded-full text-xs text-gray-300">Motion Graphics</span>
-                </div>
-              </div>
-              
-              <div className="flex-shrink-0 w-full md:w-auto">
-                <Link 
-                  href="/contact" 
-                  className="inline-flex w-full md:w-auto items-center justify-center px-6 md:px-8 py-3 md:py-4 bg-primary text-black font-bold rounded-xl transition-all hover:bg-primary-dark shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-105 text-sm md:text-base"
-                >
-                  Contact Us to Apply
-                </Link>
-              </div>
+          <div className="job-details">
+            <h2>Video editor</h2>
+            <div className="job-tags">
+              <span>Remote</span>
+              <span>Full-time / Contract</span>
             </div>
+            <p>
+              Make product films, feature walkthroughs, and social videos that
+              show what Aetheria can do. Bring a strong eye for editing, motion,
+              and the small details that make a film work.
+            </p>
+            <div className="job-tools">
+              Premiere Pro / DaVinci Resolve · Motion graphics
+            </div>
+            <Link href="/contact" className="primary-cta">
+              Show us your work <ArrowUpRight size={20} />
+            </Link>
           </div>
-          
-          <div className="mt-12 md:mt-16 text-center text-gray-500">
-            <p>Don't see a role for you? <Link href="/contact" className="text-primary hover:underline">Reach out</Link> anyway.</p>
-          </div>
-        </div>
+        </article>
+        <p className="careers-note">
+          Something else you do exceptionally well?{" "}
+          <Link href="/contact">Tell us about it ↗</Link>
+        </p>
       </div>
     </Layout>
   );

@@ -1,0 +1,1806 @@
+/* Product-first Aetheria homepage. */
+.stellar-home {
+  --paper: #0d0e10;
+  --ink: #eeece7;
+  --muted: #a4a4ab;
+  --line: #2b2d33;
+  --orange: #f58a70;
+  --soft: #17191d;
+  background: #0d0e10;
+  color: #eeece7;
+}
+:is(.stellar-home, .site-shell) .site-header {
+  min-height: 86px;
+  padding: 0 max(5%, calc((100vw - 1320px) / 2));
+  background: #0d0e10ed;
+  backdrop-filter: blur(18px);
+  border-color: #ffffff0b;
+  gap: 25px;
+}
+:is(.stellar-home, .site-shell) .brand {
+  font-size: 27px;
+  letter-spacing: -1.4px;
+  font-weight: 500;
+  gap: 11px;
+}
+:is(.stellar-home, .site-shell) .brand-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 0;
+}
+:is(.stellar-home, .site-shell) .brand-dot {
+  display: none;
+}
+:is(.stellar-home, .site-shell) .desktop-nav {
+  gap: 33px;
+  color: #b7b7bd;
+  font-size: 12px;
+}
+:is(.stellar-home, .site-shell) .desktop-nav a:hover {
+  color: #fff;
+}
+:is(.stellar-home, .site-shell) .desktop-nav a::after {
+  background: #f58a70;
+  height: 1px;
+}
+:is(.stellar-home, .site-shell) .header-actions {
+  font-size: 12px;
+  gap: 25px;
+}
+:is(.stellar-home, .site-shell) .small-cta {
+  background: #efeee9;
+  color: #19191c;
+  border-radius: 7px;
+  padding: 12px 17px;
+  gap: 23px;
+}
+:is(.stellar-home, .site-shell) .small-cta:hover {
+  background: #f6a28e;
+}
+:is(.stellar-home, .site-shell) .skip-link {
+  color: #101114;
+  background: #f58a70;
+}
+.stellar-home a:focus-visible,
+.stellar-home button:focus-visible {
+  outline-color: #f58a70;
+  outline-offset: 4px;
+}
+:is(.stellar-home, .site-shell) .mobile-nav {
+  background: #141519;
+  color: #eeece7;
+  border-color: #35363c;
+}
+:is(.stellar-home, .site-shell) .mobile-nav .mobile-download {
+  color: #151516;
+  background: #f58a70;
+  border-radius: 5px;
+}
+.cinema-hero {
+  position: relative;
+  padding: 75px 5% 0;
+  isolation: isolate;
+}
+.hero-atmosphere {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 62% 38% at 50% 42%,
+    #46302c55,
+    transparent 80%
+  );
+}
+.horizon-orbit {
+  position: absolute;
+  top: 175px;
+  left: 50%;
+  width: 1000px;
+  height: 720px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  border: 1px solid #f2ad9321;
+  box-shadow: 0 -8px 35px -18px #eac3a5;
+  opacity: 0.5;
+  mask-image: linear-gradient(transparent 10%, #000 65%, transparent);
+}
+.horizon-light {
+  position: absolute;
+  width: 70%;
+  height: 80px;
+  left: 15%;
+  top: 555px;
+  background: radial-gradient(ellipse, #ed7e5c28, transparent 65%);
+}
+.star-point {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #d6bfaa;
+  box-shadow: 0 0 8px #ffe3c4;
+}
+.star-a {
+  left: 13%;
+  top: 17%;
+}
+.star-b {
+  right: 15%;
+  top: 30%;
+}
+.star-c {
+  right: 30%;
+  top: 7%;
+}
+.cinema-hero-content {
+  max-width: 1150px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+.product-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #a9a4a3;
+}
+.product-kicker > span {
+  width: 5px;
+  height: 5px;
+  background: #f58a70;
+  border-radius: 50%;
+  box-shadow: 0 0 9px #f58a7470;
+}
+.cinema-hero h1 {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(52px, 6.2vw, 94px);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+  line-height: 1.07;
+  margin: 30px 0 23px;
+  text-wrap: balance;
+}
+.cinema-hero h1 > span {
+  font-family: var(--font-serif), Georgia, serif;
+  font-style: italic;
+  letter-spacing: -0.035em;
+  color: #f2a18b;
+  font-size: 1.12em;
+}
+.cinema-hero-content > p {
+  font-size: 15px;
+  line-height: 1.85;
+  color: #a7a6ad;
+}
+.cinema-hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin: 29px 0 18px;
+}
+.stellar-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 22px;
+  min-height: 48px;
+  gap: 29px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f3947b;
+  color: #201713;
+  border: 1px solid #f8ac94;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 1px 0 #ffffff40,
+    0 3px 12px #0003;
+  transition:
+    transform 0.25s,
+    background 0.25s;
+}
+.stellar-button:hover {
+  transform: translateY(-2px);
+  background: #f9b39e;
+}
+.stellar-button:active {
+  transform: translateY(1px);
+}
+.watch-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: #d1cfd0;
+  min-height: 48px;
+}
+.watch-button > span {
+  width: 27px;
+  height: 27px;
+  border: 1px solid #57545a;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+.watch-button:hover > span {
+  background: #28252a;
+  border-color: #f58a70;
+}
+.hero-availability {
+  display: block;
+  font-size: 10px;
+  color: #929197;
+  letter-spacing: 0.1px;
+}
+.hero-availability > span {
+  margin: 0 7px;
+  color: #5e5c62;
+}
+.product-theatre {
+  max-width: 1100px;
+  margin: 56px auto 0;
+  border: 1px solid #54514c;
+  border-radius: 12px;
+  background: #111216;
+  box-shadow:
+    0 -5px 55px -30px #f1bb9755,
+    0 25px 90px #0008;
+  overflow: hidden;
+  position: relative;
+}
+.theatre-topbar {
+  min-height: 45px;
+  padding: 0 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(#22232a, #1b1c21);
+  border-bottom: 1px solid #ffffff09;
+  gap: 20px;
+  font-size: 10px;
+  color: #b9b7bd;
+}
+.theatre-topbar > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.theatre-context {
+  margin-left: 12px;
+  color: #96949a;
+}
+.theatre-caption {
+  font-family: monospace;
+  font-size: 7px;
+  letter-spacing: 1px;
+  color: #7f7f8a;
+}
+.theatre-window-controls {
+  font-family: monospace;
+  color: #83838e;
+}
+.theatre-display {
+  position: relative;
+  aspect-ratio: 1920/930;
+  overflow: hidden;
+}
+.theatre-screenshot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  animation: screenshot-arrive 0.35s ease-out;
+}
+.theatre-caption-panel {
+  position: absolute;
+  left: 20%;
+  right: 7%;
+  bottom: 6%;
+  padding: 18px 22px;
+  border: 1px solid #454149;
+  background: #222126f2;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  box-shadow: 0 8px 30px #0006;
+}
+.caption-star {
+  flex-shrink: 0;
+}
+.caption-star img {
+  border-radius: 50%;
+}
+.theatre-caption-panel h2 {
+  font-family: var(--font-body), sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.1px;
+  color: #e8e6e9;
+}
+.theatre-caption-panel p {
+  font-size: 10px;
+  line-height: 1.8;
+  color: #aaa6b0;
+  margin-top: 4px;
+}
+.theatre-caption-panel a {
+  margin-left: auto;
+  min-width: 35px;
+  min-height: 35px;
+  display: grid;
+  place-items: center;
+  color: #f58a70;
+}
+.theatre-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  gap: 15px;
+  background: #17181c;
+  border-top: 1px solid #2c2d34;
+}
+.theatre-switch {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.theatre-switch button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border-radius: 5px;
+  padding: 10px 13px;
+  font-size: 10px;
+  color: #aaa8b0;
+  border: 1px solid transparent;
+  transition:
+    color 0.2s,
+    background 0.2s;
+}
+.theatre-switch button[aria-pressed="true"] {
+  color: #efdfd7;
+  background: #3a2c29;
+  border-color: #5d423a;
+}
+.theatre-switch button:hover {
+  color: #fff;
+  background: #28262b;
+}
+.theatre-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: monospace;
+  font-size: 7px;
+  letter-spacing: 0.6px;
+  color: #83828a;
+}
+.hero-closing {
+  max-width: 1100px;
+  margin: 25px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 10px;
+  color: #8c8b93;
+}
+.hero-closing > a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  color: #bbb7bc;
+}
+.stellar-section {
+  max-width: 1320px;
+  padding: 140px 40px;
+  margin: auto;
+}
+.stellar-section-heading {
+  max-width: 900px;
+  margin-bottom: 50px;
+  position: relative;
+}
+.section-kicker {
+  display: block;
+  color: #9a979e;
+  font-size: 9px;
+  font-family: monospace;
+  letter-spacing: 1.5px;
+  margin-bottom: 24px;
+}
+.stellar-home .stellar-section h2 {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(42px, 4.7vw, 70px);
+  font-weight: 400;
+  line-height: 1.13;
+  letter-spacing: -0.06em;
+}
+.stellar-section h2 > span {
+  color: #898890;
+}
+.stellar-section-heading > p {
+  color: #a2a0a8;
+  font-size: 13px;
+  line-height: 1.9;
+  margin-top: 25px;
+}
+.capability-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  grid-auto-flow: dense;
+  gap: 14px;
+}
+.capability-grid article {
+  border: 1px solid #303038;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: #17181d;
+  transition: border-color 0.25s;
+}
+.capability-grid article:hover {
+  border-color: #6e4e44;
+}
+.capability-icon {
+  display: inline-flex;
+  color: #cf9c88;
+  margin-bottom: 24px;
+}
+.capability-grid h3 {
+  font-size: 31px;
+  line-height: 1.18;
+  letter-spacing: -1.3px;
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+.capability-grid p {
+  font-size: 12px;
+  line-height: 1.9;
+  color: #a4a2ad;
+  margin-top: 18px;
+  max-width: 340px;
+}
+.capability-grid a {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 44px;
+  font-size: 11px;
+  color: #deccc3;
+  margin-top: 15px;
+}
+.capability-grid a:hover {
+  color: #f6ac93;
+}
+.capability-copy {
+  padding: 35px 35px 20px;
+}
+.capability-build {
+  background:
+    radial-gradient(ellipse at 100% 100%, #442b243b, transparent), #17181d !important;
+}
+.code-art {
+  margin: 25px 0 0 30px;
+  border: 1px solid #3c3942;
+  border-radius: 8px 0 0;
+  background: #111216;
+  transform: translateX(6px);
+}
+.code-art-toolbar {
+  padding: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #9b96a2;
+  background: #24212a;
+  font-family: monospace;
+  font-size: 8px;
+}
+.code-art-toolbar > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.code-art-body {
+  display: flex;
+  min-height: 175px;
+  padding: 20px 0;
+}
+.code-art-tree {
+  border-right: 1px solid #2d2c34;
+  width: 125px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: monospace;
+  font-size: 8px;
+  color: #97929f;
+  padding: 0 15px;
+}
+.file-active {
+  color: #f0ba9f;
+}
+.code-art-lines {
+  padding: 0 15px;
+  font-size: 9px;
+  font-family: monospace;
+  min-width: 0;
+}
+.code-art-lines p {
+  font-size: inherit;
+  color: #bcb6c5;
+  line-height: 1.9;
+  margin: 0;
+  white-space: nowrap;
+}
+.code-art-lines i {
+  margin-right: 13px;
+  color: #686470;
+  font-style: normal;
+}
+.code-art-lines span {
+  color: #cc98a7;
+}
+.code-art-lines b {
+  font-weight: 400;
+  color: #c4c595;
+}
+.code-art-status {
+  padding: 11px 14px;
+  background: #19171d;
+  color: #b4b5a1;
+  border-top: 1px solid #2d2b33;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 8px;
+}
+.code-art-status > span {
+  margin-left: auto;
+  font-family: monospace;
+  font-size: 6px;
+  color: #928c99;
+}
+.capability-computer {
+  padding: 35px;
+  background:
+    radial-gradient(ellipse at 0 100%, #29403838, transparent), #17181d !important;
+}
+.permission-art {
+  margin: 37px 0 15px;
+  padding: 21px;
+  background: #151c1b;
+  border: 1px solid #36443e;
+  border-radius: 8px;
+}
+.permission-art > div:first-child {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #c2d2c6;
+  font-size: 12px;
+  margin-bottom: 24px;
+}
+.permission-art > span {
+  font-family: monospace;
+  font-size: 8px;
+  letter-spacing: 0.5px;
+  color: #839d8d;
+}
+.permission-row {
+  padding: 13px 0;
+  border-bottom: 1px solid #34423a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 9px;
+  color: #a7b7ac;
+}
+.permission-row > span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #bfcfbe;
+}
+.capability-context {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 40px;
+  min-height: 200px;
+}
+.capability-context .capability-icon {
+  margin: 0;
+}
+.capability-context > div:nth-child(2) {
+  flex: 1;
+}
+.capability-context h3 {
+  font-size: 27px;
+}
+.capability-context p {
+  max-width: 430px;
+  margin-top: 10px;
+}
+.context-art {
+  width: 220px;
+  height: 135px;
+  position: relative;
+  flex-shrink: 0;
+}
+.context-doc {
+  position: absolute;
+  border: 1px solid #60574d;
+  border-radius: 6px;
+  width: 103px;
+  height: 130px;
+  background: #2d2825;
+  padding: 16px;
+  color: #c9bbaa;
+  font-family: monospace;
+  font-size: 7px;
+}
+.context-doc i {
+  display: block;
+  height: 3px;
+  width: 65%;
+  margin-top: 13px;
+  background: #625349;
+  border-radius: 2px;
+}
+.doc-back {
+  left: 10px;
+  top: 8px;
+  transform: rotate(-17deg);
+}
+.doc-front {
+  left: 60px;
+  top: -5px;
+  transform: rotate(8deg);
+  background: #38302a;
+}
+.context-orb {
+  position: absolute;
+  right: 4px;
+  top: 45px;
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #0b0c0e;
+  border: 1px solid #544437;
+  box-shadow: 0 0 25px #f29a6d15;
+}
+.context-orb img {
+  border-radius: 50%;
+}
+.stellar-home .playground {
+  max-width: none;
+  background: #131419;
+  border-top: 1px solid #292a32;
+  border-bottom: 1px solid #292a32;
+  padding: 125px max(5%, calc((100vw - 1240px) / 2));
+}
+.stellar-home .section-heading {
+  gap: 50px;
+  margin-bottom: 45px;
+}
+.stellar-home .section-heading h2 {
+  font-weight: 400;
+  font-size: clamp(40px, 4.5vw, 65px);
+}
+.stellar-home .section-heading .serif-word {
+  color: #f2a18b;
+}
+.stellar-home .section-heading p {
+  color: #a7a5af;
+  font-size: 13px;
+}
+.stellar-home .eyebrow {
+  color: #a7a0a9;
+  font-size: 8px;
+  letter-spacing: 1.3px;
+  margin-bottom: 24px;
+}
+.stellar-home .demo-note {
+  color: #bcb5bf;
+  font-size: 10px;
+}
+.stellar-home .workflow-switch {
+  gap: 10px;
+  border: 0;
+  padding: 5px;
+  margin-bottom: 24px;
+  background: #1c1d24;
+  border-radius: 8px;
+  max-width: 735px;
+}
+.stellar-home .workflow-switch button {
+  padding: 15px 18px;
+  border: 1px solid transparent;
+  color: #a5a3ae;
+  border-radius: 6px;
+  font-size: 11px;
+  flex: 1;
+}
+.stellar-home .workflow-switch button[aria-pressed="true"] {
+  background: #363039;
+  color: #f1d8cb;
+  border-color: #5b4650;
+}
+.stellar-home .workflow-switch button:hover {
+  background: #2a2830;
+  color: #e8d6d0;
+}
+.stellar-home .workflow-switch button > svg:last-child {
+  margin-left: auto;
+}
+.stellar-home .workbench {
+  background: #19191f;
+  border: 1px solid #44414a;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px #0003;
+}
+.stellar-home .workbench-command {
+  border-color: #38363f;
+  padding: 30px;
+}
+.stellar-home .bench-label {
+  color: #b6aeb7;
+  font-size: 8px;
+}
+.stellar-home .status-dot {
+  background: #f58a70;
+}
+.stellar-home .prompt-bubble {
+  transform: none;
+  background: #28232a;
+  border-color: #4c3b40;
+  padding: 23px;
+  border-radius: 7px;
+}
+.stellar-home .prompt-bubble .eyebrow {
+  color: #c28e7d;
+}
+.stellar-home .prompt-bubble p {
+  font-size: 18px;
+  color: #e4d5d0;
+}
+.stellar-home .agent-heading {
+  color: #d8d3da;
+}
+.stellar-home .agent-avatar {
+  background: #4b332c;
+  color: #f0b49c;
+}
+.stellar-home .agent-heading small {
+  color: #a7a0ad;
+}
+.stellar-home .agent-status {
+  color: #b2c9aa;
+}
+.stellar-home .workflow-steps li {
+  color: #b1aab8;
+}
+.stellar-home .step-check {
+  border-color: #595362;
+  color: #bbb2c7;
+}
+.stellar-home .step-check.checked {
+  background: #29332b;
+  color: #bed3b4;
+  border-color: #475e44;
+}
+.stellar-home .run-button {
+  background: #ec9a7f;
+  color: #271a15;
+  font-weight: 600;
+  padding: 16px 18px;
+  border-radius: 6px;
+}
+.stellar-home .run-button:hover {
+  background: #f7b298;
+}
+.stellar-home .workbench-output {
+  background: #101115;
+}
+.stellar-home .output-toolbar {
+  border-color: #34303b;
+  color: #bdb2c5;
+  padding: 22px;
+}
+.stellar-home .preview-badge {
+  color: #a497ae;
+}
+.stellar-home .code-preview {
+  padding: 32px 25px;
+  font-size: 12px;
+  line-height: 2.3;
+}
+.stellar-home .code-preview code {
+  color: #bac69f;
+}
+.stellar-home .code-preview > div:nth-child(3n + 1) code {
+  color: #db9b9e;
+}
+.stellar-home .code-preview > div > span {
+  color: #706478;
+}
+.stellar-home .output-result {
+  background: #1d2022;
+  border-color: #464e44;
+  border-radius: 6px;
+}
+.stellar-home .output-result.complete {
+  background: #242f24;
+  border-color: #546746;
+}
+.stellar-home .result-icon,
+.stellar-home .output-result small {
+  color: #b0c49c;
+}
+.stellar-home .output-result p {
+  color: #d2d4cc;
+  font-size: 12px;
+}
+.stellar-home .output-result > svg {
+  color: #a6bc99;
+}
+.stellar-home .section-footnote {
+  color: #97909f;
+}
+.stellar-home .section-footnote a {
+  color: #d3c3c3;
+  font-size: 11px;
+}
+.connected-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 80px;
+}
+.connected-heading > p {
+  color: #a4a2ad;
+  font-size: 13px;
+  line-height: 1.9;
+  margin: 28px 0 15px;
+}
+.stellar-text-link {
+  display: inline-flex;
+  gap: 15px;
+  align-items: center;
+  color: #f0ba9f;
+  font-size: 12px;
+  min-height: 44px;
+}
+.tool-constellation {
+  position: relative;
+  padding: 75px 25px 25px;
+  isolation: isolate;
+}
+.constellation-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+.constellation-center img {
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  box-shadow: 0 0 50px #dc926718;
+}
+.constellation-center > span {
+  font-family: monospace;
+  font-size: 8px;
+  color: #bda38f;
+  letter-spacing: 1.2px;
+}
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.constellation-tool {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  padding: 20px 15px;
+  min-height: 63px;
+  border: 1px solid #343239;
+  background: #19191ded;
+  border-radius: 7px;
+  color: #c7c2cc;
+  font-size: 11px;
+  transition:
+    transform 0.25s,
+    border-color 0.25s;
+}
+.constellation-tool > svg:first-child {
+  color: #a899a8;
+  width: 19px;
+}
+.constellation-tool > svg:last-child {
+  margin-left: auto;
+  color: #766c7b;
+}
+.constellation-tool:hover {
+  transform: translateY(-3px);
+  border-color: #947061;
+}
+.constellation-orbit {
+  position: absolute;
+  border: 1px solid #6a544a40;
+  border-radius: 50%;
+  width: 320px;
+  height: 320px;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  z-index: -1;
+  mask-image: linear-gradient(#000, transparent);
+}
+.orbit-two {
+  width: 410px;
+  height: 410px;
+  top: -45px;
+  border-color: #3e353633;
+}
+:is(.stellar-home, .site-shell) .site-footer {
+  background: #0d0e10;
+  border-top: 1px solid #292a31;
+  color: #eeece7;
+}
+:is(.stellar-home, .site-shell) .footer-cta {
+  background:
+    radial-gradient(ellipse at 85% 80%, #b4513024, transparent 70%), #151418;
+  max-width: 1240px;
+  margin: 75px auto 0;
+  padding: 55px;
+  border: 1px solid #43352f;
+  border-radius: 14px;
+}
+:is(.stellar-home, .site-shell) .footer-cta .eyebrow {
+  color: #bd9f8b;
+}
+:is(.stellar-home, .site-shell) .footer-heading h2 {
+  font-size: clamp(50px, 6vw, 86px);
+  font-weight: 400;
+}
+:is(.stellar-home, .site-shell) .footer-heading h2 .serif-word {
+  color: #efa890;
+}
+:is(.stellar-home, .site-shell) .footer-arrow {
+  border-color: #5d4337;
+  width: 110px;
+  color: #f0b293;
+  background: #2d221e;
+}
+:is(.stellar-home, .site-shell) .footer-arrow:hover {
+  background: #f0a385;
+  color: #281c16;
+  transform: rotate(10deg);
+}
+:is(.stellar-home, .site-shell) .footer-cta-bottom {
+  border-color: #4d3b33;
+  color: #afa2a1;
+}
+:is(.stellar-home, .site-shell) .footer-cta-bottom a {
+  color: #f0b39b;
+}
+:is(.stellar-home, .site-shell) .footer-navigation {
+  padding: 55px 5% 30px;
+  max-width: 1320px;
+}
+:is(.stellar-home, .site-shell) .footer-wordmark {
+  color: #d8d1d5;
+  font-size: 30px;
+}
+:is(.stellar-home, .site-shell) .footer-navigation nav {
+  gap: 10px 25px;
+}
+:is(.stellar-home, .site-shell) .footer-navigation nav a {
+  color: #aaa3b1;
+  font-size: 10px;
+}
+:is(.stellar-home, .site-shell) .footer-legal {
+  border-color: #28262e;
+  color: #8f8596;
+  max-width: 1240px;
+  padding: 20px 0;
+  font-size: 8px;
+}
+@keyframes screenshot-arrive {
+  from {
+    opacity: 0.6;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (min-width: 1600px) {
+  .cinema-hero {
+    padding-top: 100px;
+  }
+}
+@media (max-width: 1100px) {
+  :is(.stellar-home, .site-shell) .site-header {
+    padding-inline: 4%;
+  }
+  :is(.stellar-home, .site-shell) .desktop-nav {
+    gap: 22px;
+  }
+  :is(.stellar-home, .site-shell) .header-actions {
+    gap: 18px;
+  }
+  .cinema-hero {
+    padding-top: 65px;
+  }
+  .stellar-section {
+    padding-inline: 5%;
+  }
+  .theatre-caption-panel {
+    padding: 14px 18px;
+  }
+  .capability-computer {
+    padding: 28px;
+  }
+  .capability-copy {
+    padding: 28px;
+  }
+  .code-art-lines {
+    font-size: 8px;
+  }
+  .code-art-tree {
+    width: 95px;
+  }
+  .connected-section {
+    gap: 40px;
+  }
+  :is(.stellar-home, .site-shell) .footer-cta {
+    margin-inline: 5%;
+  }
+  :is(.stellar-home, .site-shell) .footer-legal {
+    margin-inline: 5%;
+  }
+}
+@media (max-width: 800px) {
+  :is(.stellar-home, .site-shell) .site-header {
+    min-height: 75px;
+  }
+  :is(.stellar-home, .site-shell) .brand {
+    font-size: 25px;
+  }
+  :is(.stellar-home, .site-shell) .header-actions {
+    gap: 20px;
+  }
+  .cinema-hero h1 {
+    font-size: clamp(44px, 7vw, 63px);
+  }
+  .cinema-hero {
+    padding-top: 60px;
+  }
+  .theatre-caption-panel {
+    left: 12%;
+    right: 4%;
+    bottom: 7%;
+    padding: 12px;
+    gap: 12px;
+  }
+  .theatre-caption-panel p {
+    font-size: 9px;
+  }
+  .theatre-caption-panel h2 {
+    font-size: 11px;
+  }
+  .caption-star img {
+    width: 28px;
+    height: 28px;
+  }
+  .theatre-hint {
+    display: none;
+  }
+  .theatre-bottom {
+    justify-content: center;
+  }
+  .theatre-switch button {
+    min-height: 44px;
+  }
+  .stellar-section {
+    padding-block: 100px;
+  }
+  .stellar-home .playground {
+    padding-block: 90px;
+  }
+  .capability-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .capability-grid h3 {
+    font-size: 27px;
+  }
+  .code-art-tree {
+    display: none;
+  }
+  .code-art-lines {
+    padding: 12px;
+    font-size: 9px;
+  }
+  .capability-context {
+    padding: 30px;
+    gap: 20px;
+  }
+  .context-art {
+    width: 170px;
+  }
+  .context-orb {
+    right: -12px;
+  }
+  .capability-context h3 {
+    font-size: 25px;
+  }
+  .permission-art {
+    padding: 17px;
+  }
+  .permission-row {
+    font-size: 8px;
+  }
+  .stellar-home .code-preview {
+    font-size: 10px;
+  }
+  .stellar-home .workbench-command {
+    padding: 24px;
+  }
+  .stellar-home .output-toolbar {
+    font-size: 8px;
+    padding: 18px;
+  }
+  :is(.stellar-home, .site-shell) .footer-cta {
+    padding: 35px;
+  }
+  :is(.stellar-home, .site-shell) .footer-arrow {
+    width: 80px;
+  }
+}
+@media (max-width: 600px) {
+  :is(.stellar-home, .site-shell) .site-header {
+    padding-inline: 6%;
+    min-height: 72px;
+    gap: 12px;
+  }
+  :is(.stellar-home, .site-shell) .brand {
+    font-size: 23px;
+  }
+  :is(.stellar-home, .site-shell) .brand-icon {
+    width: 29px;
+    height: 29px;
+  }
+  :is(.stellar-home, .site-shell) .small-cta {
+    padding: 11px 13px;
+    font-size: 10px;
+    gap: 13px;
+  }
+  :is(.stellar-home, .site-shell) .menu-toggle {
+    padding: 8px;
+  }
+  .cinema-hero {
+    padding: 50px 5% 0;
+  }
+  .product-kicker {
+    font-size: 7px;
+    letter-spacing: 1.4px;
+  }
+  .cinema-hero h1 {
+    font-size: clamp(36px, 8.6vw, 52px);
+    line-height: 1.16;
+    letter-spacing: -0.055em;
+    margin-block: 27px 22px;
+  }
+  .cinema-hero-content > p {
+    font-size: 12px;
+    line-height: 1.9;
+  }
+  .cinema-hero-actions {
+    gap: 20px;
+    margin-top: 24px;
+  }
+  .stellar-button {
+    font-size: 11px;
+    gap: 15px;
+    padding: 14px 17px;
+  }
+  .watch-button {
+    font-size: 10px;
+    gap: 7px;
+  }
+  .watch-button > span {
+    width: 24px;
+    height: 24px;
+  }
+  .hero-availability {
+    font-size: 8px;
+  }
+  .product-theatre {
+    margin-top: 38px;
+    border-radius: 8px;
+  }
+  .theatre-topbar {
+    min-height: 34px;
+    padding: 0 10px;
+    font-size: 8px;
+  }
+  .theatre-caption,
+  .theatre-context {
+    display: none;
+  }
+  .theatre-topbar img {
+    width: 17px;
+    height: 17px;
+  }
+  .theatre-display {
+    aspect-ratio: 1.15;
+  }
+  .theatre-screenshot {
+    object-fit: cover;
+    object-position: 48% top;
+  }
+  .theatre-caption-panel {
+    bottom: 5%;
+    left: 5%;
+    right: 5%;
+    padding: 12px;
+    gap: 9px;
+  }
+  .theatre-caption-panel h2 {
+    font-size: 10px;
+    line-height: 1.5;
+  }
+  .theatre-caption-panel p {
+    font-size: 8px;
+    line-height: 1.6;
+  }
+  .theatre-caption-panel a {
+    display: none;
+  }
+  .caption-star img {
+    width: 23px;
+    height: 23px;
+  }
+  .theatre-bottom {
+    padding: 8px;
+  }
+  .theatre-switch {
+    gap: 3px;
+    width: 100%;
+  }
+  .theatre-switch button {
+    flex: 1;
+    flex-direction: column;
+    font-size: 7px;
+    gap: 7px;
+    padding: 8px 5px;
+    min-height: 55px;
+  }
+  .theatre-switch svg {
+    width: 13px;
+    height: 13px;
+  }
+  .hero-closing {
+    font-size: 8px;
+    align-items: flex-start;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  .hero-closing > span {
+    max-width: 150px;
+    line-height: 1.9;
+  }
+  .hero-closing a {
+    font-size: 8px;
+    min-height: 30px;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .hero-closing a svg {
+    width: 12px;
+  }
+  .horizon-orbit {
+    width: 580px;
+    height: 540px;
+    top: 150px;
+  }
+  .horizon-light {
+    top: 360px;
+  }
+  .stellar-section {
+    padding: 85px 6%;
+  }
+  .section-kicker {
+    font-size: 7px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .stellar-home .stellar-section h2 {
+    font-size: 39px;
+    letter-spacing: -0.055em;
+  }
+  .stellar-section-heading > p {
+    font-size: 12px;
+    margin-top: 20px;
+  }
+  .stellar-section-heading {
+    margin-bottom: 35px;
+  }
+  .capability-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .capability-grid h3 {
+    font-size: 30px;
+  }
+  .capability-copy,
+  .capability-computer {
+    padding: 28px;
+  }
+  .capability-grid p {
+    font-size: 12px;
+  }
+  .code-art {
+    margin-left: 20px;
+    margin-top: 12px;
+  }
+  .code-art-body {
+    min-height: 170px;
+  }
+  .code-art-tree {
+    display: flex;
+    width: 105px;
+    font-size: 7px;
+  }
+  .code-art-lines {
+    padding: 0 10px;
+    font-size: 8px;
+  }
+  .code-art-lines i {
+    margin-right: 7px;
+  }
+  .code-art-status {
+    font-size: 7px;
+  }
+  .code-art-status > span {
+    display: none;
+  }
+  .permission-art {
+    margin-top: 27px;
+  }
+  .permission-row {
+    font-size: 10px;
+  }
+  .capability-context {
+    display: block;
+    padding: 28px;
+  }
+  .capability-context .capability-icon {
+    margin-bottom: 23px;
+  }
+  .capability-context h3 {
+    font-size: 28px;
+  }
+  .context-art {
+    margin: 30px auto 10px;
+    width: 200px;
+  }
+  .context-orb {
+    right: 0;
+  }
+  .stellar-home .playground {
+    padding: 80px 6%;
+  }
+  .stellar-home .section-heading {
+    display: block;
+    margin-bottom: 30px;
+  }
+  .stellar-home .section-heading h2 {
+    font-size: 38px;
+  }
+  .stellar-home .section-heading p {
+    font-size: 12px;
+    margin-top: 23px;
+  }
+  .stellar-home .workflow-switch {
+    gap: 3px;
+    padding: 4px;
+  }
+  .stellar-home .workflow-switch button {
+    font-size: 8px;
+    padding: 12px 5px;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .stellar-home .workflow-switch button > svg:last-child {
+    display: none;
+  }
+  .stellar-home .prompt-bubble {
+    padding: 20px;
+  }
+  .stellar-home .prompt-bubble p {
+    font-size: 18px;
+  }
+  .stellar-home .code-preview {
+    font-size: 10px;
+    padding: 25px 14px;
+  }
+  .stellar-home .output-result p {
+    font-size: 11px;
+  }
+  .stellar-home .section-footnote {
+    font-size: 7px;
+    line-height: 1.7;
+  }
+  .stellar-home .section-footnote a {
+    font-size: 11px;
+  }
+  .connected-section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .connected-heading > p {
+    font-size: 12px;
+  }
+  .tool-constellation {
+    padding: 50px 0 0;
+  }
+  .constellation-tool {
+    padding: 17px 12px;
+    font-size: 10px;
+    gap: 9px;
+  }
+  .constellation-tool > svg:first-child {
+    width: 17px;
+  }
+  .constellation-orbit {
+    width: 260px;
+    height: 260px;
+  }
+  .orbit-two {
+    width: 330px;
+    height: 330px;
+    top: -35px;
+  }
+  :is(.stellar-home, .site-shell) .footer-cta {
+    margin: 45px 5% 0;
+    padding: 28px;
+  }
+  :is(.stellar-home, .site-shell) .footer-heading {
+    gap: 12px;
+  }
+  :is(.stellar-home, .site-shell) .footer-heading h2 {
+    font-size: 39px;
+  }
+  :is(.stellar-home, .site-shell) .footer-arrow {
+    width: 51px;
+  }
+  :is(.stellar-home, .site-shell) .footer-cta .eyebrow {
+    font-size: 7px;
+  }
+  :is(.stellar-home, .site-shell) .footer-cta-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 9px;
+    padding-top: 20px;
+    margin-top: 25px;
+  }
+  :is(.stellar-home, .site-shell) .footer-cta-bottom p {
+    font-size: 11px;
+    max-width: none;
+  }
+  :is(.stellar-home, .site-shell) .footer-cta-bottom a {
+    font-size: 11px;
+  }
+  :is(.stellar-home, .site-shell) .footer-navigation {
+    padding: 35px 6% 25px;
+  }
+  :is(.stellar-home, .site-shell) .footer-navigation nav {
+    gap: 5px 20px;
+  }
+  :is(.stellar-home, .site-shell) .footer-legal {
+    font-size: 7px;
+    padding-block: 15px;
+    gap: 15px;
+  }
+  :is(.stellar-home, .site-shell) .footer-legal > div {
+    gap: 15px;
+  }
+}
+@media (max-width: 360px) {
+  :is(.stellar-home, .site-shell) .header-actions {
+    display: flex;
+  }
+  :is(.stellar-home, .site-shell) .brand {
+    font-size: 21px;
+  }
+  :is(.stellar-home, .site-shell) .small-cta {
+    font-size: 9px;
+    gap: 8px;
+    padding-inline: 10px;
+  }
+  .stellar-home .cinema-hero h1 {
+    font-size: 33px;
+  }
+  .cinema-hero-actions {
+    gap: 12px;
+  }
+  .watch-button {
+    font-size: 9px;
+  }
+  .stellar-home .stellar-section h2,
+  .stellar-home .section-heading h2 {
+    font-size: 34px;
+  }
+  .code-art-tree {
+    width: 82px;
+    padding-inline: 10px;
+  }
+  .code-art-lines {
+    font-size: 7px;
+  }
+  :is(.stellar-home, .site-shell) .footer-heading h2 {
+    font-size: 34px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stellar-home .theatre-screenshot {
+    animation: none;
+  }
+}
+.start-section {
+  border-top: 1px solid #292a31;
+}
+.start-heading {
+  text-align: center;
+}
+.start-heading p {
+  font-size: 13px;
+  line-height: 1.9;
+  color: #a7a0ac;
+  margin-top: 25px;
+}
+.platform-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid #3b353c;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 45px;
+  background: #19171b;
+}
+.platform-strip > a {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 28px;
+  transition: background 0.25s;
+}
+.platform-strip > a + a {
+  border-left: 1px solid #3b353c;
+}
+.platform-strip > a:hover {
+  background: #352823;
+}
+.platform-strip-icon {
+  color: #cbb1a0;
+  font-size: 24px;
+}
+.platform-strip strong {
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+}
+.platform-strip div span {
+  display: block;
+  font-size: 9px;
+  margin-top: 6px;
+  color: #9f91a3;
+}
+.platform-strip > a > svg {
+  margin-left: auto;
+  color: #bc9d8b;
+  flex-shrink: 0;
+}
+.start-links {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 18px;
+}
+.start-links a {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  min-height: 44px;
+  font-size: 10px;
+  color: #bbb0bc;
+}
+.questions-layout {
+  display: grid;
+  grid-template-columns: 0.8fr 1.4fr;
+  gap: 80px;
+  margin-top: 100px;
+}
+.questions-layout h3 {
+  font-family: var(--font-display);
+  font-size: 38px;
+  letter-spacing: -1.8px;
+  line-height: 1.15;
+  font-weight: 400;
+}
+.questions-layout > div:first-child > a {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 11px;
+  color: #d4b09c;
+  margin-top: 20px;
+  min-height: 44px;
+}
+.question-list {
+  border-top: 1px solid #38303c;
+}
+.question-list details {
+  border-bottom: 1px solid #38303c;
+}
+.question-list summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 23px 0;
+  cursor: pointer;
+  list-style: none;
+  font-size: 13px;
+  gap: 20px;
+  color: #d9d2dc;
+}
+.question-list summary::-webkit-details-marker {
+  display: none;
+}
+.question-list summary svg {
+  color: #9e8192;
+  flex-shrink: 0;
+  transition: transform 0.25s;
+}
+.question-list details[open] summary svg {
+  transform: rotate(45deg);
+  color: #f4af8f;
+}
+.question-list p {
+  font-size: 12px;
+  line-height: 1.9;
+  color: #aaa0b2;
+  padding-bottom: 25px;
+  max-width: 530px;
+}
+.question-list summary:focus-visible {
+  outline: 2px solid #f58a70;
+  outline-offset: 4px;
+}
+.stellar-home .run-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+@media (max-width: 800px) {
+  .platform-strip > a {
+    padding: 22px 18px;
+    gap: 12px;
+  }
+  .questions-layout {
+    gap: 40px;
+  }
+}
+@media (max-width: 600px) {
+  .platform-strip {
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+  }
+  .platform-strip > a {
+    padding: 24px;
+  }
+  .platform-strip > a + a {
+    border-left: 0;
+    border-top: 1px solid #3b353c;
+  }
+  .platform-strip strong {
+    font-size: 15px;
+  }
+  .platform-strip div span {
+    font-size: 10px;
+  }
+  .start-links {
+    flex-direction: column;
+    gap: 0;
+  }
+  .start-links a {
+    font-size: 9px;
+  }
+  .questions-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 65px;
+  }
+  .questions-layout h3 {
+    font-size: 34px;
+  }
+  .question-list summary {
+    font-size: 12px;
+    padding: 22px 0;
+  }
+  .question-list p {
+    font-size: 11px;
+  }
+}
+.site-shell .site-header {
+  color: #eeece7;
+}
+.site-shell .site-header .login-link,
+.site-shell .site-header .menu-toggle {
+  color: #d9d3dc;
+}
+.site-shell .site-header .brand {
+  color: #eeece7;
+}
+.site-shell .site-footer {
+  --ink: #eeece7;
+  --paper: #0d0e10;
+  --line: #292a31;
+  --muted: #a4a4ab;
+}
+.site-shell .footer-heading h2 {
+  color: #eeece7;
+}
+.site-shell .primary-cta {
+  background: #e8a38a;
+  color: #251b16;
+  border: 1px solid #d68d74;
+  box-shadow: inset 0 1px 0 #fff6;
+  border-radius: 6px;
+}
+.site-shell .primary-cta:hover {
+  background: #efb49f;
+  box-shadow: inset 0 1px 0 #fff6;
+  transform: translateY(-2px);
+}
+.site-shell .download-stamp {
+  background: #e8a38a;
+}
+.site-shell .download-action {
+  border-radius: 6px;
+}
+.site-shell .plan-panel {
+  background: #ecece6;
+}
+.site-shell .plan-featured {
+  background: #ecc5b5;
+}
+.auth-art {
+  background: #e6a18a;
+}
+.auth-submit {
+  border-radius: 6px;
+}
+:is(.stellar-home,.site-shell) .small-cta { white-space:nowrap; }
+:is(.stellar-home,.site-shell) .mobile-nav a[aria-current='page'] { color:#f4af8f; }
+@media(max-width:360px) { :is(.stellar-home,.site-shell) .small-cta svg { display:none; } :is(.stellar-home,.site-shell) .small-cta { padding:12px 10px; font-size:9px; } }

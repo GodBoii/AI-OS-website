@@ -1,226 +1,180 @@
-import React, { useEffect, useState } from 'react';
-import SEO from '../components/SEO';
-import Layout from '../components/Layout';
+import { useEffect, useState } from "react";
+import { ArrowUpRight, RefreshCw } from "lucide-react";
+import SEO from "../components/SEO";
+import Layout from "../components/Layout";
 
+type Release = {
+  id: number;
+  name: string | null;
+  tag_name: string;
+  body: string | null;
+  html_url: string;
+  published_at: string | null;
+};
+type ReleaseState =
+  | { kind: "loading" }
+  | { kind: "ready"; releases: Release[] }
+  | { kind: "error"; message: string };
+function isRelease(value: unknown): value is Release {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "id" in value &&
+    typeof value.id === "number" &&
+    "name" in value &&
+    (typeof value.name === "string" || value.name === null) &&
+    "tag_name" in value &&
+    typeof value.tag_name === "string" &&
+    "body" in value &&
+    (typeof value.body === "string" || value.body === null) &&
+    "html_url" in value &&
+    typeof value.html_url === "string" &&
+    value.html_url.startsWith(
+      "https://github.com/GodBoii/AI-OS-website/releases/",
+    ) &&
+    "published_at" in value &&
+    (typeof value.published_at === "string" || value.published_at === null)
+  );
+}
+function releaseDate(value: string | null) {
+  if (!value || !Number.isFinite(Date.parse(value)))
+    return "Release date unavailable";
+  return new Date(value).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
 export default function Changelog() {
-  const [releases, setReleases] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
+  const [state, setState] = useState<ReleaseState>({ kind: "loading" });
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
-    async function fetchReleases() {
+    const controller = new AbortController();
+    let disposed = false;
+    const timeout = setTimeout(() => controller.abort(), 12000);
+    setState({ kind: "loading" });
+    async function load() {
       try {
-        const response = await fetch('https://api.github.com/repos/GodBoii/AI-OS-website/releases', {
-          headers: {
-            'Accept': 'application/vnd.github.v3.html+json'
-          }
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          setReleases(data);
-        } else {
-          setError("Failed to load changelog data.");
-        }
-      } catch (err) {
-        console.error("Error fetching releases:", err);
-        setError("An error occurred while fetching changelog data.");
+        const response = await fetch(
+          "https://api.github.com/repos/GodBoii/AI-OS-website/releases",
+          {
+            headers: { Accept: "application/vnd.github+json" },
+            signal: controller.signal,
+          },
+        );
+        if (!response.ok)
+          throw new Error(
+            response.status === 403
+              ? "GitHub is limiting requests right now. Try again shortly."
+              : "Could not load the releases from GitHub. Try again.",
+          );
+        const data: unknown = await response.json();
+        if (!Array.isArray(data) || !data.every(isRelease))
+          throw new Error(
+            "GitHub returned release data we could not read. View the releases directly or try again.",
+          );
+        if (!disposed) setState({ kind: "ready", releases: data });
+      } catch (error: unknown) {
+        if (!disposed)
+          setState({
+            kind: "error",
+            message: controller.signal.aborted
+              ? "GitHub took too long to respond. Try again or view the releases directly."
+              : error instanceof Error
+                ? error.message
+                : "Could not load releases. Try again.",
+          });
       } finally {
-        setLoading(false);
+        clearTimeout(timeout);
       }
     }
-
-    fetchReleases();
-  }, []);
-
+    void load();
+    return () => {
+      disposed = true;
+      clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [attempt]);
   return (
     <Layout>
-      <SEO 
-        title="Changelog | Aetheria AI"
-        description="Track updates, features, improvements, and changes on the Aetheria AI operating system and workspace platform."
+      <SEO
+        title="What's new | Aetheria AI"
+        description="Release notes, improvements, and updates from Aetheria AI."
       />
-
-      <div className="min-h-screen pt-8 pb-24 relative overflow-hidden">
-        {/* Background Glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[600px] bg-primary/10 blur-[150px] rounded-full pointer-events-none -z-10"></div>
-
-        <div className="max-w-4xl mx-auto px-4 md:px-6 relative z-10">
-          <div className="text-center mb-10 md:mb-16">
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-sm font-medium mb-6">
-              <span className="flex w-2 h-2 rounded-full bg-primary mr-2 animate-pulse"></span>
-              Updates &amp; Releases
-            </div>
-            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold tracking-tight text-white mb-4 md:mb-6">Changelog</h1>
-            <p className="text-base md:text-xl text-gray-400">The latest updates, improvements, and new features for Aetheria AI.</p>
+      <div className="company-page releases-page section-pad">
+        <span className="eyebrow">ALWAYS A WORK IN PROGRESS.</span>
+        <h1>
+          Fresh off
+          <br />
+          the <span className="serif-word">workbench.</span>
+        </h1>
+        <p className="company-description">
+          The latest Aetheria releases, straight from GitHub.
+        </p>
+        {state.kind === "loading" && (
+          <div className="release-loading" role="status">
+            <span>Loading releases…</span>
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="release-skeleton" />
+            ))}
           </div>
-
-          {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
-            </div>
-          ) : error ? (
-            <div className="text-center py-20 text-red-400 bg-red-500/5 rounded-2xl border border-red-500/10 backdrop-blur-sm px-4">
-              <p className="text-lg">{error}</p>
-            </div>
-          ) : releases.length === 0 ? (
-            <div className="text-center py-20 text-gray-400 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm px-4">
-              <p className="text-lg">No release information available at this time.</p>
+        )}
+        {state.kind === "error" && (
+          <div className="release-error" role="alert">
+            <h2>The update needs a minute.</h2>
+            <p>{state.message}</p>
+            <button
+              onClick={() => setAttempt(attempt + 1)}
+              className="primary-cta"
+            >
+              Try again <RefreshCw size={17} />
+            </button>
+            <a
+              href="https://github.com/GodBoii/AI-OS-website/releases"
+              className="text-cta"
+            >
+              View on GitHub <ArrowUpRight size={17} />
+            </a>
+          </div>
+        )}
+        {state.kind === "ready" &&
+          (state.releases.length === 0 ? (
+            <div className="release-error">
+              <h2>Nothing published yet.</h2>
+              <p>
+                The next release will appear here when it's available on GitHub.
+              </p>
+              <a
+                href="https://github.com/GodBoii/AI-OS-website/releases"
+                className="text-cta"
+              >
+                View on GitHub <ArrowUpRight size={17} />
+              </a>
             </div>
           ) : (
-            <div className="space-y-8 md:space-y-12">
-              {releases.map((release) => (
-                <div key={release.id} className="relative">
-                  {/* Mobile layout: stacked card with header */}
-                  <div className="flex flex-col gap-4 md:hidden">
-                    {/* Mobile release header */}
-                    <div className="flex items-start gap-3">
-                      <div className="mt-1.5 w-3 h-3 bg-primary rounded-full shadow-[0_0_10px_rgba(168,85,247,0.8)] flex-shrink-0"></div>
-                      <div>
-                        <h3 className="text-lg font-bold text-white leading-tight">{release.name || release.tag_name}</h3>
-                        <p className="text-xs text-gray-400 mt-0.5">{new Date(release.published_at || release.created_at).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}</p>
-                        <div className="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
-                          {release.tag_name}
-                        </div>
-                      </div>
-                    </div>
-                    {/* Mobile content card */}
-                    <div className="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/5 shadow-xl">
-                      <div 
-                        className="markdown-content text-gray-300"
-                        dangerouslySetInnerHTML={{ __html: release.body_html || release.body }}
-                      />
-                      <div className="mt-6 pt-4 border-t border-white/5">
-                        <a 
-                          href={release.html_url} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-sm text-gray-400 hover:text-white transition-colors flex items-center"
-                        >
-                          View on GitHub
-                          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                        </a>
-                      </div>
-                    </div>
+            <div className="release-list">
+              {state.releases.map((release) => (
+                <article className="release-row" key={release.id}>
+                  <div>
+                    <span className="release-tag">{release.tag_name}</span>
+                    <p className="release-date">
+                      {releaseDate(release.published_at)}
+                    </p>
                   </div>
-
-                  {/* Desktop layout: two column timeline */}
-                  <div className="hidden md:flex gap-12">
-                    <div className="w-1/4 text-right shrink-0 relative">
-                      {/* Timeline dot */}
-                      <div className="absolute -right-6 top-2 w-3 h-3 bg-primary rounded-full shadow-[0_0_10px_rgba(168,85,247,0.8)] z-10"></div>
-                      
-                      <h3 className="text-xl font-bold text-white">{release.name || release.tag_name}</h3>
-                      <p className="text-sm text-gray-400 mt-1">{new Date(release.published_at || release.created_at).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}</p>
-                      <div className="mt-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
-                        {release.tag_name}
-                      </div>
-                    </div>
-                    
-                    <div className="w-3/4 pb-12 border-l border-white/10 pl-12 relative">
-                      <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/5 shadow-xl hover:border-white/10 transition-colors">
-                        <div 
-                          className="markdown-content text-gray-300"
-                          dangerouslySetInnerHTML={{ __html: release.body_html || release.body }}
-                        />
-                        
-                        <div className="mt-8 pt-6 border-t border-white/5 flex gap-4">
-                          <a 
-                            href={release.html_url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="text-sm text-gray-400 hover:text-white transition-colors flex items-center"
-                          >
-                            View on GitHub
-                            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="release-content">
+                    <h2>{release.name || release.tag_name}</h2>
+                    <p className="release-notes">
+                      {release.body ||
+                        "Full release details are available on GitHub."}
+                    </p>
+                    <a href={release.html_url} className="text-cta">
+                      View release on GitHub <ArrowUpRight size={17} />
+                    </a>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
-          )}
-        </div>
-
-        <style jsx global>{`
-          .markdown-content h1, .markdown-content h2, .markdown-content h3 {
-            color: white;
-            font-weight: bold;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-          }
-          .markdown-content h1 { font-size: 1.5rem; }
-          .markdown-content h2 { font-size: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.3em; }
-          .markdown-content h3 { font-size: 1.1rem; }
-          .markdown-content p {
-            margin-bottom: 1em;
-            line-height: 1.6;
-          }
-          .markdown-content ul {
-            list-style-type: disc;
-            padding-left: 1.25em;
-            margin-bottom: 1em;
-          }
-          .markdown-content ol {
-            list-style-type: decimal;
-            padding-left: 1.25em;
-            margin-bottom: 1em;
-          }
-          .markdown-content li {
-            margin-bottom: 0.5em;
-          }
-          .markdown-content li > p {
-            margin-bottom: 0.25em;
-          }
-          .markdown-content a {
-            color: #a855f7;
-            text-decoration: underline;
-          }
-          .markdown-content a:hover {
-            color: #c084fc;
-          }
-          .markdown-content code {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 0.2em 0.4em;
-            border-radius: 0.25rem;
-            font-family: monospace;
-            font-size: 0.875em;
-            word-break: break-word;
-          }
-          .markdown-content pre {
-            background-color: rgba(0, 0, 0, 0.4);
-            padding: 1em;
-            border-radius: 0.5rem;
-            overflow-x: auto;
-            margin-bottom: 1em;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-          }
-          .markdown-content pre code {
-            background-color: transparent;
-            padding: 0;
-          }
-          .markdown-content blockquote {
-            border-left: 4px solid #a855f7;
-            padding-left: 1em;
-            color: #9ca3af;
-            font-style: italic;
-            margin-bottom: 1em;
-          }
-          .markdown-content img {
-            max-width: 100%;
-            border-radius: 0.5rem;
-            margin: 1em 0;
-          }
-        `}</style>
+          ))}
       </div>
     </Layout>
   );
