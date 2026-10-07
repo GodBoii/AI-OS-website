@@ -7,57 +7,67 @@ import {
   Database,
   FolderOpen,
   Globe,
+  Cable,
 } from "lucide-react";
-
 const tools = [
-  { name: "GitHub", icon: GitBranch },
-  { name: "Gmail", icon: Mail },
-  { name: "Google Drive", icon: FolderOpen },
-  { name: "Supabase", icon: Database },
-  { name: "Google Sheets", icon: FileSpreadsheet },
-  { name: "Vercel", icon: Globe },
+  { name: "GitHub", type: "Repositories & code", icon: GitBranch },
+  { name: "Gmail", type: "Mail & conversations", icon: Mail },
+  { name: "Google Drive", type: "Files & project context", icon: FolderOpen },
+  { name: "Supabase", type: "Data & backend", icon: Database },
+  {
+    name: "Google Sheets",
+    type: "Spreadsheets & planning",
+    icon: FileSpreadsheet,
+  },
+  { name: "Vercel", type: "Projects & deployments", icon: Globe },
 ];
 export default function OrchestrationScene() {
   return (
-    <section className="connected-section stellar-section">
-      <div className="connected-heading">
-        <span className="section-kicker">
-          EVERYTHING IN THE SAME CONVERSATION
-        </span>
-        <h2>
-          Good tools.
-          <br />
-          <span>Better together.</span>
-        </h2>
-        <p>
-          Your work already lives in a dozen places.
-          <br />
-          Aetheria connects the dots.
-        </p>
-        <Link href="/for-you" className="stellar-text-link">
-          Find your integrations <ArrowUpRight size={17} />
-        </Link>
+    <section
+      className="connections-section studio-section"
+      aria-labelledby="connections-title"
+    >
+      <div className="studio-section-top">
+        <span className="studio-label">03 / The connections</span>
+        <Cable size={21} />
       </div>
-      <div className="tool-constellation">
-        <div className="constellation-center">
-          <img src="/icon.png" width={90} height={90} alt="Aetheria" />
-          <span>SHARED CONTEXT</span>
+      <div className="connections-layout">
+        <div className="connections-copy">
+          <h2 id="connections-title">
+            YOUR TOOLS.
+            <br />
+            <span>SAME TEAM.</span>
+          </h2>
+          <p>
+            Your files are over here. Your code is over there. Bring the tools
+            you already use into the same conversation.
+          </p>
+          <Link href="/for-you" className="studio-secondary">
+            Explore connected workflows <ArrowUpRight size={18} />
+          </Link>
+          <div className="connection-receipt">
+            <img src="/icon.png" width={30} height={30} alt="" />
+            <span>
+              Aetheria
+              <br />
+              <small>The place it comes together</small>
+            </span>
+            <span aria-hidden="true">↗</span>
+          </div>
         </div>
-        <div className="tool-grid">
-          {tools.map((tool) => (
-            <Link
-              key={tool.name}
-              href="/for-you"
-              className="constellation-tool"
-            >
-              <tool.icon size={22} />
-              <span>{tool.name}</span>
-              <ArrowUpRight size={12} />
+        <div className="connections-list">
+          {tools.map((tool, i) => (
+            <Link key={tool.name} href="/for-you" className="connection-row">
+              <span className="connection-index">0{i + 1}</span>
+              <tool.icon size={25} />
+              <span>
+                {tool.name}
+                <small>{tool.type}</small>
+              </span>
+              <ArrowUpRight size={20} />
             </Link>
           ))}
         </div>
-        <div className="constellation-orbit" aria-hidden="true" />
-        <div className="constellation-orbit orbit-two" aria-hidden="true" />
       </div>
     </section>
   );
