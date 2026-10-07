@@ -32,23 +32,33 @@ const questions = [
 ];
 export default function StartScene() {
   return (
-    <section className="start-section stellar-section">
+    <section
+      className="start-section studio-section"
+      aria-labelledby="start-title"
+    >
+      <div className="studio-section-top">
+        <span className="studio-label">04 / Make it yours</span>
+        <span>Your next workspace is one download away</span>
+      </div>
       <div className="start-heading">
-        <span className="section-kicker">MAKE YOURSELF AT HOME</span>
-        <h2>
-          Open it.
+        <h2 id="start-title">
+          SMALL DOWNLOAD.
           <br />
-          <span>Make something happen.</span>
+          <span>BIG POSSIBILITIES.</span>
         </h2>
         <p>
-          Your next workspace, on your device.
+          Same ambition. Your device.
           <br />
-          Choose a client to get started.
+          Choose a client and get started.
         </p>
       </div>
       <div className="platform-strip">
         {downloads.map((platform) => (
-          <a key={platform.id} href={platform.href}>
+          <a
+            key={platform.id}
+            href={platform.href}
+            aria-label={`Download Aetheria for ${platform.name}, ${platform.version}`}
+          >
             <span className="platform-strip-icon">
               {platform.id === "windows" ? (
                 <FaWindows />
@@ -78,7 +88,7 @@ export default function StartScene() {
       </div>
       <div className="questions-layout">
         <div>
-          <span className="section-kicker">BEFORE YOU JUMP IN</span>
+          <span className="studio-label">The useful details</span>
           <h3>
             A few good
             <br />
