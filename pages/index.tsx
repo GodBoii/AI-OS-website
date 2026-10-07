@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className="aetheria-home stellar-home">
       <SEO
-        title="Aetheria AI | A little less artificial. A lot more capable."
+        title="Aetheria AI | Big ideas. Real moves."
         description="Your computer has a new operator. Aetheria connects your tools, runs agent workflows, and turns ideas into finished work."
         schemaType="Organization"
       />
