@@ -152,7 +152,7 @@ export default function Header() {
                 </p>
 
                 <div className="grid grid-cols-2 gap-3 mb-3.5">
-                  <a href="https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.24/Aetheria.AI.Setup.1.2.24.exe" className="group/item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/[0.03] transition-colors border border-transparent hover:border-white/[0.05]">
+                  <a href="https://github.com/GodBoii/AI-OS-website/releases/download/v1.4.2/aetheria-ai-Setup-1.4.1.exe" className="group/item flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/[0.03] transition-colors border border-transparent hover:border-white/[0.05]">
                     <div className="p-2 rounded-lg bg-[#00a4ef]/10 text-[#00a4ef]/80 group-hover/item:text-[#00a4ef] transition-colors">
                       <FaWindows className="w-5 h-5" />
                     </div>
@@ -161,7 +161,7 @@ export default function Header() {
                         <h4 className="text-sm font-medium text-white/80 group-hover/item:text-white transition-colors mb-0.5">Windows</h4>
                         <p className="text-xs text-white/30 font-light">x64 Installer (.exe)</p>
                       </div>
-                      <span className="text-[10px] text-white/20 px-2 py-0.5 rounded-full border border-white/5 group-hover/item:border-white/10 group-hover/item:text-white/40 transition-colors font-mono">v1.2.24</span>
+                      <span className="text-[10px] text-white/20 px-2 py-0.5 rounded-full border border-white/5 group-hover/item:border-white/10 group-hover/item:text-white/40 transition-colors font-mono">v1.4.1</span>
                     </div>
                   </a>
 
