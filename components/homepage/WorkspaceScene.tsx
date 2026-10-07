@@ -1,165 +1,161 @@
+import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import {
   ArrowUpRight,
-  FolderOpen,
+  ArrowRight,
+  MessageSquare,
   Code2,
   Monitor,
   Check,
-  Terminal,
-  ShieldCheck,
+  Maximize2,
 } from "lucide-react";
 
+const workspaces = [
+  {
+    id: "conversation",
+    number: "01",
+    label: "Think out loud",
+    name: "Conversation",
+    icon: MessageSquare,
+    image: "/home-page.png",
+    title: "A home for your next thought.",
+    description:
+      "Start a conversation, bring in your files, and keep the context with your project.",
+    details: [
+      "Conversations and project context",
+      "Files alongside your ideas",
+    ],
+  },
+  {
+    id: "code",
+    number: "02",
+    label: "Make the thing",
+    name: "Code workspace",
+    icon: Code2,
+    image: "/coding-worspace.png",
+    title: "From an idea to a working project.",
+    description:
+      "Bring your repository, code, and terminal into the same workspace. Keep building without losing the thread.",
+    details: [
+      "Repository and terminal workspace",
+      "Development alongside conversation",
+    ],
+  },
+  {
+    id: "computer",
+    number: "03",
+    label: "Put it to work",
+    name: "Computer workspace",
+    icon: Monitor,
+    image: "/computer-workspace.png",
+    title: "Your desktop joins the conversation.",
+    description:
+      "Direct computer tasks from Aetheria. Choose the scope and permissions before giving your workspace access.",
+    details: [
+      "Desktop tasks in the workspace",
+      "Scope and permission controls",
+    ],
+  },
+];
+
 export default function WorkspaceScene() {
+  const [selected, setSelected] = useState(workspaces[0]);
   return (
     <section
       id="possibilities"
-      className="possibilities-section stellar-section"
+      className="workspace-section studio-section"
+      aria-labelledby="workspace-title"
     >
-      <div className="stellar-section-heading">
-        <span className="section-kicker">SPACE TO THINK. TOOLS TO ACT.</span>
-        <h2>
-          For the things
+      <div className="studio-section-top">
+        <span className="studio-label">01 / The workspace</span>
+        <span>One place. A few more possibilities.</span>
+      </div>
+      <div className="studio-heading">
+        <h2 id="workspace-title">
+          THERE'S A WHOLE
           <br />
-          you <span>actually want to do.</span>
+          <span>COMPUTER IN HERE.</span>
         </h2>
         <p>
-          A conversation is just the beginning.
+          Some days you're thinking.
           <br />
-          Give your ideas somewhere to go.
+          Some days you're building.
+          <br />
+          Your workspace should keep up.
         </p>
       </div>
-      <div className="capability-grid">
-        <article className="capability-build">
-          <div className="capability-copy">
-            <span className="capability-icon">
-              <Code2 size={21} />
+      <div
+        className="workspace-selector"
+        aria-label="Choose a workspace preview"
+      >
+        {workspaces.map((item) => (
+          <button
+            type="button"
+            key={item.id}
+            aria-pressed={selected.id === item.id}
+            aria-controls="workspace-preview"
+            onClick={() => setSelected(item)}
+          >
+            <span className="workspace-number">{item.number}</span>
+            <item.icon size={20} />
+            <span>
+              {item.label}
+              <small>{item.name}</small>
             </span>
-            <h3>
-              Build past
-              <br />
-              the blank page.
-            </h3>
-            <p>
-              Work on code, connect a repository, and keep the terminal close.
-              Your project gets a workspace of its own.
-            </p>
-            <Link href="/for-you">
-              Explore developer workflows <ArrowUpRight size={16} />
-            </Link>
-          </div>
-          <div className="code-art" aria-label="Illustrative project workspace">
-            <div className="code-art-toolbar">
-              <span>
-                <Terminal size={13} /> project / your-next-idea
-              </span>
-              <span>TSX</span>
-            </div>
-            <div className="code-art-body">
-              <div className="code-art-tree">
-                <span>↓ your-next-idea</span>
-                <span>↳ src</span>
-                <span className="file-active">↳ app.tsx</span>
-                <span>↳ styles.css</span>
-                <span>↳ package.json</span>
-              </div>
-              <div className="code-art-lines">
-                <p>
-                  <i>01</i>
-                  <span>import</span> {"{ yourIdea }"}
-                </p>
-                <p>
-                  <i>02</i>
-                  <span>from</span> <b>'possibilities'</b>;
-                </p>
-                <p>
-                  <i>03</i>&nbsp;
-                </p>
-                <p>
-                  <i>04</i>
-                  <span>export default</span> function App() {"{"}
-                </p>
-                <p>
-                  <i>05</i>&nbsp; return <b>&lt;SomethingNew /&gt;</b>;
-                </p>
-                <p>
-                  <i>06</i>
-                  {"}"}
-                </p>
-              </div>
-            </div>
-            <div className="code-art-status">
-              <Check size={13} /> A place for your next commit.
-              <span>WORKFLOW ILLUSTRATION</span>
-            </div>
-          </div>
-        </article>
-        <article className="capability-computer">
-          <span className="capability-icon">
-            <Monitor size={21} />
+            <ArrowUpRight size={18} />
+          </button>
+        ))}
+      </div>
+      <div className="workspace-preview" id="workspace-preview">
+        <div className="workspace-chrome">
+          <span>
+            <Image src="/icon.png" width={20} height={20} alt="" /> Aetheria /{" "}
+            {selected.name}
           </span>
-          <h3>
-            Beyond
-            <br />
-            the browser.
-          </h3>
-          <p>
-            Your computer workspace brings desktop actions into the
-            conversation.
-          </p>
-          <div className="permission-art">
-            <div>
-              <ShieldCheck size={18} />
-              <span>You're in control</span>
-            </div>
-            <span>Permissions</span>
-            <div className="permission-row">
-              <span>Workspace scope</span>
-              <span>
-                Selected files <Check size={13} />
-              </span>
-            </div>
-            <div className="permission-row">
-              <span>Desktop access</span>
-              <span>
-                You decide <Check size={13} />
-              </span>
-            </div>
-          </div>
-          <Link href="/download">
-            Meet the desktop app <ArrowUpRight size={16} />
-          </Link>
-        </article>
-        <article className="capability-context">
-          <span className="capability-icon">
-            <FolderOpen size={21} />
-          </span>
+          <a
+            href={selected.image}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Open full-size ${selected.name.toLowerCase()} screenshot in a new tab`}
+          >
+            Full-size screenshot <Maximize2 size={14} />
+          </a>
+        </div>
+        <div className="workspace-image">
+          <Image
+            key={selected.id}
+            src={selected.image}
+            alt={`Aetheria ${selected.name.toLowerCase()} showing the actual application interface`}
+            width={1920}
+            height={1080}
+            sizes="(max-width: 1440px) 90vw, 1300px"
+          />
+        </div>
+        <div className="workspace-explanation" aria-live="polite">
           <div>
-            <h3>A place for all the context.</h3>
-            <p>
-              Keep files, conversations, and project work together. Pick up the
-              thread without starting over.
-            </p>
+            <span className="studio-label">Your workspace, your direction</span>
+            <h3>{selected.title}</h3>
+            <p>{selected.description}</p>
           </div>
-          <div className="context-art" aria-hidden="true">
-            <span className="context-doc doc-back">
-              project notes
-              <br />
-              <i />
-              <i />
-              <i />
-            </span>
-            <span className="context-doc doc-front">
-              the next idea
-              <br />
-              <i />
-              <i />
-              <i />
-            </span>
-            <span className="context-orb">
-              <img src="/icon.png" width={48} height={48} alt="" />
-            </span>
-          </div>
-        </article>
+          <ul>
+            {selected.details.map((detail) => (
+              <li key={detail}>
+                <Check size={15} />
+                {detail}
+              </li>
+            ))}
+          </ul>
+          <Link href="/for-you" aria-label="Explore Aetheria workflows">
+            <ArrowRight size={24} />
+          </Link>
+        </div>
+      </div>
+      <div className="workspace-footnote">
+        <span>Real screenshots. Choose a workspace to look inside.</span>
+        <Link href="/for-you">
+          Find your kind of work <ArrowUpRight size={16} />
+        </Link>
       </div>
     </section>
   );
