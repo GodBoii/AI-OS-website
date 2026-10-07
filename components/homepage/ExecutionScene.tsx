@@ -8,10 +8,25 @@ import {
   Mail,
   Search,
   RotateCcw,
+  Download,
+  Play,
 } from "lucide-react";
 import Link from "next/link";
 
-const workflows = [
+type WorkflowId = "build" | "research" | "organize";
+type Workflow = {
+  id: WorkflowId;
+  name: string;
+  icon: typeof Code2;
+  prompt: string;
+  agent: string;
+  steps: string[];
+  result: string;
+  file: string;
+  lines: string[];
+};
+
+const workflows: Workflow[] = [
   {
     id: "build",
     name: "Build something",
@@ -94,6 +109,7 @@ export default function ExecutionScene() {
     { kind: "idle" } | { kind: "playing"; step: number } | { kind: "complete" }
   >({ kind: "idle" });
   const reduced = useReducedMotion();
+  const [showSource, setShowSource] = useState(false);
   const ran = playback.kind === "complete";
   useEffect(() => {
     if (playback.kind !== "playing") return;
@@ -109,23 +125,30 @@ export default function ExecutionScene() {
     return () => clearTimeout(timer);
   }, [playback]);
   return (
-    <section id="playground" className="playground section-pad">
-      <div className="section-heading">
+    <section
+      id="playground"
+      className="playground studio-section"
+      aria-labelledby="playground-title"
+    >
+      <div className="studio-section-top">
+        <span className="studio-label">02 / The test drive</span>
+        <span>An example you can actually try</span>
+      </div>
+      <div className="section-heading studio-heading">
         <div>
-          <span className="eyebrow">A THOUGHT. A PLAN. A FIRST STEP.</span>
-          <h2>
-            Less explaining.
+          <h2 id="playground-title">
+            A LITTLE DIRECTION.
             <br />
-            More <span className="serif-word">making it happen.</span>
+            <span>A LOT OF POSSIBILITY.</span>
           </h2>
         </div>
         <p>
-          Code, research, daily work.
+          Pick a task. Run the example.
           <br />
-          One place to set things in motion.
+          See how a thought becomes a draft.
           <br />
           <span className="demo-note">
-            Try an interactive workflow preview below.
+            This is a local demo of the workflow.
           </span>
         </p>
       </div>
@@ -133,10 +156,12 @@ export default function ExecutionScene() {
         {workflows.map((flow) => (
           <button
             key={flow.id}
+            type="button"
             aria-pressed={selected.id === flow.id}
             onClick={() => {
               setSelected(flow);
               setPlayback({ kind: "idle" });
+              setShowSource(false);
             }}
           >
             <flow.icon size={18} />
@@ -156,7 +181,9 @@ export default function ExecutionScene() {
             <p>{selected.prompt}</p>
           </div>
           <div className="agent-heading">
-            <span className="agent-avatar">a</span>
+            <span className="agent-avatar">
+              <img src="/icon.png" alt="" width={28} height={28} />
+            </span>
             <div>
               {selected.agent}
               <small>
@@ -196,43 +223,84 @@ export default function ExecutionScene() {
             ))}
           </ol>
           <button
+            type="button"
             className="run-button"
             disabled={playback.kind === "playing"}
-            onClick={() =>
+            onClick={() => {
+              setShowSource(false);
               setPlayback(
                 ran
                   ? { kind: "idle" }
                   : reduced
                     ? { kind: "complete" }
                     : { kind: "playing", step: 0 },
-              )
-            }
+              );
+            }}
           >
             {ran
               ? "Reset preview"
               : playback.kind === "playing"
                 ? "Playing preview…"
-                : "Run this preview"}
-            {ran ? <RotateCcw size={17} /> : <ArrowRight size={19} />}
+                : "Run the example"}
+            {ran ? <RotateCcw size={17} /> : <Play size={17} />}
           </button>
         </div>
-        <div className="workbench-output">
+        <div
+          className="workbench-output"
+          aria-busy={playback.kind === "playing"}
+        >
           <div className="output-toolbar">
             <span>
               <Code2 size={15} /> {selected.file}
             </span>
             <span className="preview-badge">
-              {ran ? "OUTPUT READY" : "EXAMPLE OUTPUT"}
+              {ran ? "DRAFT READY" : "EXAMPLE OUTPUT"}
             </span>
           </div>
-          <div className="code-preview">
-            {selected.lines.map((line, i) => (
-              <div key={`${selected.id}-${i}`}>
-                <span>{i + 1}</span>
-                <code>{line || " "}</code>
+          {ran ? (
+            <>
+              <div className="draft-toolbar">
+                <span>Illustrative draft</span>
+                <button
+                  type="button"
+                  aria-pressed={showSource}
+                  onClick={() => setShowSource(!showSource)}
+                >
+                  {showSource ? "View preview" : "View source"}
+                  <Code2 size={14} />
+                </button>
               </div>
-            ))}
-          </div>
+              {showSource ? (
+                <div className="code-preview">
+                  {selected.lines.map((line, i) => (
+                    <div key={`${selected.id}-${i}`}>
+                      <span>{i + 1}</span>
+                      <code>{line || " "}</code>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <SampleDraft kind={selected.id} />
+              )}
+            </>
+          ) : (
+            <div className="draft-empty">
+              <span className="draft-cross" aria-hidden="true">
+                ↗
+              </span>
+              <h3>
+                {playback.kind === "playing"
+                  ? "Putting the pieces together."
+                  : "The next move is yours."}
+              </h3>
+              <p>
+                {playback.kind === "playing"
+                  ? "Follow the steps as the example prepares a draft."
+                  : "Choose a workflow and run the example to see its draft here."}
+              </p>
+              <span className="draft-rule" aria-hidden="true" />
+            </div>
+          )}
           <div
             className={ran ? "output-result complete" : "output-result"}
             aria-live="polite"
@@ -248,7 +316,16 @@ export default function ExecutionScene() {
                   : "A little direction. A lot of possibility."}
               </p>
             </div>
-            <ArrowUpRight size={22} />
+            {ran && (
+              <a
+                className="save-example"
+                href={`data:text/plain;charset=utf-8,${encodeURIComponent(selected.lines.join("\n"))}`}
+                download={selected.file.split(" / ").pop()}
+                aria-label="Save the example source"
+              >
+                <Download size={20} />
+              </a>
+            )}
           </div>
         </div>
       </div>
@@ -259,5 +336,110 @@ export default function ExecutionScene() {
         </Link>
       </div>
     </section>
+  );
+}
+
+function SampleDraft({ kind }: { kind: WorkflowId }) {
+  if (kind === "build")
+    return (
+      <div className="sample-portfolio">
+        <div className="sample-nav">
+          Alex Morgan <span>Independent designer ↗</span>
+        </div>
+        <span className="sample-caption">Selected work / 2026</span>
+        <h3>
+          Good ideas.
+          <br />
+          <em>Made tangible.</em>
+        </h3>
+        <div className="sample-projects">
+          <span>
+            01 / Identity systems
+            <i>
+              FORM
+              <br />& FEEL
+            </i>
+          </span>
+          <span>
+            02 / Digital experiences
+            <i>
+              OPEN
+              <br />
+              STUDIO ↗
+            </i>
+          </span>
+        </div>
+        <p>Portfolio example. Your actual project starts in the app.</p>
+      </div>
+    );
+  if (kind === "research")
+    return (
+      <div className="sample-document">
+        <span className="sample-caption">
+          Research brief / Example structure
+        </span>
+        <h3>
+          Find your
+          <br />
+          <em>opening.</em>
+        </h3>
+        <p>
+          A useful comparison starts with the same questions for every product.
+        </p>
+        <div className="sample-doc-row">
+          <span>01</span>
+          <div>
+            Map the alternatives
+            <small>Audience, product, and core workflow</small>
+          </div>
+        </div>
+        <div className="sample-doc-row">
+          <span>02</span>
+          <div>
+            Compare the real capabilities
+            <small>What works, what's missing, and the evidence</small>
+          </div>
+        </div>
+        <div className="sample-doc-row">
+          <span>03</span>
+          <div>
+            Trace every claim<small>Source links beside each finding</small>
+          </div>
+        </div>
+        <span className="sample-caption">
+          An outline, ready for your research.
+        </span>
+      </div>
+    );
+  return (
+    <div className="sample-document">
+      <span className="sample-caption">Weekly update / Example structure</span>
+      <h3>
+        Everyone on
+        <br />
+        <em>the same page.</em>
+      </h3>
+      <p>A place for the decisions and loose ends that matter.</p>
+      <div className="sample-doc-row">
+        <Check size={17} />
+        <div>
+          Decisions made<small>What changed and the context behind it</small>
+        </div>
+      </div>
+      <div className="sample-doc-row">
+        <ArrowRight size={17} />
+        <div>
+          Needs your attention
+          <small>Blockers, owners, and open questions</small>
+        </div>
+      </div>
+      <div className="sample-doc-row">
+        <Mail size={17} />
+        <div>
+          Ready for your review<small>You decide what to send and when</small>
+        </div>
+      </div>
+      <span className="sample-caption">Draft only. Nothing is sent.</span>
+    </div>
   );
 }
