@@ -11,9 +11,7 @@ export default function AccountForm({ mode }: { mode: "login" | "signup" }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [status, setStatus] = useState<"idle" | "email" | "google" | "success">(
-    "idle",
-  );
+  const [status, setStatus] = useState<"idle" | "email" | "google">("idle");
   const [error, setError] = useState("");
   const pending = status === "email" || status === "google";
 
@@ -23,7 +21,7 @@ export default function AccountForm({ mode }: { mode: "login" | "signup" }) {
     setStatus("email");
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email: email.trim(),
           password,
           options: {
@@ -32,7 +30,11 @@ export default function AccountForm({ mode }: { mode: "login" | "signup" }) {
           },
         });
         if (error) throw error;
-        setStatus("success");
+        if (!data.session)
+          throw new Error(
+            "Could not start a session. Try logging in to your account.",
+          );
+        await router.replace("/dashboard");
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({
           email: email.trim(),
@@ -40,9 +42,7 @@ export default function AccountForm({ mode }: { mode: "login" | "signup" }) {
         });
         if (error) throw error;
         if (!data.session)
-          throw new Error(
-            "Check your email to confirm your account before signing in.",
-          );
+          throw new Error("Could not start a session. Try logging in again.");
         await router.push("/dashboard");
       }
     } catch (error: unknown) {
@@ -86,105 +86,91 @@ export default function AccountForm({ mode }: { mode: "login" | "signup" }) {
           {error}
         </p>
       )}
-      {status === "success" ? (
-        <div className="signup-success" role="status">
-          <h2>Check your inbox.</h2>
-          <p>
-            We sent a confirmation link to {email}. Confirm your email, then
-            come back to log in.
-          </p>
-          <Link href="/auth/login" className="primary-cta">
-            Go to login <ArrowUpRight size={18} />
-          </Link>
+      <>
+        <button
+          className="google-button"
+          disabled={pending}
+          onClick={() => void google()}
+        >
+          <span className="google-g" aria-hidden="true">
+            G
+          </span>
+          {status === "google"
+            ? "Connecting to Google…"
+            : "Continue with Google"}
+        </button>
+        <div className="auth-divider">
+          <span>or use your email</span>
         </div>
-      ) : (
-        <>
-          <button
-            className="google-button"
-            disabled={pending}
-            onClick={() => void google()}
-          >
-            <span className="google-g" aria-hidden="true">
-              G
-            </span>
-            {status === "google"
-              ? "Connecting to Google…"
-              : "Continue with Google"}
-          </button>
-          <div className="auth-divider">
-            <span>or use your email</span>
+        <form
+          onSubmit={(event) => void submit(event)}
+          aria-describedby={error ? "auth-error" : undefined}
+        >
+          {mode === "signup" && (
+            <div className="auth-field">
+              <label htmlFor="name">Your name</label>
+              <input
+                id="name"
+                name="name"
+                autoComplete="name"
+                required
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                placeholder="How should we call you?"
+                disabled={pending}
+              />
+            </div>
+          )}
+          <div className="auth-field">
+            <label htmlFor="email">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="you@example.com"
+              disabled={pending}
+            />
           </div>
-          <form
-            onSubmit={(event) => void submit(event)}
-            aria-describedby={error ? "auth-error" : undefined}
-          >
-            {mode === "signup" && (
-              <div className="auth-field">
-                <label htmlFor="name">Your name</label>
-                <input
-                  id="name"
-                  name="name"
-                  autoComplete="name"
-                  required
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  placeholder="How should we call you?"
-                  disabled={pending}
-                />
-              </div>
-            )}
-            <div className="auth-field">
-              <label htmlFor="email">Email address</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder="you@example.com"
-                disabled={pending}
-              />
-            </div>
-            <div className="auth-field">
-              <label htmlFor="password">
-                Password{" "}
-                {mode === "signup" && <span>At least 6 characters</span>}
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete={
-                  mode === "login" ? "current-password" : "new-password"
-                }
-                required
-                minLength={mode === "signup" ? 6 : undefined}
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="Your password"
-                disabled={pending}
-              />
-            </div>
-            {mode === "login" && (
-              <Link href="/contact" className="auth-help">
-                Need help signing in?
-              </Link>
-            )}
-            <button className="auth-submit" type="submit" disabled={pending}>
-              {status === "email"
-                ? mode === "login"
-                  ? "Signing in…"
-                  : "Creating your account…"
-                : mode === "login"
-                  ? "Log in"
-                  : "Create account"}
-              <ArrowUpRight size={20} />
-            </button>
-          </form>
-        </>
-      )}
+          <div className="auth-field">
+            <label htmlFor="password">
+              Password {mode === "signup" && <span>At least 6 characters</span>}
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete={
+                mode === "login" ? "current-password" : "new-password"
+              }
+              required
+              minLength={mode === "signup" ? 6 : undefined}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Your password"
+              disabled={pending}
+            />
+          </div>
+          {mode === "login" && (
+            <Link href="/auth/forgot-password" className="auth-help">
+              Forgot your password?
+            </Link>
+          )}
+          <button className="auth-submit" type="submit" disabled={pending}>
+            {status === "email"
+              ? mode === "login"
+                ? "Signing in…"
+                : "Creating your account…"
+              : mode === "login"
+                ? "Log in"
+                : "Create account"}
+            <ArrowUpRight size={20} />
+          </button>
+        </form>
+      </>
     </AuthFrame>
   );
 }
