@@ -24,16 +24,16 @@ const SEO: React.FC<SEOProps> = ({
   const router = useRouter();
   const siteUrl = "https://aetheria.ai";
 
-  const defaultTitle = "Aetheria AI | The AI Operating System";
+  const defaultTitle = "Aetheria AI | Less talk. More doing.";
   const defaultDescription =
-    "Execution at Machine Speed. Aetheria doesn't just answer—it builds, deploys, and orchestrates autonomous agent workflows across devices.";
-  const defaultOgImage = `${siteUrl}/home-page.png`;
+    "A workspace for conversation, code, and computer tasks. Bring project context and connected tools into one place.";
+  const defaultOgImage = `${siteUrl}/og-experience.png`;
 
   const metaTitle = title ? title : defaultTitle;
   const metaDescription = description ? description : defaultDescription;
 
   // Construct canonical URL
-  const path = router.asPath.split("?")[0];
+  const path = router.asPath.split(/[?#]/)[0];
   const canonical = canonicalUrl
     ? canonicalUrl
     : `${siteUrl}${path === "/" ? "" : path}`;
