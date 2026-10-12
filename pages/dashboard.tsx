@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { supabase, User, getCurrentSession } from "../lib/supabaseClient";
 import UsageCard, { ConvexUsageData } from "../components/UsageCard";
 import Layout from "../components/Layout";
+import { windowsDownload } from "../lib/downloads";
 import { motion } from "framer-motion";
 import { FaWindows, FaLinux, FaApple, FaAndroid } from "react-icons/fa6";
 import { ShieldCheck, DownloadCloud, Activity, Zap } from "lucide-react";
@@ -135,9 +136,9 @@ export default function Dashboard() {
     {
       name: "Windows",
       icon: <FaWindows className="w-5 h-5 text-[#256280]" />,
-      desc: "64-bit installer (v1.4.1)",
-      filename: "aetheria-ai-Setup-1.4.1.exe",
-      path: "https://github.com/GodBoii/AI-OS-website/releases/download/v1.4.2/aetheria-ai-Setup-1.4.1.exe",
+      desc: `64-bit installer (${windowsDownload.version})`,
+      filename: windowsDownload.filename,
+      path: windowsDownload.href,
       available: true,
     },
     {
@@ -276,7 +277,7 @@ export default function Dashboard() {
                   </h3>
                 </div>
                 <span className="text-[10px] font-mono text-muted tracking-widest px-2 py-1 border border-ink/10 rounded">
-                  v1.4.1
+                  {windowsDownload.version}
                 </span>
               </div>
               <div className="space-y-3">
