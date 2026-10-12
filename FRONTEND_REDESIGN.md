@@ -1,57 +1,72 @@
-# Aetheria frontend pass
+# Aetheria black-theme redesign
 
-## Original brief
+Implemented on `codex/black-star-experience`.
 
-Read all five turns of chat `01a113d6-7906-77c1-8ec8-ea6b3f37894c`, including the follow-up messages.
+## Experience
 
-Your first design prompt was:
+The homepage uses a black background, Outfit display type, Instrument Serif accents, and a pale green action color. The four-point logo is reconstructed as an interactive metal sculpture with a surrounding ring. It supports pointer tilt, mouse dragging, and a keyboard-accessible rotation button.
 
-> i want you to re-design and make the website 100xX better go crazy on everything on UI/UX , buttons , fonts , typography , elements , vibe. i just want you to go crazy on every step of the way i dont want a boring website a boring frontend i dont want ai slop and ai generated slop designs. be unequally unique. dont hold back on anything. just go crazy. im open to WACKY ideas. ULTRA THINK
+Application screenshots and recordings are replaced by code-native marketing illustrations. Expanding panels describe conversation, code, computer tasks, and connected tools. Their interfaces are labelled as illustrations.
 
-Your subsequent directions were:
+The playground contains three browser examples:
 
-> wrong website is opened recheck and clear locahost cache
+- Build a page produces a self-contained HTML document with responsive styles.
+- Make a brief groups six sample updates into completed work, decisions, and next steps.
+- Clean a sheet normalizes six sample contacts and removes duplicate email addresses.
 
-> first analyze and understand the codes dont get mistaken with the website you are looking its from other project analyze the codes and codebase and get complete understanding first and then procced with the implemenation
+Visitors can pause, resume, cancel, switch tasks, inspect source, and download the result. The site explicitly describes these as illustrative workflows with sample data. They do not call a live agent backend.
 
-> Continue.
+ChatGPT, Claude, and Gemini have selectable descriptions with links to their documented capabilities. The comparison explains approaches; it does not claim benchmark results or invent missing competitor features.
 
-> in assets folder you will find the logo / icon use that in public folder its icon.ico and icon.png same but different formats
+The wayfinder offers a contextual tour and reacts to example selection, execution, cancellation, and completion. It offers one inactivity suggestion per page session, suppresses hints while typing, and remembers explicit dismissal in session storage. Voice uses the browser's speech synthesis only after the visitor enables it. It does not use a microphone.
 
-> the site still doesn't look complete and good and its very boring the UI/UX , design aren't well implemented and well developed and are well thought out. everything should look like a 100K dollar level of website and frontend.
+## Motion and fallbacks
 
-> the svg you created or that circle thing on landing page is looking very ugly and its just not good.
+The wayfinder is available across shared pages, with contextual explanations for downloads, pricing, integrations, account forms, and policy pages. Page changes close its panel and stop voice playback.
 
-The last instruction in that chat was to push its completed changes to GitHub. That earlier push was completed in commit `6d19643`.
+GSAP connects the manifesto text and workspace entrance to native scrolling. The tool strip is pausable. Reduced-motion preferences disable decorative movement while preserving the workflow controls and output.
 
-## This implementation
+The 3D scene renders on demand and pauses offscreen or in a hidden tab. A vector mark remains available before loading, when WebGL is unavailable, and after context loss.
 
-- Condensed Barlow display typography, charcoal surfaces, orange primary actions, and a mechanical-hand hero photograph.
-- Real conversation, code, and computer screenshots in a selectable workspace preview, with links to inspect the original full-size screenshots.
-- Workflow examples with idle, playing, complete, reset, preview, and source states. Each example produces a visible illustrative draft. Its source can be saved locally.
-- An integration directory replaces decorative orbit graphics. Downloads and FAQs have consistent spacing, focus states, and touch targets.
-- Shared header, footer, interior headings, pricing controls, and account screens follow the updated visual direction. The original star logo remains in use.
-- Existing authentication, usage APIs, download destinations, and plan details are preserved.
+The same palette carries into downloads, pricing, integration pages, and account screens. Existing authentication, API behavior, plan values, and installer destinations remain in place.
 
-## Generated asset
+A new 1200 × 630 social image uses the rendered marketing hero. Default metadata points to it, and canonical URLs omit query strings and section fragments.
 
-Created with the built-in ImageGen tool. Project asset: `public/operator-hand.png`. The original is also retained in the Codex generated-images directory.
+## Local review
 
-Exact generation prompt:
+The production review server uses `http://localhost:3012`.
 
-> Use case: ads-marketing. Asset type: website hero editorial photograph for Aetheria, an AI computer workspace. Create a high-end surreal industrial product photograph: one beautifully engineered brushed-aluminum robotic hand and forearm entering from lower right, gently pinching a large physical ivory-white computer mouse cursor arrow between thumb and index finger, arrow points upper left. Precision articulated fingers with convincing mechanical joints, scratched metal, black rubber details, a tiny burnt-orange cable, tactile materials. The cursor arrow is a solid ceramic object with bevelled edges. Composition: portrait-ish 4:5 image, hand occupies right and center, arrow sits in upper middle. Background seamless very dark charcoal #111311, no environment. Dramatic studio side lighting, warm pale highlights, subtle film grain, a little shadow, fashion editorial art direction, photoreal 3D photographed object. Clear silhouette, bold and playful, serious craftsmanship. No words, no letters, no logo, no sphere, no ring, no gradients or starfields, no holograms, no extra hands, no interface or screen. This is conceptual art, not a screenshot. Save the generated output as a local image file if available.
+To create an isolated review build in PowerShell:
 
-The conceptual artwork is separate from the real application screenshots. Next.js Image provides responsive image loading and optimization.
+```powershell
+$env:AETHERIA_REVIEW = '1'
+npm.cmd run build
+node node_modules/next/dist/bin/next start -p 3012
+```
+
+This writes to the ignored `.next-review` directory. Ordinary development continues to use `.next`, so a development server cannot overwrite the production review build.
 
 ## Verification
 
-- Final production build, type checking, and Git whitespace check pass.
-- Homepage checked at 320, 390, 768, 1440, and 1920 pixels. Pricing, downloads, integrations, login, and signup checked at 320 pixels. No horizontal page overflow or clipped headings and controls found.
-- Workspace switching and full-size screenshot destinations checked.
-- Build, research, and weekly-update demos checked, including source viewing, source download content, reset, and changing workflows while playback is running.
-- Mobile navigation opens and closes, Escape returns focus to the menu button, and FAQs work with the keyboard.
-- Fresh production browser logs contain no warnings or errors.
-- Reduced-motion styling and the immediate demo-completion branch are implemented. Reduced-motion browser emulation was not available in the browser tool.
-- Signed-in account flows, billing, and remote installer downloads were not exercised. Their existing behavior and destinations remain unchanged.
+Production builds and TypeScript checks pass.
 
-Production preview: `http://localhost:3007/`.
+Browser checks cover:
+
+- Homepage layouts at 320, 390, 768, 1024, 1440, and 1920 pixels.
+- Visible 3D rendering and the rotation control.
+- Mouse dragging, context-loss fallback and restoration, and operation with WebGL disabled.
+- Pause, resume, cancellation, and switching examples during playback.
+- All three downloaded files, including CSV deduplication and document contents.
+- Workspace and competitor selection.
+- Guide reactions, tour navigation, dismissal, and Escape focus return.
+- Shared-page guidance, cross-page navigation, an actual inactivity hint, and dismissal after reloading.
+- Mobile navigation and keyboard-operated questions.
+- The tool-strip pause control and reduced-motion mode.
+- Pricing, downloads, integrations, login, signup, contact, privacy, and terms at 320 and 1440 pixels.
+- No horizontal document overflow, browser exceptions, or failing local requests during the interaction suite.
+- Text contrast on the homepage, pricing, downloads, contact, and login.
+- The social image response and canonical URL after section navigation.
+
+Authenticated account operations, payments, and remote installer downloads were not exercised. Audible speech depends on the browser and installed voices and requires manual listening. Field performance data is not yet available.
+
+The repository's pre-existing edits to `components/ForYouSection.tsx` and `styles/studio.css` were preserved and excluded from redesign commits. Existing untracked business documents and data files were also excluded.
