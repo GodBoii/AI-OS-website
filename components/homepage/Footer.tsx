@@ -1,51 +1,60 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-
+import StarMark from "../experience/StarMark";
 export default function Footer() {
   return (
-    <footer className="site-footer">
-      <div className="footer-cta">
-        <span className="studio-label">Less someday. More today.</span>
-        <div className="footer-heading">
-          <h2>
-            OVER TO YOU.
-            <br />
-            <span>MAKE YOUR MOVE.</span>
-          </h2>
-          <Link
-            href="/download"
-            className="footer-arrow"
-            aria-label="Download Aetheria"
-          >
+    <footer className="exp-footer">
+      <div className="exp-footer-call exp-container">
+        <span className="exp-kicker">Got something in mind?</span>
+        <Link href="/download" className="footer-main-link">
+          <span>
+            Over to <em>you.</em>
+          </span>
+          <span className="footer-go">
             <ArrowUpRight />
-          </Link>
-        </div>
-        <div className="footer-cta-bottom">
-          <p>Got something in mind? Give it a workspace.</p>
-          <Link href="/download">
-            Get Aetheria <ArrowUpRight size={18} />
-          </Link>
-        </div>
+          </span>
+        </Link>
+        <p>Give it a workspace.</p>
       </div>
-      <div className="footer-navigation">
-        <Link href="/" className="footer-wordmark">
-          <img src="/icon.png" width={34} height={34} alt="" /> aetheria
+      <div className="exp-footer-nav exp-container">
+        <Link href="/" className="footer-new-brand">
+          <StarMark />
+          aetheria
         </Link>
         <nav aria-label="Footer navigation">
-          <Link href="/contact">Say hello ↗</Link>
-          <Link href="/changelog">What's new</Link>
+          <Link href="/contact">
+            Say hello <ArrowUpRight size={12} />
+          </Link>
+          <Link href="/changelog">Changelog</Link>
+          <Link href="/investor">The vision</Link>
+          <Link href="/playbook">Playbook</Link>
           <Link href="/careers">Careers</Link>
-          <Link href="/playbook">The playbook</Link>
-          <a href="https://github.com/GodBoii/AI-OS-website">GitHub ↗</a>
-          <a href="https://x.com/Aetheria__ai">X ↗</a>
-          <a href="https://youtube.com/@aetheriaai.007">YouTube ↗</a>
-          <a href="https://www.instagram.com/aetheria._.ai">Instagram ↗</a>
-          <a href="https://www.threads.com/@aetheria._.ai">Threads ↗</a>
+          <a
+            href="https://github.com/GodBoii/AI-OS-website"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub <ArrowUpRight size={12} />
+          </a>
+          <a
+            href="https://youtube.com/@aetheriaai.007"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            YouTube <ArrowUpRight size={12} />
+          </a>
+          <a
+            href="https://x.com/Aetheria__ai"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            X <ArrowUpRight size={12} />
+          </a>
         </nav>
       </div>
-      <div className="footer-legal">
+      <div className="exp-footer-legal exp-container">
         <span>© {new Date().getFullYear()} Aetheria AI</span>
-        <span>MADE FOR IDEAS THAT WON'T SIT STILL.</span>
+        <span>Human direction. A little mechanical help.</span>
         <div>
           <Link href="/privacy-policy">Privacy</Link>
           <Link href="/terms">Terms</Link>
