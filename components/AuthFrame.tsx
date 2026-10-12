@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import StarMark from "./experience/StarMark";
 import { ArrowLeft } from "lucide-react";
 import { BrandMark } from "./homepage/Header";
 
@@ -21,20 +21,14 @@ export default function AuthFrame({
         <div className="auth-art-copy">
           <span className="eyebrow">YOUR NEXT WORKSPACE</span>
           <h2>
-            BIG IDEAS.
+            A place to
             <br />
-            <span>REAL MOVES.</span>
+            <span>pick things up.</span>
           </h2>
-          <p>Your ideas, your tools, and a little mechanical help.</p>
+          <p>Your ideas and your tools, together in one workspace.</p>
         </div>
         <div className="auth-visual" aria-hidden="true">
-          <Image
-            src="/operator-hand.png"
-            width={1122}
-            height={1402}
-            alt=""
-            sizes="(max-width: 800px) 1px, 40vw"
-          />
+          <StarMark className="auth-star" />
         </div>
         <span className="auth-art-note">HUMAN DIRECTION / AETHERIA AI</span>
       </aside>
