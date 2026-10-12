@@ -1,25 +1,16 @@
 import React from "react";
 import { AppProps } from "next/app";
-import {
-  Space_Grotesk,
-  DM_Sans,
-  Instrument_Serif,
-  Barlow_Condensed,
-} from "next/font/google";
+import { Outfit, DM_Sans, Instrument_Serif } from "next/font/google";
 import "../styles/globals.css";
 import "../styles/studio.css";
+import "../styles/experience.css";
 import { MotionConfig } from "framer-motion";
 
-const display = Space_Grotesk({
+const display = Outfit({
   subsets: ["latin"],
   variable: "--font-display",
 });
 const body = DM_Sans({ subsets: ["latin"], variable: "--font-body" });
-const poster = Barlow_Condensed({
-  weight: ["500", "600", "700"],
-  subsets: ["latin"],
-  variable: "--font-poster",
-});
 const serif = Instrument_Serif({
   weight: "400",
   style: ["normal", "italic"],
@@ -31,7 +22,7 @@ const serif = Instrument_Serif({
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div
-      className={`${display.variable} ${body.variable} ${serif.variable} ${poster.variable} site-root`}
+      className={`${display.variable} ${body.variable} ${serif.variable} site-root`}
     >
       <MotionConfig reducedMotion="user">
         <Component {...pageProps} />
