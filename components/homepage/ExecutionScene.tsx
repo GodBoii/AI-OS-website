@@ -1,445 +1,400 @@
 import { useEffect, useState } from "react";
-import { useReducedMotion } from "framer-motion";
 import {
   ArrowUpRight,
-  ArrowRight,
   Check,
   Code2,
-  Mail,
-  Search,
-  RotateCcw,
   Download,
+  FileText,
+  Pause,
   Play,
+  RotateCcw,
+  Square,
+  Table2,
 } from "lucide-react";
-import Link from "next/link";
+import {
+  cleanContacts,
+  createArtifact,
+  sampleContacts,
+  sampleUpdates,
+  workflows,
+} from "../../lib/showcase";
+import type { WorkflowId } from "../../lib/showcase";
+import { notifyGuide } from "../../lib/experience";
+import StarMark from "../experience/StarMark";
 
-type WorkflowId = "build" | "research" | "organize";
-type Workflow = {
-  id: WorkflowId;
-  name: string;
-  icon: typeof Code2;
-  prompt: string;
-  agent: string;
-  steps: string[];
-  result: string;
-  file: string;
-  lines: string[];
-};
+type Playback =
+  | { kind: "idle" }
+  | { kind: "running"; step: number }
+  | { kind: "paused"; step: number }
+  | { kind: "complete"; artifact: string };
+const icons = { build: Code2, brief: FileText, sheet: Table2 };
 
-const workflows: Workflow[] = [
-  {
-    id: "build",
-    name: "Build something",
-    icon: Code2,
-    prompt: "Build a personal portfolio. Make it feel like me.",
-    agent: "Builder agent",
-    steps: [
-      "Map out the pages and visual direction",
-      "Write the components and responsive styles",
-      "Prepare a preview for your review",
-    ],
-    result: "Your next idea, ready for its first preview.",
-    file: "portfolio / preview.tsx",
-    lines: [
-      "export default function Portfolio() {",
-      "  return (",
-      '    <main className="your-next-big-thing">',
-      '      <Intro name="You" />',
-      "      <SelectedWork />",
-      "      <LetsTalk />",
-      "    </main>",
-      "  );",
-      "}",
-    ],
-  },
-  {
-    id: "research",
-    name: "Connect the dots",
-    icon: Search,
-    prompt: "Research my competitors. Find the gaps worth building for.",
-    agent: "Research agent",
-    steps: [
-      "Find the relevant products and sources",
-      "Compare capabilities and positioning",
-      "Organize the findings into a brief",
-    ],
-    result: "The useful bits, with sources attached.",
-    file: "research / opportunity-brief.md",
-    lines: [
-      "# Find your opening",
-      "",
-      "01  Map the alternatives",
-      "02  Compare what they actually do",
-      "03  Trace every claim to its source",
-      "",
-      "## The deliverable",
-      "A research brief you can act on.",
-      "Your next move is yours.",
-    ],
-  },
-  {
-    id: "organize",
-    name: "Clear the busywork",
-    icon: Mail,
-    prompt: "Sort my project updates and draft a weekly summary.",
-    agent: "Workspace agent",
-    steps: [
-      "Collect updates from connected tools",
-      "Group decisions, blockers, and next steps",
-      "Draft the summary for your approval",
-    ],
-    result: "A weekly update, ready for your final say.",
-    file: "workspace / weekly-update.md",
-    lines: [
-      "# This week, in one place",
-      "",
-      "## Decisions made",
-      "The context behind the next steps.",
-      "",
-      "## Needs your attention",
-      "Blockers, owners, and open questions.",
-      "",
-      "Draft only. You decide when to send.",
-    ],
-  },
-];
 export default function ExecutionScene() {
-  const [selected, setSelected] = useState(workflows[0]);
-  const [playback, setPlayback] = useState<
-    { kind: "idle" } | { kind: "playing"; step: number } | { kind: "complete" }
-  >({ kind: "idle" });
-  const reduced = useReducedMotion();
-  const [showSource, setShowSource] = useState(false);
-  const ran = playback.kind === "complete";
+  const [workflowId, setWorkflowId] = useState<WorkflowId>("build");
+  const [playback, setPlayback] = useState<Playback>({ kind: "idle" });
+  const [source, setSource] = useState(false);
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+  const workflow =
+    workflows.find((item) => item.id === workflowId) ?? workflows[0];
+  const artifact = playback.kind === "complete" ? playback.artifact : null;
+  const step =
+    playback.kind === "running" || playback.kind === "paused"
+      ? playback.step
+      : playback.kind === "complete"
+        ? 3
+        : -1;
+
   useEffect(() => {
-    if (playback.kind !== "playing") return;
-    const timer = setTimeout(
-      () =>
-        setPlayback(
-          playback.step >= 3
-            ? { kind: "complete" }
-            : { kind: "playing", step: playback.step + 1 },
-        ),
-      450,
-    );
+    if (playback.kind !== "running") return;
+    const timer = setTimeout(() => {
+      if (playback.step === workflow.steps.length - 1) {
+        setPlayback({
+          kind: "complete",
+          artifact: createArtifact(workflow.id),
+        });
+        notifyGuide({ kind: "completed", name: workflow.label });
+      } else setPlayback({ kind: "running", step: playback.step + 1 });
+    }, 950);
     return () => clearTimeout(timer);
-  }, [playback]);
+  }, [playback, workflow]);
+
+  useEffect(() => {
+    if (artifact === null) {
+      setDownloadUrl(null);
+      return;
+    }
+    const url = URL.createObjectURL(
+      new Blob([artifact], {
+        type:
+          workflow.id === "build" ? "text/html" : "text/plain;charset=utf-8",
+      }),
+    );
+    setDownloadUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [artifact, workflow.id]);
+
+  function start() {
+    setSource(false);
+    setPlayback({ kind: "running", step: 0 });
+    notifyGuide({ kind: "started", name: workflow.label });
+  }
+  const playing = playback.kind === "running";
+  const paused = playback.kind === "paused";
+  const complete = playback.kind === "complete";
+
   return (
     <section
+      className="exp-playground exp-section"
       id="playground"
-      className="playground studio-section"
       aria-labelledby="playground-title"
     >
-      <div className="studio-section-top">
-        <span className="studio-label">02 / The test drive</span>
-        <span>An example you can actually try</span>
-      </div>
-      <div className="section-heading studio-heading">
+      <div className="exp-section-heading">
         <div>
+          <span className="exp-kicker">A little direction goes a long way</span>
           <h2 id="playground-title">
-            A LITTLE DIRECTION.
+            From “what if”
             <br />
-            <span>A LOT OF POSSIBILITY.</span>
+            to <em>there it is.</em>
           </h2>
         </div>
         <p>
-          Pick a task. Run the example.
+          Pick a task. Watch the pieces come together.
           <br />
-          See how a thought becomes a draft.
-          <br />
-          <span className="demo-note">
-            This is a local demo of the workflow.
-          </span>
+          Then take the result with you.
         </p>
       </div>
-      <div className="workflow-switch" aria-label="Choose a workflow">
-        {workflows.map((flow) => (
-          <button
-            key={flow.id}
-            type="button"
-            aria-pressed={selected.id === flow.id}
-            onClick={() => {
-              setSelected(flow);
-              setPlayback({ kind: "idle" });
-              setShowSource(false);
-            }}
-          >
-            <flow.icon size={18} />
-            {flow.name}
-            <ArrowUpRight size={16} />
-          </button>
-        ))}
-      </div>
-      <div className="workbench">
-        <div className="workbench-command">
-          <div className="bench-label">
-            <span className="status-dot" /> AETHERIA / WORKFLOW PREVIEW{" "}
-            <span>↗</span>
+      <div className="demo-shell">
+        <div className="demo-topbar">
+          <div className="demo-brand">
+            <StarMark /> aetheria <span>/ playground</span>
           </div>
-          <div className="prompt-bubble">
-            <span className="eyebrow">YOUR IDEA</span>
-            <p>{selected.prompt}</p>
-          </div>
-          <div className="agent-heading">
-            <span className="agent-avatar">
-              <img src="/icon.png" alt="" width={28} height={28} />
-            </span>
-            <div>
-              {selected.agent}
-              <small>
-                {ran
-                  ? "Preview complete"
-                  : playback.kind === "playing"
-                    ? "Playing the workflow example"
-                    : "Ready when you are"}
-              </small>
+          <span className="demo-disclosure">
+            <i /> Interactive example
+          </span>
+        </div>
+        <div className="demo-tabs" aria-label="Choose an example">
+          {workflows.map((item) => {
+            const Icon = icons[item.id];
+            return (
+              <button
+                type="button"
+                aria-pressed={workflowId === item.id}
+                key={item.id}
+                onClick={() => {
+                  setWorkflowId(item.id);
+                  setPlayback({ kind: "idle" });
+                  setSource(false);
+                  notifyGuide({ kind: "selected", name: item.label });
+                }}
+              >
+                <Icon size={16} />
+                {item.label}
+                <ArrowUpRight size={14} />
+              </button>
+            );
+          })}
+        </div>
+        <div className="demo-body">
+          <div className="demo-instruction">
+            <span className="exp-mono">YOUR DIRECTION</span>
+            <p className="demo-prompt">{workflow.prompt}</p>
+            <div className="demo-agent">
+              <span className={playing ? "mini-star working" : "mini-star"}>
+                <StarMark />
+              </span>
+              <div>
+                Aetheria{" "}
+                <small>
+                  {complete
+                    ? "Your file is ready."
+                    : paused
+                      ? "Paused. Take your time."
+                      : playing
+                        ? "Putting the pieces together."
+                        : "Ready when you are."}
+                </small>
+              </div>
+              <span className="agent-small-status">
+                {complete
+                  ? "DONE"
+                  : playing
+                    ? "RUNNING"
+                    : paused
+                      ? "PAUSED"
+                      : "READY"}
+              </span>
             </div>
-            <span className="agent-status">
-              {ran
-                ? "COMPLETE"
-                : playback.kind === "playing"
-                  ? "PREVIEW"
-                  : "READY"}
-            </span>
-          </div>
-          <ol className="workflow-steps">
-            {selected.steps.map((step, i) => (
-              <li key={step}>
-                <span
-                  className={
-                    ran || (playback.kind === "playing" && playback.step > i)
-                      ? "step-check checked"
-                      : "step-check"
+            <ol className="demo-timeline">
+              {workflow.steps.map((item, i) => (
+                <li
+                  key={item.action}
+                  className={step > i ? "done" : step === i ? "active" : ""}
+                >
+                  <span className="timeline-indicator">
+                    {step > i ? <Check size={12} /> : <span />}
+                  </span>
+                  <div>
+                    {item.action}
+                    <small>{item.detail}</small>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <div className="demo-controls">
+              {playing ? (
+                <button
+                  className="exp-button"
+                  type="button"
+                  onClick={() =>
+                    setPlayback({ kind: "paused", step: playback.step })
                   }
                 >
-                  {ran || (playback.kind === "playing" && playback.step > i) ? (
-                    <Check size={13} />
-                  ) : (
-                    `0${i + 1}`
-                  )}
-                </span>
-                {step}
-              </li>
-            ))}
-          </ol>
-          <button
-            type="button"
-            className="run-button"
-            disabled={playback.kind === "playing"}
-            onClick={() => {
-              setShowSource(false);
-              setPlayback(
-                ran
-                  ? { kind: "idle" }
-                  : reduced
-                    ? { kind: "complete" }
-                    : { kind: "playing", step: 0 },
-              );
-            }}
-          >
-            {ran
-              ? "Reset preview"
-              : playback.kind === "playing"
-                ? "Playing preview…"
-                : "Run the example"}
-            {ran ? <RotateCcw size={17} /> : <Play size={17} />}
-          </button>
-        </div>
-        <div
-          className="workbench-output"
-          aria-busy={playback.kind === "playing"}
-        >
-          <div className="output-toolbar">
-            <span>
-              <Code2 size={15} /> {selected.file}
-            </span>
-            <span className="preview-badge">
-              {ran ? "DRAFT READY" : "EXAMPLE OUTPUT"}
-            </span>
-          </div>
-          {ran ? (
-            <>
-              <div className="draft-toolbar">
-                <span>Illustrative draft</span>
-                <button
-                  type="button"
-                  aria-pressed={showSource}
-                  onClick={() => setShowSource(!showSource)}
-                >
-                  {showSource ? "View preview" : "View source"}
-                  <Code2 size={14} />
+                  <Pause size={15} /> Pause example
                 </button>
-              </div>
-              {showSource ? (
-                <div className="code-preview">
-                  {selected.lines.map((line, i) => (
-                    <div key={`${selected.id}-${i}`}>
-                      <span>{i + 1}</span>
-                      <code>{line || " "}</code>
-                    </div>
-                  ))}
-                </div>
+              ) : paused ? (
+                <button
+                  className="exp-button"
+                  type="button"
+                  onClick={() =>
+                    setPlayback({ kind: "running", step: playback.step })
+                  }
+                >
+                  <Play size={15} /> Keep going
+                </button>
               ) : (
-                <SampleDraft kind={selected.id} />
+                <button className="exp-button" type="button" onClick={start}>
+                  {complete ? (
+                    <RotateCcw size={15} />
+                  ) : (
+                    <Play size={15} fill="currentColor" />
+                  )}
+                  {complete ? "Run it again" : "Run this example"}
+                </button>
               )}
-            </>
-          ) : (
-            <div className="draft-empty">
-              <span className="draft-cross" aria-hidden="true">
-                ↗
+              {(playing || paused) && (
+                <button
+                  className="demo-cancel"
+                  type="button"
+                  onClick={() => {
+                    setPlayback({ kind: "idle" });
+                    notifyGuide({ kind: "cancelled" });
+                  }}
+                  aria-label="Cancel example"
+                >
+                  <Square size={13} />
+                </button>
+              )}
+            </div>
+          </div>
+          <div className="demo-output" aria-busy={playing}>
+            <div className="artifact-toolbar">
+              <span>
+                <span className="file-dot" />
+                {workflow.filename}
               </span>
-              <h3>
-                {playback.kind === "playing"
-                  ? "Putting the pieces together."
-                  : "The next move is yours."}
-              </h3>
-              <p>
-                {playback.kind === "playing"
-                  ? "Follow the steps as the example prepares a draft."
-                  : "Choose a workflow and run the example to see its draft here."}
-              </p>
-              <span className="draft-rule" aria-hidden="true" />
+              <span>
+                {complete ? "READY TO TAKE WITH YOU" : "OUTPUT PREVIEW"}
+              </span>
             </div>
-          )}
-          <div
-            className={ran ? "output-result complete" : "output-result"}
-            aria-live="polite"
-          >
-            <span className="result-icon">
-              {ran ? <Check size={23} /> : <Code2 size={23} />}
-            </span>
-            <div>
-              <small>{ran ? "THAT’S THE IDEA." : "YOUR IDEA GOES HERE."}</small>
-              <p>
-                {ran
-                  ? selected.result
-                  : "A little direction. A lot of possibility."}
-              </p>
-            </div>
-            {ran && (
-              <a
-                className="save-example"
-                href={`data:text/plain;charset=utf-8,${encodeURIComponent(selected.lines.join("\n"))}`}
-                download={selected.file.split(" / ").pop()}
-                aria-label="Save the example source"
+            {complete && artifact !== null ? (
+              <div className="artifact-stage">
+                {source ? (
+                  <pre className="artifact-source">
+                    <code>{artifact}</code>
+                  </pre>
+                ) : workflow.id === "build" ? (
+                  <iframe
+                    className="artifact-iframe"
+                    title="Generated creative studio sample page"
+                    srcDoc={artifact}
+                    sandbox=""
+                  />
+                ) : workflow.id === "brief" ? (
+                  <div className="artifact-document">
+                    <span className="doc-label">
+                      PROJECT NOTES / SAMPLE DATA
+                    </span>
+                    <h3>
+                      A week,
+                      <br />
+                      <em>in focus.</em>
+                    </h3>
+                    {[
+                      { status: "done", title: "Completed" },
+                      { status: "blocked", title: "Needs a decision" },
+                      { status: "next", title: "Next up" },
+                    ].map((group) => (
+                      <div className="brief-group" key={group.status}>
+                        <h4>{group.title}</h4>
+                        {sampleUpdates
+                          .filter((item) => item.status === group.status)
+                          .map((item) => (
+                            <p key={item.note}>
+                              {item.note}
+                              <span>{item.team}</span>
+                            </p>
+                          ))}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="artifact-sheet">
+                    <div className="sheet-heading">
+                      <Table2 size={22} />
+                      <h3>
+                        Less mess.
+                        <br />
+                        <em>Better data.</em>
+                      </h3>
+                    </div>
+                    <div className="sheet-summary">
+                      <span>{sampleContacts.length} rows in</span>
+                      <ArrowUpRight size={18} />
+                      <span>{cleanContacts().length} unique contacts out</span>
+                    </div>
+                    <div className="sheet-table-wrap">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {cleanContacts().map((row) => (
+                            <tr key={row.email}>
+                              <td>{row.name}</td>
+                              <td>{row.email}</td>
+                              <td>{row.role}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div
+                className={
+                  playing ? "artifact-await is-playing" : "artifact-await"
+                }
               >
-                <Download size={20} />
-              </a>
+                <div className="paper-stack">
+                  <span />
+                  <span />
+                  <div>
+                    <StarMark />
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                </div>
+                <p>
+                  {playing
+                    ? workflow.steps[playback.step]?.action
+                    : paused
+                      ? "Right where you left it."
+                      : "A thought goes in."}
+                  <em>
+                    {playing
+                      ? "Watch it take shape."
+                      : paused
+                        ? "Resume when you’re ready."
+                        : "Something useful comes out."}
+                  </em>
+                </p>
+                <span className="artifact-await-format">
+                  {workflow.format} / YOUR NEXT DELIVERABLE
+                </span>
+              </div>
             )}
+            <div className="artifact-bottom">
+              <span role="status">
+                {complete
+                  ? "Example complete. This file is yours."
+                  : paused
+                    ? "Example paused."
+                    : playing
+                      ? workflow.steps[playback.step]?.detail
+                      : "Choose an example and press play."}
+              </span>
+              {complete && (
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setSource(!source)}
+                    aria-pressed={source}
+                    aria-label={
+                      source ? "View artifact preview" : "View artifact source"
+                    }
+                  >
+                    <Code2 size={16} />
+                  </button>
+                  {downloadUrl && (
+                    <a
+                      href={downloadUrl}
+                      download={workflow.filename}
+                      aria-label={"Download " + workflow.filename}
+                    >
+                      <Download size={16} />
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      <div className="section-footnote">
-        <span>ILLUSTRATIVE PREVIEW. REAL WORK HAPPENS IN THE APP.</span>
-        <Link href="/for-you">
-          Explore the possibilities <ArrowUpRight size={17} />
-        </Link>
+      <div className="exp-footnote">
+        <span>
+          Illustrative workflow. Sample data. Files created in your browser.
+        </span>
+        <a href="#workspaces">
+          Meet the actual workspace <ArrowUpRight size={14} />
+        </a>
       </div>
     </section>
-  );
-}
-
-function SampleDraft({ kind }: { kind: WorkflowId }) {
-  if (kind === "build")
-    return (
-      <div className="sample-portfolio">
-        <div className="sample-nav">
-          Alex Morgan <span>Independent designer ↗</span>
-        </div>
-        <span className="sample-caption">Selected work / 2026</span>
-        <h3>
-          Good ideas.
-          <br />
-          <em>Made tangible.</em>
-        </h3>
-        <div className="sample-projects">
-          <span>
-            01 / Identity systems
-            <i>
-              FORM
-              <br />& FEEL
-            </i>
-          </span>
-          <span>
-            02 / Digital experiences
-            <i>
-              OPEN
-              <br />
-              STUDIO ↗
-            </i>
-          </span>
-        </div>
-        <p>Portfolio example. Your actual project starts in the app.</p>
-      </div>
-    );
-  if (kind === "research")
-    return (
-      <div className="sample-document">
-        <span className="sample-caption">
-          Research brief / Example structure
-        </span>
-        <h3>
-          Find your
-          <br />
-          <em>opening.</em>
-        </h3>
-        <p>
-          A useful comparison starts with the same questions for every product.
-        </p>
-        <div className="sample-doc-row">
-          <span>01</span>
-          <div>
-            Map the alternatives
-            <small>Audience, product, and core workflow</small>
-          </div>
-        </div>
-        <div className="sample-doc-row">
-          <span>02</span>
-          <div>
-            Compare the real capabilities
-            <small>What works, what's missing, and the evidence</small>
-          </div>
-        </div>
-        <div className="sample-doc-row">
-          <span>03</span>
-          <div>
-            Trace every claim<small>Source links beside each finding</small>
-          </div>
-        </div>
-        <span className="sample-caption">
-          An outline, ready for your research.
-        </span>
-      </div>
-    );
-  return (
-    <div className="sample-document">
-      <span className="sample-caption">Weekly update / Example structure</span>
-      <h3>
-        Everyone on
-        <br />
-        <em>the same page.</em>
-      </h3>
-      <p>A place for the decisions and loose ends that matter.</p>
-      <div className="sample-doc-row">
-        <Check size={17} />
-        <div>
-          Decisions made<small>What changed and the context behind it</small>
-        </div>
-      </div>
-      <div className="sample-doc-row">
-        <ArrowRight size={17} />
-        <div>
-          Needs your attention
-          <small>Blockers, owners, and open questions</small>
-        </div>
-      </div>
-      <div className="sample-doc-row">
-        <Mail size={17} />
-        <div>
-          Ready for your review<small>You decide what to send and when</small>
-        </div>
-      </div>
-      <span className="sample-caption">Draft only. Nothing is sent.</span>
-    </div>
   );
 }
