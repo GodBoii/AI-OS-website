@@ -1,6 +1,6 @@
 # Aetheria black-theme redesign
 
-Implemented on `codex/black-star-experience`.
+Implemented on `main`. Continue development on `main`.
 
 ## Experience
 
