@@ -5,7 +5,6 @@ import ExecutionScene from "../components/homepage/ExecutionScene";
 import OrchestrationScene from "../components/homepage/OrchestrationScene";
 import WorkspaceTheatre from "../components/experience/WorkspaceTheatre";
 import ComparisonScene from "../components/experience/ComparisonScene";
-import Companion from "../components/experience/Companion";
 import MotionDirector from "../components/experience/MotionDirector";
 import Footer from "../components/homepage/Footer";
 import StartScene from "../components/homepage/StartScene";
@@ -29,7 +28,6 @@ export default function Home() {
         <StartScene />
       </main>
       <Footer />
-      <Companion />
     </div>
   );
 }
