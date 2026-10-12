@@ -1,70 +1,73 @@
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight, Play } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import StarMark from "../experience/StarMark";
+import { notifyGuide } from "../../lib/experience";
+
+const StarSculpture = dynamic(() => import("../experience/StarSculpture"), {
+  ssr: false,
+  loading: () => (
+    <div className="star-sculpture">
+      <StarMark className="star-fallback" />
+    </div>
+  ),
+});
 
 export default function HeroScene() {
-  const reduced = useReducedMotion();
   return (
-    <section className="operator-hero" aria-labelledby="hero-title">
-      <div className="hero-edition">
+    <section className="exp-hero" aria-labelledby="hero-title">
+      <div className="hero-topline">
         <span>
-          <span className="studio-dot" /> A new kind of computer companion
+          <i /> Your ideas have places to go.
         </span>
-        <span>Meet Aetheria AI ↗</span>
+        <button type="button" onClick={() => notifyGuide({ kind: "guide" })}>
+          A little help? <ArrowUpRight size={13} />
+        </button>
       </div>
-      <div className="operator-composition">
-        <div className="operator-copy">
-          <span className="studio-label">Think it. Direct it. Do it.</span>
-          <motion.h1
-            id="hero-title"
-            initial={reduced ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: reduced ? 0 : 0.5 }}
-          >
-            BIG IDEAS.
+      <div className="hero-stage">
+        <div className="hero-message">
+          <h1 id="hero-title">
+            Less talk.
             <br />
-            <span>REAL MOVES.</span>
-          </motion.h1>
+            <em>More doing.</em>
+          </h1>
           <p>
-            Give your ideas a way to act. Aetheria brings conversation, code,
-            and your computer into one AI workspace.
+            Your next idea deserves more than a chat box.
+            <br className="desktop-break" /> Meet the workspace that puts it in
+            motion.
           </p>
-          <div className="operator-actions">
-            <Link href="/download" className="studio-button">
-              Get Aetheria <ArrowUpRight size={20} />
+          <div className="exp-actions">
+            <Link className="exp-button" href="/download">
+              Get Aetheria <ArrowUpRight size={18} />
             </Link>
-            <a href="#playground" className="studio-secondary">
-              <Play size={14} fill="currentColor" /> Take it for a spin
+            <a className="exp-text-link" href="#playground">
+              <span className="play-circle">
+                <Play size={11} fill="currentColor" />
+              </span>{" "}
+              See it happen
             </a>
           </div>
-          <span className="operator-availability">
-            Windows / Linux / Android <span>Free plan available</span>
-          </span>
+          <div className="hero-platforms">
+            Windows <span aria-hidden="true">·</span> Linux{" "}
+            <span aria-hidden="true">·</span> Android
+          </div>
         </div>
-        <div className="operator-art">
-          <Image
-            src="/operator-hand.png"
-            alt=""
-            width={1122}
-            height={1402}
-            priority
-            sizes="(max-width: 600px) 90vw, (max-width: 1000px) 50vw, 650px"
-          />
-          <span className="art-note">
-            <span>Human direction.</span>
-            <br />A little mechanical help.
-          </span>
-          <span className="art-index" aria-hidden="true">
-            A / 01
-          </span>
+        <div className="hero-object">
+          <StarSculpture />
+          <div className="object-caption">
+            <span>Aetheria, in another dimension.</span>
+            <span>Human direction. Agent execution.</span>
+          </div>
         </div>
       </div>
-      <div className="operator-bottom">
-        <a href="#possibilities">
-          <ArrowDown size={17} /> Look around. Make yourself at home.
+      <div className="hero-bottom">
+        <a href="#playground">
+          <ArrowDown size={15} /> Keep going. It gets hands-on.
         </a>
-        <span>Less switching tabs. More getting somewhere.</span>
+        <span>
+          Conversation. Code. Computer.
+          <span className="hero-bottom-dot" />
+        </span>
       </div>
     </section>
   );
