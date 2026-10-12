@@ -19,9 +19,17 @@ export default function StarSculpture() {
       ]);
       if (cancelled || !host) return;
       const canvas = document.createElement("canvas");
-      const context = canvas.getContext("webgl2", { alpha: true, antialias: true });
+      const context = canvas.getContext("webgl2", {
+        alpha: true,
+        antialias: true,
+      });
       if (!context) return;
-      const renderer = new THREE.WebGLRenderer({ canvas, context, alpha: true, antialias: true });
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        context,
+        alpha: true,
+        antialias: true,
+      });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
       renderer.setClearColor(0x000000, 0);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -45,18 +53,30 @@ export default function StarSculpture() {
       shape.bezierCurveTo(-0.13, -0.9, -0.9, -0.13, -2.8, 0);
       shape.bezierCurveTo(-0.9, 0.13, -0.13, 0.9, 0, 2.8);
       const geometry = new THREE.ExtrudeGeometry(shape, {
-        depth: 0.32, bevelEnabled: true, bevelSegments: 6,
-        steps: 1, bevelSize: 0.075, bevelThickness: 0.15, curveSegments: 40,
+        depth: 0.32,
+        bevelEnabled: true,
+        bevelSegments: 12,
+        steps: 1,
+        bevelSize: 0.075,
+        bevelThickness: 0.15,
+        curveSegments: 64,
       });
       geometry.center();
       const metal = new THREE.MeshPhysicalMaterial({
-        color: 0xe0e4e7, metalness: 1, roughness: 0.18,
-        clearcoat: 0.7, clearcoatRoughness: 0.12,
+        color: 0xe0e4e7,
+        metalness: 1,
+        roughness: 0.18,
+        clearcoat: 0.7,
+        clearcoatRoughness: 0.12,
       });
       const sculpture = new THREE.Group();
       sculpture.add(new THREE.Mesh(geometry, metal));
       const ringGeometry = new THREE.TorusGeometry(1.76, 0.023, 12, 160);
-      const ringMaterial = new THREE.MeshStandardMaterial({ color: 0xabb5ba, metalness: 1, roughness: 0.24 });
+      const ringMaterial = new THREE.MeshStandardMaterial({
+        color: 0xabb5ba,
+        metalness: 1,
+        roughness: 0.24,
+      });
       const ring = new THREE.Mesh(ringGeometry, ringMaterial);
       ring.rotation.y = 0.4;
       sculpture.add(ring);
@@ -77,18 +97,27 @@ export default function StarSculpture() {
       let frame = 0;
       let visible = true;
       let framesLeft = 0;
+      let contextLost = false;
+      let drag: {
+        x: number;
+        y: number;
+        rotationX: number;
+        rotationY: number;
+      } | null = null;
       function render() {
         frame = 0;
-        if (!visible || document.hidden || cancelled) return;
+        if (!visible || document.hidden || cancelled || contextLost) return;
         sculpture.rotation.x += (targetX - sculpture.rotation.x) * 0.08;
         sculpture.rotation.y += (targetY - sculpture.rotation.y) * 0.08;
         sculpture.rotation.z += (targetZ - sculpture.rotation.z) * 0.07;
         renderer.render(scene, camera);
-        if (framesLeft-- > 0 && !reduced.matches) frame = requestAnimationFrame(render);
+        if (framesLeft-- > 0 && !reduced.matches)
+          frame = requestAnimationFrame(render);
       }
       function requestRender() {
         framesLeft = reduced.matches ? 0 : 65;
-        if (!frame && visible && !document.hidden) frame = requestAnimationFrame(render);
+        if (!frame && visible && !document.hidden && !contextLost)
+          frame = requestAnimationFrame(render);
       }
       function resize() {
         if (!host) return;
@@ -101,13 +130,68 @@ export default function StarSculpture() {
       }
       function move(event: PointerEvent) {
         if (reduced.matches || event.pointerType !== "mouse" || !host) return;
+        if (drag) {
+          targetY = drag.rotationY + (event.clientX - drag.x) * 0.009;
+          targetX = drag.rotationX + (event.clientY - drag.y) * 0.009;
+          requestRender();
+          return;
+        }
         const bounds = host.getBoundingClientRect();
-        targetY = -0.48 + ((event.clientX - bounds.left) / bounds.width - 0.5) * 0.42;
-        targetX = 0.2 + ((event.clientY - bounds.top) / bounds.height - 0.5) * 0.24;
+        targetY =
+          -0.48 + ((event.clientX - bounds.left) / bounds.width - 0.5) * 0.42;
+        targetX =
+          0.2 + ((event.clientY - bounds.top) / bounds.height - 0.5) * 0.24;
         requestRender();
       }
-      function leave() { targetX = 0.2; targetY = -0.48; requestRender(); }
-      function visibility() { if (document.hidden) { cancelAnimationFrame(frame); frame = 0; } else requestRender(); }
+      function leave() {
+        if (drag) return;
+        targetX = 0.2;
+        targetY = -0.48;
+        requestRender();
+      }
+      function grab(event: PointerEvent) {
+        if (
+          reduced.matches ||
+          event.pointerType !== "mouse" ||
+          event.button !== 0 ||
+          !host
+        )
+          return;
+        drag = {
+          x: event.clientX,
+          y: event.clientY,
+          rotationX: targetX,
+          rotationY: targetY,
+        };
+        host.setPointerCapture(event.pointerId);
+        host.classList.add("is-grabbing");
+      }
+      function release(event: PointerEvent) {
+        drag = null;
+        host?.classList.remove("is-grabbing");
+        if (host?.hasPointerCapture(event.pointerId))
+          host.releasePointerCapture(event.pointerId);
+      }
+      function loseContext(event: Event) {
+        event.preventDefault();
+        contextLost = true;
+        cancelAnimationFrame(frame);
+        frame = 0;
+        if (!cancelled) setReady(false);
+      }
+      function restoreContext() {
+        contextLost = false;
+        if (!cancelled) {
+          setReady(true);
+          requestRender();
+        }
+      }
+      function visibility() {
+        if (document.hidden) {
+          cancelAnimationFrame(frame);
+          frame = 0;
+        } else requestRender();
+      }
       spinRef.current = () => {
         if (reduced.matches) return;
         targetZ += Math.PI / 2;
@@ -118,24 +202,45 @@ export default function StarSculpture() {
       const observer = new IntersectionObserver(([entry]) => {
         visible = Boolean(entry?.isIntersecting);
         if (visible) requestRender();
-        else { cancelAnimationFrame(frame); frame = 0; }
+        else {
+          cancelAnimationFrame(frame);
+          frame = 0;
+        }
       });
       observer.observe(host);
       host.addEventListener("pointermove", move);
       host.addEventListener("pointerleave", leave);
+      host.addEventListener("pointerdown", grab);
+      host.addEventListener("pointerup", release);
+      host.addEventListener("pointercancel", release);
+      canvas.addEventListener("webglcontextlost", loseContext);
+      canvas.addEventListener("webglcontextrestored", restoreContext);
       document.addEventListener("visibilitychange", visibility);
       reduced.addEventListener("change", requestRender);
       resize();
       setReady(true);
       dispose = () => {
         cancelAnimationFrame(frame);
-        resizeObserver.disconnect(); observer.disconnect();
-        host.removeEventListener("pointermove", move); host.removeEventListener("pointerleave", leave);
+        resizeObserver.disconnect();
+        observer.disconnect();
+        host.removeEventListener("pointermove", move);
+        host.removeEventListener("pointerleave", leave);
+        host.removeEventListener("pointerdown", grab);
+        host.removeEventListener("pointerup", release);
+        host.removeEventListener("pointercancel", release);
+        canvas.removeEventListener("webglcontextlost", loseContext);
+        canvas.removeEventListener("webglcontextrestored", restoreContext);
         document.removeEventListener("visibilitychange", visibility);
         reduced.removeEventListener("change", requestRender);
         spinRef.current = null;
-        geometry.dispose(); ringGeometry.dispose(); metal.dispose(); ringMaterial.dispose();
-        environment.dispose(); renderer.dispose(); renderer.forceContextLoss(); canvas.remove();
+        geometry.dispose();
+        ringGeometry.dispose();
+        metal.dispose();
+        ringMaterial.dispose();
+        environment.dispose();
+        renderer.dispose();
+        renderer.forceContextLoss();
+        canvas.remove();
       };
     }
     void setup().catch(() => {
@@ -143,14 +248,27 @@ export default function StarSculpture() {
       if (!cancelled) setReady(false);
       dispose?.();
     });
-    return () => { cancelled = true; dispose?.(); };
+    return () => {
+      cancelled = true;
+      dispose?.();
+    };
   }, []);
 
   return (
     <div className={`star-sculpture ${ready ? "is-ready" : ""}`}>
       <div className="star-render" ref={hostRef} aria-hidden="true" />
       <StarMark className="star-fallback" />
-      {ready && <button className="star-spin" type="button" onClick={() => spinRef.current?.()} aria-label="Rotate the 3D Aetheria star"><RotateCw size={16} /><span>Give it a spin</span></button>}
+      {ready && (
+        <button
+          className="star-spin"
+          type="button"
+          onClick={() => spinRef.current?.()}
+          aria-label="Rotate the 3D Aetheria star"
+        >
+          <RotateCw size={16} />
+          <span>Give it a spin</span>
+        </button>
+      )}
     </div>
   );
 }
