@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import {
   ArrowUpRight,
   Check,
@@ -83,6 +84,100 @@ const everydayTools: [Integration, ...Integration[]] = [
   },
 ];
 
+function IntegrationMachine({ integration }: { integration: Integration }) {
+  const machineRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(machineRef, { amount: 0.25 });
+  const prefersReducedMotion = useReducedMotion();
+  const animateSignal = isInView && !prefersReducedMotion;
+
+  return (
+    <div
+      ref={machineRef}
+      className={`integration-machine integration-machine--${integration.id}`}
+      aria-hidden="true"
+    >
+      <svg
+        className="integration-machine__routes"
+        viewBox="0 0 360 230"
+        fill="none"
+        focusable="false"
+      >
+        <path className="integration-machine__grid" d="M30 177 180 218 330 177" />
+        <path className="integration-machine__grid" d="M54 153 180 188 306 153" />
+        <path className="integration-machine__grid" d="M78 129 180 158 282 129" />
+        <path className="integration-machine__grid" d="M104 105 180 127 256 105" />
+        <path className="integration-machine__grid" d="M180 80v138" />
+        <path className="integration-machine__grid" d="m105 105 75 113" />
+        <path className="integration-machine__grid" d="m255 105-75 113" />
+        <path
+          className="integration-machine__route"
+          d="M39 162c39-39 77-47 118-29 36 16 65 6 96-33 21-27 43-33 70-25"
+        />
+        <path
+          className="integration-machine__route"
+          d="M53 197c34-35 69-44 104-28 35 16 67 4 94-29 29-35 50-47 78-42"
+        />
+        <motion.path
+          className="integration-machine__signal"
+          d="M39 162c39-39 77-47 118-29 36 16 65 6 96-33 21-27 43-33 70-25"
+          strokeDasharray="7 13"
+          initial={false}
+          animate={animateSignal ? { strokeDashoffset: [40, 0] } : { strokeDashoffset: 0 }}
+          transition={{
+            duration: 2.7,
+            ease: "linear",
+            repeat: animateSignal ? Infinity : 0,
+          }}
+        />
+        <motion.path
+          className="integration-machine__signal integration-machine__signal--delayed"
+          d="M53 197c34-35 69-44 104-28 35 16 67 4 94-29 29-35 50-47 78-42"
+          strokeDasharray="7 13"
+          initial={false}
+          animate={animateSignal ? { strokeDashoffset: [0, 40] } : { strokeDashoffset: 0 }}
+          transition={{
+            duration: 3.2,
+            ease: "linear",
+            repeat: animateSignal ? Infinity : 0,
+          }}
+        />
+        <circle className="integration-machine__node" cx="39" cy="162" r="4" />
+        <circle className="integration-machine__node" cx="323" cy="104" r="4" />
+        <circle className="integration-machine__node" cx="53" cy="197" r="4" />
+        <circle className="integration-machine__node" cx="329" cy="98" r="2" />
+      </svg>
+      <AnimatePresence initial={false} mode="wait">
+        <motion.div
+          key={integration.id}
+          className="integration-machine__cube"
+          initial={
+            prefersReducedMotion
+              ? false
+              : { opacity: 0, y: 15, rotateX: -38, rotateY: -10 }
+          }
+          animate={{ opacity: 1, y: 0, rotateX: -12, rotateY: 24 }}
+          exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10, rotateY: 54 }}
+          transition={{ type: "spring", stiffness: 210, damping: 22, mass: 0.7 }}
+        >
+          <div className="integration-machine__face integration-machine__face--front">
+            {integration.icon}
+          </div>
+          <div className="integration-machine__face integration-machine__face--back" />
+          <div className="integration-machine__face integration-machine__face--right">
+            <BrandMark />
+          </div>
+          <div className="integration-machine__face integration-machine__face--left" />
+          <div className="integration-machine__face integration-machine__face--top">
+            <span>{integration.title.slice(0, 3).toUpperCase()}</span>
+          </div>
+          <div className="integration-machine__face integration-machine__face--bottom" />
+        </motion.div>
+      </AnimatePresence>
+      <span className="integration-machine__caption">CONTEXT ROUTE / ACTIVE</span>
+    </div>
+  );
+}
+
 function IntegrationGroup({
   title,
   subtitle,
@@ -124,11 +219,7 @@ function IntegrationGroup({
           <span>↗</span>
         </div>
         <div className="integration-diagram" aria-hidden="true">
-          <span className="integration-logo">{selected.icon}</span>
-          <span className="integration-wire" />
-          <span className="integration-aetheria">
-            <BrandMark />
-          </span>
+          <IntegrationMachine integration={selected} />
         </div>
         <div className="integration-example">
           <span className="eyebrow">YOU + {selected.title.toUpperCase()}</span>
