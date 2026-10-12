@@ -48,3 +48,26 @@ public/downloads/**/*.txt
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local reports, planning documents, and reference images
+/AetheriaAI Website Redesign Report.md
+/CODEBASE_REVIEW.md
+/CONVEX_USAGE_ANALYSIS.md
+/startup_playbook.md
+/goal.txt
+/Executive Summary.pdf
+/Strut Web 0.png
+/3-Year_Financial_Projection__*.png
+/Aetheria_AI_Mobile_6-Month_Product_Roadmap__*.png
+
+# Private exports and local deployment/database reference snapshots
+/*_rows.csv
+/DEPLOY_CHECKLIST.txt
+/database-schema.sql
+/supabase-profile-table.json
+/supabase.md
+/supabase_doc.txt
+
+# One-off local document helper and duplicate root icon
+/read_pdf.js
+/icon.ico
