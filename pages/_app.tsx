@@ -5,6 +5,7 @@ import "../styles/globals.css";
 import "../styles/studio.css";
 import "../styles/experience.css";
 import { MotionConfig } from "framer-motion";
+import Companion from "../components/experience/Companion";
 
 const display = Outfit({
   subsets: ["latin"],
@@ -26,6 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     >
       <MotionConfig reducedMotion="user">
         <Component {...pageProps} />
+        <Companion />
       </MotionConfig>
     </div>
   );
