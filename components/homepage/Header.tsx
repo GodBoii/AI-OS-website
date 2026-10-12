@@ -7,14 +7,22 @@ import { supabase } from "../../lib/supabaseClient";
 
 export function BrandMark() {
   return (
-    <img className="brand-icon" src="/icon.png" width={40} height={40} alt="" aria-hidden="true" />
+    <img
+      className="brand-icon"
+      src="/icon.png"
+      width={40}
+      height={40}
+      alt=""
+      aria-hidden="true"
+    />
   );
 }
 const links = [
-  { href: "/for-you", label: "What it does" },
+  { href: "/#workspaces", label: "The workspace" },
+  { href: "/#playground", label: "Playground" },
+  { href: "/#compare", label: "Compare" },
   { href: "/download", label: "Downloads" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/investor", label: "The vision" },
 ];
 
 export default function Header() {
