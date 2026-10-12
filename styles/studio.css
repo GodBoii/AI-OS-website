@@ -1267,6 +1267,195 @@
   transform: none;
   border-radius: 8px;
 }
+.site-shell .integration-diagram {
+  padding: 28px 0 21px;
+}
+.site-shell .integration-machine {
+  --machine-face: #f47c4d;
+  --machine-side: #a83c20;
+  --machine-top: #ffc09d;
+  --machine-ink: #2a241e;
+  --machine-route: #aa4b31;
+  --machine-wash: #f3ddd3;
+  --machine-glow: rgb(238 81 44 / 24%);
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 238px;
+  width: min(100%, 390px);
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #c7cbbf;
+  background:
+    radial-gradient(circle at 50% 43%, var(--machine-glow), transparent 32%),
+    linear-gradient(145deg, #f4f5ee 0%, var(--machine-wash) 100%);
+  perspective: 900px;
+}
+.site-shell .integration-machine::before {
+  position: absolute;
+  z-index: -1;
+  width: 170px;
+  height: 74px;
+  border: 1px solid var(--machine-route);
+  border-radius: 50%;
+  content: "";
+  opacity: 0.26;
+  transform: rotateX(66deg) rotateZ(-13deg);
+}
+.site-shell .integration-machine__routes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.site-shell .integration-machine__grid {
+  stroke: var(--machine-route);
+  stroke-width: 0.8;
+  opacity: 0.18;
+}
+.site-shell .integration-machine__route {
+  stroke: var(--machine-route);
+  stroke-width: 1.1;
+  opacity: 0.42;
+}
+.site-shell .integration-machine__signal {
+  stroke: var(--machine-face);
+  stroke-linecap: round;
+  stroke-width: 2.4;
+}
+.site-shell .integration-machine__signal--delayed {
+  opacity: 0.55;
+}
+.site-shell .integration-machine__node {
+  fill: var(--machine-face);
+  stroke: #f8f8f1;
+  stroke-width: 2px;
+}
+.site-shell .integration-machine__cube {
+  position: relative;
+  z-index: 1;
+  width: 78px;
+  height: 78px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.site-shell .integration-machine__face {
+  position: absolute;
+  display: grid;
+  width: 78px;
+  height: 78px;
+  place-items: center;
+  border: 1px solid rgb(36 38 32 / 34%);
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+.site-shell .integration-machine__face--front {
+  color: var(--machine-ink);
+  background: var(--machine-face);
+  box-shadow: inset 0 0 0 5px rgb(255 255 255 / 8%);
+  transform: translateZ(39px);
+}
+.site-shell .integration-machine__face--front > svg {
+  width: 31px;
+  height: 31px;
+  stroke-width: 1.45;
+}
+.site-shell .integration-machine__face--back {
+  background: var(--machine-side);
+  transform: rotateY(180deg) translateZ(39px);
+}
+.site-shell .integration-machine__face--right {
+  background: var(--machine-side);
+  transform: rotateY(90deg) translateZ(39px);
+}
+.site-shell .integration-machine__face--right .brand-icon {
+  width: 34px;
+  height: 34px;
+  filter: grayscale(1) contrast(1.25);
+  mix-blend-mode: multiply;
+}
+.site-shell .integration-machine__face--left {
+  background: #252822;
+  transform: rotateY(-90deg) translateZ(39px);
+}
+.site-shell .integration-machine__face--top {
+  color: var(--machine-ink);
+  background: var(--machine-top);
+  font-family: monospace;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  transform: rotateX(90deg) translateZ(39px);
+}
+.site-shell .integration-machine__face--bottom {
+  background: #1f211d;
+  transform: rotateX(-90deg) translateZ(39px);
+}
+.site-shell .integration-machine__caption {
+  position: absolute;
+  bottom: 15px;
+  left: 18px;
+  font-family: monospace;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  color: var(--machine-route);
+}
+.site-shell .integration-machine--github {
+  --machine-face: #3a4038;
+  --machine-side: #1e221e;
+  --machine-top: #939b8d;
+  --machine-ink: #f5f4ef;
+  --machine-route: #677062;
+  --machine-wash: #dfe3da;
+  --machine-glow: rgb(50 57 49 / 22%);
+}
+.site-shell .integration-machine--supabase,
+.site-shell .integration-machine--sheets {
+  --machine-face: #718766;
+  --machine-side: #40523c;
+  --machine-top: #cfddbf;
+  --machine-ink: #21301f;
+  --machine-route: #5e7658;
+  --machine-wash: #dde6d4;
+  --machine-glow: rgb(113 135 102 / 22%);
+}
+.site-shell .integration-machine--drive,
+.site-shell .integration-machine--whatsapp {
+  --machine-face: #acb795;
+  --machine-side: #6f7d5e;
+  --machine-top: #edf0df;
+  --machine-ink: #2f3a2b;
+  --machine-route: #7b886d;
+  --machine-wash: #e8ebdf;
+  --machine-glow: rgb(130 148 111 / 22%);
+}
+@media (hover: hover) and (pointer: fine) {
+  .site-shell .integration-machine:hover .integration-machine__routes {
+    transform: scale(1.025);
+    transition: transform 240ms ease;
+  }
+}
+@media (max-width: 600px) {
+  .site-shell .integration-diagram {
+    padding: 20px 0 16px;
+  }
+  .site-shell .integration-machine {
+    min-height: 212px;
+  }
+  .site-shell .integration-machine__caption {
+    bottom: 12px;
+    left: 14px;
+    font-size: 7px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-shell .integration-machine__cube {
+    will-change: auto;
+  }
+  .site-shell .integration-machine__routes {
+    transition: none !important;
+  }
+}
 @keyframes studio-arrive {
   from {
     opacity: 0.5;
