@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -13,6 +14,30 @@ import StarMark from "./StarMark";
 
 const welcome =
   "I’m your little wayfinder. Want to watch a task take shape, explore the workspace, or find your download?";
+const pageGuidance: Readonly<Record<string, string>> = {
+  "/download":
+    "Choose the client for your platform. The download rows show versions, package formats, and requirements. macOS is listed as coming soon.",
+  "/pricing":
+    "Core has a daily token allowance. Pro and Elite list monthly allowances. Paid-plan buttons put you in touch with the team about availability.",
+  "/for-you":
+    "Select a tool to explore its workflow example. These illustrations explain how connected context can fit into your work.",
+  "/auth/login":
+    "Sign in with Google or your email. If you need to reset your password, use the link below the password field.",
+  "/auth/signup":
+    "Create your account with Google or email. Already have an account? Use the sign-in link above the form.",
+  "/auth/forgot-password":
+    "Enter your account email to request a password reset. The form will show the next step.",
+  "/auth/reset-password":
+    "Choose a new password for your account, then follow the form to return to your workspace.",
+  "/contact":
+    "Use the contact links on this page to reach the Aetheria team. I can also take you back to the product examples.",
+  "/changelog":
+    "Browse the published release notes here. For installers and requirements, open the download page.",
+  "/privacy-policy":
+    "This page explains Aetheria’s published privacy policy. Use the contact page for questions about your data.",
+  "/terms":
+    "Read the published terms here. The contact page is the place for questions about them.",
+};
 const tour = [
   {
     id: "playground",
@@ -37,6 +62,8 @@ const tour = [
 ];
 
 export default function Companion() {
+  const router = useRouter();
+  const isHome = router.pathname === "/";
   const [open, setOpen] = useState(false);
   const [hint, setHint] = useState(false);
   const [message, setMessage] = useState(welcome);
@@ -48,6 +75,17 @@ export default function Companion() {
   const root = useRef<HTMLDivElement>(null);
   const dismissed = useRef(false);
   const openRef = useRef(false);
+
+  useEffect(() => {
+    setMessage(pageGuidance[router.pathname] ?? welcome);
+    setOpen(false);
+    setHint(false);
+    setTourStep(null);
+    setVoice(false);
+    document
+      .querySelector(".is-guide-target")
+      ?.classList.remove("is-guide-target");
+  }, [router.pathname]);
 
   useEffect(() => {
     openRef.current = open;
@@ -265,12 +303,20 @@ export default function Companion() {
           )}
           {tourStep === null ? (
             <div className="companion-actions">
-              <button type="button" onClick={() => visit(0)}>
-                Show me around <ArrowRight size={15} />
-              </button>
-              <a href="#playground" onClick={() => visit(0)}>
-                Take me to the demo <ArrowUpRight size={14} />
-              </a>
+              {isHome ? (
+                <>
+                  <button type="button" onClick={() => visit(0)}>
+                    Show me around <ArrowRight size={15} />
+                  </button>
+                  <a href="#playground" onClick={() => visit(0)}>
+                    Take me to the demo <ArrowUpRight size={14} />
+                  </a>
+                </>
+              ) : (
+                <Link href="/#playground">
+                  Explore the homepage <ArrowUpRight size={14} />
+                </Link>
+              )}
               <Link href="/download">
                 Find my download <ArrowUpRight size={14} />
               </Link>
