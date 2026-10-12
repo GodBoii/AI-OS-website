@@ -1,12 +1,15 @@
+export const windowsDownload = {
+  id: "windows",
+  name: "Windows",
+  requirement: "Windows 10 & 11 · 64-bit",
+  version: "v1.4.2",
+  format: ".exe installer",
+  filename: "aetheria-ai-Setup-1.4.2.exe",
+  href: "https://github.com/GodBoii/AI-OS-website/releases/download/v1.4.21/aetheria-ai-Setup-1.4.2.exe",
+};
+
 export const downloads = [
-  {
-    id: "windows",
-    name: "Windows",
-    requirement: "Windows 10 & 11 · 64-bit",
-    version: "v1.4.1",
-    format: ".exe installer",
-    href: "https://github.com/GodBoii/AI-OS-website/releases/download/v1.4.2/aetheria-ai-Setup-1.4.1.exe",
-  },
+  windowsDownload,
   {
     id: "linux",
     name: "Linux",
