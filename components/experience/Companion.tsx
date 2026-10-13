@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { GUIDE_EVENT, isGuideEvent } from "../../lib/experience";
 import StarMark from "./StarMark";
+import PetCompanion from "./PetCompanion";
 
 const welcome =
   "I’m your little wayfinder. Want to watch a task take shape, explore the workspace, or find your download?";
@@ -65,7 +66,6 @@ export default function Companion() {
   const router = useRouter();
   const isHome = router.pathname === "/";
   const [open, setOpen] = useState(false);
-  const [hint, setHint] = useState(false);
   const [message, setMessage] = useState(welcome);
   const [tourStep, setTourStep] = useState<number | null>(null);
   const [voice, setVoice] = useState(false);
@@ -73,13 +73,10 @@ export default function Companion() {
   const [speechError, setSpeechError] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
   const root = useRef<HTMLDivElement>(null);
-  const dismissed = useRef(false);
-  const openRef = useRef(false);
 
   useEffect(() => {
     setMessage(pageGuidance[router.pathname] ?? welcome);
     setOpen(false);
-    setHint(false);
     setTourStep(null);
     setVoice(false);
     document
@@ -88,23 +85,13 @@ export default function Companion() {
   }, [router.pathname]);
 
   useEffect(() => {
-    openRef.current = open;
-  }, [open]);
-  useEffect(() => {
     setSpeechAvailable("speechSynthesis" in window);
-    try {
-      dismissed.current =
-        sessionStorage.getItem("aetheria-guide-dismissed") === "true";
-    } catch {
-      /* In-memory preference still works when storage is unavailable. */
-    }
     function receive(event: Event) {
       if (!(event instanceof CustomEvent)) return;
       const detail: unknown = event.detail;
       if (!isGuideEvent(detail)) return;
       if (detail.kind === "guide") {
         setOpen(true);
-        setHint(false);
         setMessage(welcome);
         setTourStep(null);
         return;
@@ -130,34 +117,8 @@ export default function Companion() {
         setMessage("Stopped. Pick another example whenever you’re ready.");
     }
     window.addEventListener(GUIDE_EVENT, receive);
-    let timer: ReturnType<typeof setTimeout>;
-    let offered = false;
-    function scheduleHint() {
-      clearTimeout(timer);
-      if (offered || dismissed.current) return;
-      timer = setTimeout(() => {
-        const active = document.activeElement;
-        if (
-          document.hidden ||
-          !document.hasFocus() ||
-          openRef.current ||
-          active?.matches("input, textarea, select, [contenteditable=true]")
-        )
-          return;
-        offered = true;
-        setHint(true);
-      }, 20000);
-    }
-    scheduleHint();
-    window.addEventListener("pointerdown", scheduleHint, { passive: true });
-    window.addEventListener("scroll", scheduleHint, { passive: true });
-    window.addEventListener("keydown", scheduleHint);
     return () => {
-      clearTimeout(timer);
       window.removeEventListener(GUIDE_EVENT, receive);
-      window.removeEventListener("pointerdown", scheduleHint);
-      window.removeEventListener("scroll", scheduleHint);
-      window.removeEventListener("keydown", scheduleHint);
       document
         .querySelector(".is-guide-target")
         ?.classList.remove("is-guide-target");
@@ -219,14 +180,7 @@ export default function Companion() {
 
   function dismiss() {
     setOpen(false);
-    setHint(false);
     setTourStep(null);
-    dismissed.current = true;
-    try {
-      sessionStorage.setItem("aetheria-guide-dismissed", "true");
-    } catch {
-      /* Keep the dismissal in memory. */
-    }
     trigger.current?.focus();
   }
   function visit(index: number) {
@@ -249,28 +203,12 @@ export default function Companion() {
 
   return (
     <div className="companion" ref={root}>
-      {hint && !open && (
-        <div className="companion-hint">
-          <button
-            type="button"
-            onClick={() => {
-              setOpen(true);
-              setHint(false);
-            }}
-          >
-            Need a hand finding your next move? <ArrowUpRight size={13} />
-          </button>
-          <button
-            type="button"
-            onClick={dismiss}
-            aria-label="Dismiss guide suggestion"
-          >
-            <X size={13} />
-          </button>
-        </div>
-      )}
       {open && (
-        <aside className="companion-panel" aria-label="Aetheria wayfinder">
+        <aside
+          id="aetheria-guide-panel"
+          className="companion-panel"
+          aria-label="Aetheria wayfinder"
+        >
           <div className="companion-heading">
             <span>
               <StarMark />
@@ -361,21 +299,15 @@ export default function Companion() {
           </span>
         </aside>
       )}
-      <button
-        className={open ? "companion-trigger is-open" : "companion-trigger"}
-        ref={trigger}
-        type="button"
-        aria-expanded={open}
-        aria-label={open ? "Close Aetheria guide" : "Open Aetheria guide"}
-        onClick={() => {
+      <PetCompanion
+        pathname={router.pathname}
+        guideOpen={open}
+        guideTrigger={trigger}
+        onGuide={() => {
           if (open) dismiss();
           else setOpen(true);
-          setHint(false);
         }}
-      >
-        <StarMark />
-        <span>{open ? "Close" : "A little help?"}</span>
-      </button>
+      />
     </div>
   );
 }
