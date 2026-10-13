@@ -60,7 +60,9 @@ Non-React webviews can lazy-import `createPetRenderer` from `renderer.ts`, pass 
 | `love` | Heart eyes and floating heart |
 | `proud` | Happy eyes and celebration sparkles |
 
-`boopReaction(count)` escalates to dizziness at three rapid taps. The host decides when a streak resets; the website uses a 1.6-second gap. `scrollEmotion(speed)` accepts signed pixels per millisecond and reacts equally to both directions. `stepPetSpring(state, target, deltaSeconds)` follows the exported stiffness, damping, and mass with bounded substeps. Website travel uses a demand-driven animation frame loop that settles after scrolling, rather than React updates every frame.
+`boopReaction(count)` escalates to dizziness at three rapid taps. The host decides when a streak resets; the website uses a 1.6-second gap. `scrollEmotion(speed)` accepts signed pixels per millisecond and reacts equally to both directions. `stepPetSpring(state, target, deltaSeconds)` follows the exported stiffness, damping, and mass with bounded substeps. `getPetScrollPath(progress, horizontalRange, verticalRange)` describes four S turns through a supplied travel area. Progress runs from 0 to 1, X moves left from the right dock, and Y advances down with a small undulation. Reverse scrolling retraces the same path.
+
+Website travel springs both axes along this route, with broad side-to-side movement on desktop and a shorter route on phones. The character leans into its turns; speech bubbles stay within the phone viewport. Opening the guide or napping springs it back to its dock. Travel uses a demand-driven animation frame loop that settles after scrolling, rather than React updates every frame.
 
 ## Native mobile and desktop renderers
 
