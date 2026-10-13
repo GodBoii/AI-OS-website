@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { stepPetSpring } from "./dynamics";
+import { getPetScrollPath, stepPetSpring } from "./dynamics";
 import { boopReaction, scrollEmotion } from "./emotions";
 
 test("travel settles consistently on 30, 60, and 120 Hz hosts", () => {
@@ -41,4 +41,27 @@ test("tap reactions escalate, then a new streak returns to a single bonk", () =>
   assert.equal(boopReaction(10).emotion, "dizzy");
   assert.equal(boopReaction(1).emotion, "bonked");
   assert.ok(boopReaction(3).durationMs > boopReaction(1).durationMs);
+});
+
+test("scroll travel makes four broad left and right turns and returns to its dock", () => {
+  const width = 400;
+  const height = 300;
+  assert.deepEqual(getPetScrollPath(0, width, height), { x: 0, y: 0 });
+  for (let turn = 0; turn < 4; turn++) {
+    assert.ok(getPetScrollPath(turn / 4 + .125, width, height).x < -width * .99);
+    assert.ok(Math.abs(getPetScrollPath((turn + 1) / 4, width, height).x) < .01);
+  }
+  const end = getPetScrollPath(1, width, height);
+  assert.ok(Math.abs(end.x) < .01 && Math.abs(end.y - height) < .01);
+});
+
+test("the entire snake route stays within the supplied travel area", () => {
+  for (const [width, height] of [[150, 120], [435, 334], [100, 0]]) {
+    for (let sample = 0; sample <= 200; sample++) {
+      const point = getPetScrollPath(sample / 200, width, height);
+      assert.ok(point.x >= -width && point.x <= 0);
+      assert.ok(point.y >= 0 && point.y <= height);
+    }
+  }
+  assert.deepEqual(getPetScrollPath(NaN, Infinity, -1), { x: 0, y: 0 });
 });
