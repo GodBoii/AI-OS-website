@@ -3,7 +3,8 @@ import type { RefObject } from "react";
 import { ArrowUpRight, Moon, Sun } from "lucide-react";
 import AetheriaPet from "../../pets/aetheria/AetheriaPet";
 import type { AetheriaPetHandle } from "../../pets/aetheria/AetheriaPet";
-import { stepPetSpring } from "../../pets/aetheria/dynamics";
+import { getPetScrollPath, stepPetSpring } from "../../pets/aetheria/dynamics";
+import type { SpringState } from "../../pets/aetheria/dynamics";
 import { boopReaction, motion, scrollEmotion } from "../../pets/aetheria/emotions";
 import type { PetEmotion } from "../../pets/aetheria/emotions";
 import { GUIDE_EVENT, isGuideEvent } from "../../lib/experience";
@@ -35,8 +36,7 @@ export default function PetCompanion({ pathname, guideOpen, onGuide, guideTrigge
   const [chapterNumber, setChapterNumber] = useState(1);
   const actor = useRef<AetheriaPetHandle>(null);
   const root = useRef<HTMLDivElement>(null);
-  const rail = useRef<HTMLDivElement>(null);
-  const position = useRef<number | null>(null);
+  const position = useRef<{ x: SpringState; y: SpringState } | null>(null);
   const reacting = useRef(false);
   const taps = useRef({ count: 0, time: 0 });
   const reactionTimer = useRef<ReturnType<typeof setTimeout>>();
@@ -76,8 +76,12 @@ export default function PetCompanion({ pathname, guideOpen, onGuide, guideTrigge
     let frame = 0;
     let previousY = window.scrollY;
     let previousTime = performance.now();
-    let spring = { position: position.current ?? (compact.matches ? window.innerHeight - 246 : 154), velocity: 0 };
-    let currentX = 0;
+    let springY = position.current?.y ?? {
+      position: compact.matches ? window.innerHeight - 208 - Math.min(120, window.innerHeight * .15) : 154,
+      velocity: 0,
+    };
+    let springX = position.current?.x ?? { position: 0, velocity: 0 };
+    let petWidth = host.getBoundingClientRect().width;
     let frameTime = 0;
     let lastScroll = 0;
     let speed = 0;
@@ -104,29 +108,40 @@ export default function PetCompanion({ pathname, guideOpen, onGuide, guideTrigge
       const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
       const progress = maxScroll === 0 ? 0 : Math.min(1, Math.max(0, window.scrollY / maxScroll));
       const stationary = reduced.matches || napping || guideOpen || pathname !== "/";
-      const base = compact.matches ? window.innerHeight - 246 : 154;
-      const travel = compact.matches ? 38 : Math.max(0, window.innerHeight - 386);
-      const target = stationary ? window.innerHeight - (compact.matches ? 202 : 220) : base + progress * travel;
+      const travel = compact.matches ? Math.min(120, window.innerHeight * .15) : Math.max(0, window.innerHeight - 386);
+      const base = compact.matches ? window.innerHeight - 208 - travel : 154;
+      const viewportWidth = document.documentElement.clientWidth;
+      const horizontalRange = Math.max(0, Math.min(viewportWidth - petWidth - 32, viewportWidth * (compact.matches ? .4 : .34)));
+      const path = getPetScrollPath(progress, horizontalRange, travel);
+      const targetY = stationary ? window.innerHeight - (compact.matches ? 202 : 220) : base + path.y;
+      const targetX = stationary ? 0 : path.x;
       const elapsed = Math.min(64, Math.max(1, now - (frameTime || now - 16)));
       frameTime = now;
-      const smooth = 1 - Math.exp(-elapsed / 160);
-      spring = stepPetSpring(spring, target, elapsed / 1000);
-      position.current = spring.position;
+      springY = stepPetSpring(springY, targetY, elapsed / 1000);
+      springX = stepPetSpring(springX, targetX, elapsed / 1000);
+      position.current = { x: springX, y: springY };
       const moving = now - lastScroll < 150;
-      const targetX = stationary || compact.matches ? 0 : -(1 - Math.cos(progress * Math.PI * 2)) * 8;
-      currentX += (targetX - currentX) * smooth;
-      host.style.transform = `translate3d(${currentX.toFixed(2)}px, ${reduced.matches ? target : spring.position}px, 0)`;
-      actor.current?.setTravelVelocity(stationary || !moving ? 0 : speed);
-      rail.current?.style.setProperty("--pet-progress", String(progress));
+      const renderedX = Math.max(-(viewportWidth - petWidth - 24), Math.min(0, springX.position));
+      host.style.transform = `translate3d(${reduced.matches ? 0 : renderedX.toFixed(2)}px, ${reduced.matches ? targetY : springY.position}px, 0)`;
+      // Keep the speech bubble inside the phone viewport while its character crosses left.
+      const bubbleWidth = Math.min(232, viewportWidth - 32);
+      const bubbleLeft = viewportWidth - 8 + renderedX - 6 - bubbleWidth;
+      host.style.setProperty("--pet-bubble-offset", `${Math.max(0, 16 - bubbleLeft).toFixed(2)}px`);
+      actor.current?.setTravelVelocity(stationary ? 0 : springX.velocity / 240 + (moving ? speed * .2 : 0));
       if (!reacting.current && !napping && !guideOpen) {
         const mood = moving ? scrollEmotion(speed) : "curious";
         if (mood !== lastMood) { lastMood = mood; setEmotion(mood); }
       }
-      if (Math.abs(target - spring.position) > .2 || Math.abs(spring.velocity) > 2 || Math.abs(targetX - currentX) > .2 || moving)
+      if (Math.abs(targetY - springY.position) > .2 || Math.abs(springY.velocity) > 2 ||
+        Math.abs(targetX - springX.position) > .2 || Math.abs(springX.velocity) > 2 || moving)
         frame = requestAnimationFrame(update);
     }
     function schedule() {
       if (!frame && !document.hidden) frame = requestAnimationFrame(update);
+    }
+    function resize() {
+      petWidth = host?.getBoundingClientRect().width ?? petWidth;
+      schedule();
     }
     function scroll() {
       const now = performance.now();
@@ -164,7 +179,7 @@ export default function PetCompanion({ pathname, guideOpen, onGuide, guideTrigge
     visibility();
     schedule();
     window.addEventListener("scroll", scroll, { passive: true });
-    window.addEventListener("resize", schedule);
+    window.addEventListener("resize", resize);
     window.addEventListener("pointerdown", wake, { passive: true });
     window.addEventListener("keydown", wake);
     window.addEventListener(GUIDE_EVENT, receive);
@@ -177,7 +192,7 @@ export default function PetCompanion({ pathname, guideOpen, onGuide, guideTrigge
       clearTimeout(reactionTimer.current);
       clearTimeout(bubbleTimer.current);
       window.removeEventListener("scroll", scroll);
-      window.removeEventListener("resize", schedule);
+      window.removeEventListener("resize", resize);
       window.removeEventListener("pointerdown", wake);
       window.removeEventListener("keydown", wake);
       window.removeEventListener(GUIDE_EVENT, receive);
@@ -189,7 +204,6 @@ export default function PetCompanion({ pathname, guideOpen, onGuide, guideTrigge
 
   return (
     <>
-      {pathname === "/" && !guideOpen && !napping && <div className="pet-scroll-rail" ref={rail} aria-hidden="true"><i /><span>SCROLL BUDDY</span></div>}
       <div className={`pet-companion ${napping ? "is-napping" : ""} ${guideOpen ? "is-guiding" : ""}`} ref={root}>
         {speaking && !guideOpen && !napping && <div className="pet-speech" key={line}>
           <div className="pet-speech-heading"><span><i /> Aetheria</span><span>{String(chapterNumber).padStart(2, "0")} / {String(chapters.length).padStart(2, "0")}</span></div>
