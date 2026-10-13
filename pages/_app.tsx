@@ -4,6 +4,8 @@ import { Outfit, DM_Sans, Instrument_Serif } from "next/font/google";
 import "../styles/globals.css";
 import "../styles/studio.css";
 import "../styles/experience.css";
+import "../pets/aetheria/animations.css";
+import "../styles/pet-companion.css";
 import { MotionConfig } from "framer-motion";
 import Companion from "../components/experience/Companion";
 
