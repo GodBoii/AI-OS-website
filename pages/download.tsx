@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { FaWindows, FaLinux, FaAndroid } from "react-icons/fa6";
-import { downloads } from "../lib/downloads";
+import { androidDownload, downloads } from "../lib/downloads";
 
 const platformIcons = {
   windows: FaWindows,
@@ -68,6 +68,26 @@ export default function DownloadPage() {
             </article>
           ))}
         </div>
+        <section className="download-description" aria-labelledby="android-install-heading">
+          <h2 id="android-install-heading">Install on Android</h2>
+          <p>
+            Download the APK and open it. If Android asks, enable &quot;Allow
+            from this source&quot; for your browser or file manager, then return
+            to the installer and tap Install. You can turn that permission off
+            afterward. Keep Google Play Protect enabled.
+          </p>
+          <p>
+            The universal APK includes all supported architectures. For smaller
+            downloads, choose ARM64, ARM32, x86-64, or x86 from the{" "}
+            <a href={androidDownload.releaseHref}>Android release files</a>.
+            Checksums and the public signing certificate fingerprints are included.
+          </p>
+          <p>
+            Future releases can update this version without uninstalling it.
+            If an older installation uses a different signing key, export your
+            data before uninstalling it to install this release.
+          </p>
+        </section>
         <div className="download-help">
           <p>
             Looking for another release?
