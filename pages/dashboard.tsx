@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { supabase, User, getCurrentSession } from "../lib/supabaseClient";
 import UsageCard, { ConvexUsageData } from "../components/UsageCard";
 import Layout from "../components/Layout";
-import { windowsDownload } from "../lib/downloads";
+import { androidDownload, windowsDownload } from "../lib/downloads";
 import { motion } from "framer-motion";
 import { FaWindows, FaLinux, FaApple, FaAndroid } from "react-icons/fa6";
 import { ShieldCheck, DownloadCloud, Activity, Zap } from "lucide-react";
@@ -152,9 +152,9 @@ export default function Dashboard() {
     {
       name: "Android",
       icon: <FaAndroid className="w-5 h-5 text-emerald-800/80" />,
-      desc: "Mobile App",
-      filename: "Aetheria.apk",
-      path: "https://github.com/GodBoii/AI-OS-website/releases/download/v0.0.1/Aetheria.apk",
+      desc: `Android APK (${androidDownload.version})`,
+      filename: androidDownload.filename,
+      path: androidDownload.href,
       available: true,
     },
     {
