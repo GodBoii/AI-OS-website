@@ -1,17 +1,18 @@
 import React, { ReactNode } from "react";
 import Header from "./homepage/Header";
 import Footer from "./homepage/Footer";
+import styles from "../styles/surface.module.css";
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const Layout = ({ children, surface = false }: { children: ReactNode; surface?: boolean }) => {
   return (
-    <div className="site-shell min-h-screen bg-paper text-ink">
-      <Header />
+    <div className={`site-shell min-h-screen${surface ? " " + styles.shell : " bg-paper text-ink"}`}>
+      <Header streamlined={surface} />
 
-      <main id="main-content" className="interior-content">
+      <main id="main-content" className={surface ? undefined : "interior-content"}>
         {children}
       </main>
 
-      <Footer />
+      <Footer compact={surface} />
     </div>
   );
 };
