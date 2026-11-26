@@ -1,528 +1,151 @@
-import React, { useEffect, useState } from "react";
-import SEO from "../components/SEO";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { supabase, User, getCurrentSession } from "../lib/supabaseClient";
-import UsageCard, { ConvexUsageData } from "../components/UsageCard";
+import { ArrowDown, ArrowUpRight, RefreshCw } from "lucide-react";
+import SEO from "../components/SEO";
 import Layout from "../components/Layout";
-import { androidDownload, windowsDownload } from "../lib/downloads";
-import { motion } from "framer-motion";
-import { FaWindows, FaLinux, FaApple, FaAndroid } from "react-icons/fa6";
-import { ShieldCheck, DownloadCloud, Activity, Zap } from "lucide-react";
+import UsageCard, { type ConvexUsageData, type TimePeriod } from "../components/UsageCard";
+import { downloads } from "../lib/downloads";
+import { getCurrentSession, type Session } from "../lib/supabaseClient";
+import styles from "../styles/surface.module.css";
 
-type TimePeriod = "7days" | "30days" | "90days" | "all";
-type PlanType = "free" | "pro" | "elite";
+const periods: { id: TimePeriod; label: string }[] = [
+  { id: "7days", label: "7 days" },
+  { id: "30days", label: "30 days" },
+  { id: "90days", label: "90 days" },
+  { id: "all", label: "All loaded" },
+];
 
-interface UserProfile {
-  plan_type: PlanType;
-  subscription_status: string;
-  current_period_end: string | null;
-  _error?: string;
-}
-
-interface Platform {
-  name: string;
-  icon: React.ReactNode;
-  desc: string;
-  filename?: string;
-  path?: string;
-  available: boolean;
-  isRedirect?: boolean;
-}
+const allowances = {
+  free: { name: "Core", allowance: "50,000 tokens per day" },
+  pro: { name: "Pro", allowance: "5 million tokens per month" },
+  elite: { name: "Elite", allowance: "50 million tokens per month" },
+};
+type Plan = keyof typeof allowances;
+type Resource<T> = { kind: "loading" } | { kind: "ready"; data: T } | { kind: "error" };
 
 export default function Dashboard() {
   const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState<string | null>(null);
-
-  const [usageData, setUsageData] = useState<ConvexUsageData | null>(null);
-  const [usageLoading, setUsageLoading] = useState(true);
-  const [usageError, setUsageError] = useState<string | null>(null);
-  const [timePeriod, setTimePeriod] = useState<TimePeriod>("30days");
-
-  const [profile, setProfile] = useState<UserProfile>({
-    plan_type: "free",
-    subscription_status: "none",
-    current_period_end: null,
-  });
-  const [profileLoading, setProfileLoading] = useState(true);
+  const [session, setSession] = useState<Resource<Session>>({ kind: "loading" });
+  const [plan, setPlan] = useState<Resource<Plan>>({ kind: "loading" });
+  const [usage, setUsage] = useState<Resource<ConvexUsageData>>({ kind: "loading" });
+  const [period, setPeriod] = useState<TimePeriod>("30days");
+  const [request, setRequest] = useState(0);
+  const token = session.kind === "ready" ? session.data.access_token : undefined;
 
   useEffect(() => {
-    async function getUser() {
-      const session = await getCurrentSession();
-      if (!session) {
-        router.push("/auth/login");
-        return;
-      }
-      setUser(session.user);
-      setToken(session.access_token);
-      setLoading(false);
-    }
-    getUser();
+    let active = true;
+    void getCurrentSession().then((current) => {
+      if (!active) return;
+      if (current) setSession({ kind: "ready", data: current });
+      else void router.replace("/auth/login");
+    }).catch(() => {
+      if (active) setSession({ kind: "error" });
+    });
+    return () => { active = false; };
   }, [router]);
 
   useEffect(() => {
-    if (user && token) {
-      fetchConvexUsage();
-      fetchProfile();
-    }
-  }, [user, token]);
-
-  async function fetchProfile() {
     if (!token) return;
-    setProfileLoading(true);
-    try {
-      const res = await fetch("/api/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error("Profile fetch failed");
-      const data = await res.json();
-      setProfile({
-        plan_type: (data.plan_type ?? "free") as PlanType,
-        subscription_status: data.subscription_status ?? "none",
-        current_period_end: data.current_period_end ?? null,
-        _error: data._error,
-      });
-    } catch (err: any) {
-      console.error("[dashboard] profile fetch error:", err.message);
-    } finally {
-      setProfileLoading(false);
-    }
-  }
-
-  async function fetchConvexUsage() {
-    if (!token) return;
-    setUsageLoading(true);
-    setUsageError(null);
-    try {
-      const res = await fetch("/api/convex-usage?limit=90", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: res.statusText }));
-        throw new Error(err.error || "Failed to fetch usage");
+    const controller = new AbortController();
+    const options = { signal: controller.signal, headers: { Authorization: `Bearer ${token}` } };
+    void fetch("/api/profile", options).then(async (response) => {
+      if (!response.ok) throw new Error("Profile unavailable");
+      const profile: unknown = await response.json();
+      if (typeof profile !== "object" || profile === null || !("plan_type" in profile)) {
+        throw new Error("Invalid profile");
       }
-      const data: ConvexUsageData = await res.json();
-      setUsageData(data);
-    } catch (err: any) {
-      setUsageError(err.message || "Error connecting to telemetry server");
-    } finally {
-      setUsageLoading(false);
-    }
+      const value = profile.plan_type ?? "free";
+      if (value !== "free" && value !== "pro" && value !== "elite") throw new Error("Unknown plan");
+      if (!controller.signal.aborted) setPlan({ kind: "ready", data: value });
+    }).catch(() => {
+      if (!controller.signal.aborted) setPlan({ kind: "error" });
+    });
+    return () => controller.abort();
+  }, [token]);
+
+  useEffect(() => {
+    if (!token) return;
+    const controller = new AbortController();
+    void fetch("/api/convex-usage?limit=90", {
+      signal: controller.signal,
+      headers: { Authorization: `Bearer ${token}` },
+    }).then(async (response) => {
+      if (!response.ok) throw new Error("Usage unavailable");
+      const data: ConvexUsageData = await response.json();
+      if (!controller.signal.aborted) setUsage({ kind: "ready", data });
+    }).catch(() => {
+      if (!controller.signal.aborted) setUsage({ kind: "error" });
+    });
+    return () => controller.abort();
+  }, [request, token]);
+
+  function refreshUsage() {
+    setUsage({ kind: "loading" });
+    setRequest((value) => value + 1);
   }
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.push("/");
-  };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-paper">
-        <div className="text-center">
-          <div className="w-12 h-12 border-2 border-ink/10 border-t-white/80 rounded-full animate-spin mx-auto mb-6" />
-          <p className="font-mono text-muted text-xs uppercase tracking-widest animate-pulse">
-            Initializing Workspace
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  const platforms: Platform[] = [
-    {
-      name: "Windows",
-      icon: <FaWindows className="w-5 h-5 text-[#256280]" />,
-      desc: `64-bit installer (${windowsDownload.version})`,
-      filename: windowsDownload.filename,
-      path: windowsDownload.href,
-      available: true,
-    },
-    {
-      name: "Linux",
-      icon: <FaLinux className="w-5 h-5 text-ink/80" />,
-      desc: "AppImage (v1.2.0)",
-      filename: "Aetheria.AI-1.2.0.AppImage",
-      path: "https://github.com/GodBoii/AI-OS-website/releases/download/v1.2.0/Aetheria.AI-1.2.0.AppImage",
-      available: true,
-    },
-    {
-      name: "Android",
-      icon: <FaAndroid className="w-5 h-5 text-emerald-800/80" />,
-      desc: `Android APK (${androidDownload.version})`,
-      filename: androidDownload.filename,
-      path: androidDownload.href,
-      available: true,
-    },
-    {
-      name: "macOS",
-      icon: <FaApple className="w-5 h-5 text-muted" />,
-      desc: "Coming Soon",
-      available: false,
-    },
-  ];
-
-  const handleDownload = (platform: (typeof platforms)[number]) => {
-    if (!platform.available) return;
-    if (platform.isRedirect) {
-      window.open(platform.path, "_blank");
-      return;
-    }
-    const link = document.createElement("a");
-    link.href = platform.path!;
-    link.download = platform.filename || "";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const displayName =
-    user?.user_metadata?.name || user?.email?.split("@")[0] || "Operator";
+  const user = session.kind === "ready" ? session.data.user : null;
+  const name = user?.user_metadata?.name || user?.email?.split("@")[0];
 
   return (
-    <Layout>
-      <SEO
-        title="Dashboard | Aetheria AI"
-        description="Aetheria AI user dashboard — downloads, usage telemetry, and account management."
-        noIndex={true}
-      />
-
-      <div className="min-h-screen pb-24 relative overflow-hidden">
-        {/* Subtle ambient lighting */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent-violet/5 blur-[120px] rounded-full pointer-events-none -z-10" />
-
-        <div className="max-w-7xl mx-auto px-4 relative z-10">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-ink/[0.05] pb-8"
-          >
-            <div>
-              <div className="text-[10px] text-muted font-mono tracking-widest uppercase flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50 animate-pulse" />
-                SYSTEM: SECURE
-              </div>
-              <h1 className="text-4xl md:text-5xl font-medium text-ink mb-2 tracking-tight">
-                Command Center
-              </h1>
-              <p className="text-muted font-light tracking-wide">
-                Welcome back, <span className="text-ink/80">{displayName}</span>
-                .
-              </p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
-          >
-            {/* Identity Panel */}
-            <div className="rounded-lg border border-ink/[0.05] bg-ink/[0.01] p-6 backdrop-blur-sm">
-              <div className="flex items-center gap-3 mb-8">
-                <ShieldCheck className="w-4 h-4 text-muted" />
-                <h3 className="text-sm font-medium tracking-wide text-ink/80">
-                  Identity
-                </h3>
-              </div>
-              <div className="space-y-6">
-                <div>
-                  <span className="text-[10px] uppercase font-mono text-muted tracking-widest block mb-1">
-                    Name
-                  </span>
-                  <p className="font-light text-ink/80 text-sm">
-                    {user?.user_metadata?.name || "Unknown"}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-[10px] uppercase font-mono text-muted tracking-widest block mb-1">
-                    Email
-                  </span>
-                  <p className="font-light text-ink/80 text-sm break-all">
-                    {user?.email}
-                  </p>
-                </div>
-                <div className="flex justify-between items-center pt-4 border-t border-ink/[0.05]">
-                  <div>
-                    <span className="text-[10px] uppercase font-mono text-muted tracking-widest block mb-1">
-                      Auth Method
-                    </span>
-                    <p className="font-light text-ink/80 text-sm">
-                      {user?.email ? "Email" : "OAuth"}
-                    </p>
-                  </div>
-                  <div className="px-3 py-1 rounded bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2">
-                    <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[10px] font-mono text-emerald-800 uppercase tracking-widest">
-                      Active
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Binaries Panel */}
-            <div className="rounded-lg border border-ink/[0.05] bg-ink/[0.01] p-6 backdrop-blur-sm">
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-3">
-                  <DownloadCloud className="w-4 h-4 text-muted" />
-                  <h3 className="text-sm font-medium tracking-wide text-ink/80">
-                    Binaries
-                  </h3>
-                </div>
-                <span className="text-[10px] font-mono text-muted tracking-widest px-2 py-1 border border-ink/10 rounded">
-                  {windowsDownload.version}
-                </span>
-              </div>
-              <div className="space-y-3">
-                {platforms.map((platform) => (
-                  <button
-                    key={platform.name}
-                    onClick={() => handleDownload(platform)}
-                    disabled={!platform.available}
-                    className={`w-full p-4 rounded-xl border flex items-center gap-4 text-left transition-all ${
-                      platform.available
-                        ? "border-ink/[0.05] bg-ink/[0.02] hover:bg-ink/[0.04] hover:border-ink/[0.1] group"
-                        : "border-transparent bg-transparent opacity-40 cursor-not-allowed"
-                    }`}
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-ink/5 flex items-center justify-center border border-ink/[0.05] group-hover:bg-ink/10 transition-colors">
-                      {platform.icon}
-                    </div>
-                    <div className="flex-1">
-                      <span className="block font-medium text-sm text-ink/80">
-                        {platform.name}
-                      </span>
-                      <span className="block text-xs font-light text-muted mt-0.5">
-                        {platform.desc}
-                      </span>
-                    </div>
+    <Layout surface>
+      <SEO title="Dashboard | Aetheria AI" description="View Aetheria usage, your plan, and client downloads." noIndex />
+      <div className={`${styles.page} ${styles.dashboard}`}>
+        <header className={styles.intro}>
+          <h1>Your dashboard.</h1>
+          {name && <p>Welcome back, {name}.</p>}
+        </header>
+        {session.kind !== "ready" ? (
+          <div className={styles.panel}>
+            {session.kind === "error" ? (
+              <><p role="alert">We couldn’t load your session.</p><Link href="/auth/login" className={styles.textLink}>Open sign-in <ArrowUpRight size={15} aria-hidden="true" /></Link></>
+            ) : <p role="status">Checking your session…</p>}
+          </div>
+        ) : (
+          <div className={styles.accountGrid}>
+            <section className={styles.panel} aria-labelledby="usage-heading">
+              <div className={styles.panelHeader}>
+                <h2 id="usage-heading">Token usage</h2>
+                <div className={styles.filters} role="group" aria-label="Usage period">
+                  {periods.map(({ id, label }) => (
+                    <button type="button" key={id} aria-pressed={period === id} onClick={() => setPeriod(id)}>{label}</button>
+                  ))}
+                  <button type="button" onClick={refreshUsage} disabled={usage.kind === "loading"} aria-label="Refresh token usage">
+                    <RefreshCw size={15} aria-hidden="true" />
                   </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Access Level Panel */}
-            <div className="rounded-lg border border-ink/[0.05] bg-ink/[0.01] p-6 backdrop-blur-sm">
-              <div className="flex items-center gap-3 mb-8">
-                <Zap className="w-4 h-4 text-muted" />
-                <h3 className="text-sm font-medium tracking-wide text-ink/80">
-                  Access Level
-                </h3>
-              </div>
-
-              {profileLoading ? (
-                <div className="flex justify-center py-10">
-                  <div className="w-5 h-5 border-2 border-ink/10 border-t-white/50 rounded-full animate-spin" />
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  {/* Free Plan */}
-                  <div
-                    className={`p-5 rounded-xl border transition-colors ${
-                      profile.plan_type === "free"
-                        ? "border-ink/20 bg-ink/[0.03]"
-                        : "border-ink/[0.05] bg-transparent"
-                    }`}
-                  >
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h4 className="text-ink/90 font-medium mb-1">Free</h4>
-                        <p className="text-xs font-light text-muted">
-                          50k tokens/day
-                        </p>
-                      </div>
-                      {profile.plan_type === "free" && (
-                        <span className="text-[10px] font-mono text-muted border border-ink/10 px-2 py-0.5 rounded tracking-widest">
-                          CURRENT
-                        </span>
-                      )}
-                    </div>
-                    {profile.plan_type !== "free" && (
-                      <button
-                        onClick={() => router.push("/pricing")}
-                        className="w-full py-2 rounded-lg border border-ink/10 text-xs text-muted hover:bg-ink/5 hover:text-ink transition-colors"
-                      >
-                        Downgrade
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Pro Plan */}
-                  <div
-                    className={`p-5 rounded-xl border relative transition-colors ${
-                      profile.plan_type === "pro"
-                        ? "border-ink/20 bg-ink/[0.03]"
-                        : "border-ink/[0.05] bg-transparent"
-                    }`}
-                  >
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h4 className="text-ink/90 font-medium mb-1 flex items-center gap-2">
-                          Pro
-                          {profile.plan_type === "free" && (
-                            <span className="text-[9px] bg-white text-black px-1.5 py-0.5 rounded font-bold tracking-widest uppercase">
-                              Popular
-                            </span>
-                          )}
-                        </h4>
-                        <p className="text-xs font-light text-muted">
-                          5M tokens/mo
-                        </p>
-                      </div>
-                      {profile.plan_type === "pro" && (
-                        <span className="text-[10px] font-mono text-muted border border-ink/10 px-2 py-0.5 rounded tracking-widest">
-                          CURRENT
-                        </span>
-                      )}
-                    </div>
-                    {profile.plan_type === "free" ? (
-                      <button
-                        onClick={() => router.push("/pricing")}
-                        className="w-full py-2 rounded-lg bg-white text-black text-xs font-medium hover:bg-surface transition-colors shadow-[0_0_15px_rgba(255,255,255,0.1)]"
-                      >
-                        Upgrade to Pro
-                      </button>
-                    ) : (
-                      profile.plan_type !== "pro" && (
-                        <button
-                          onClick={() => router.push("/pricing")}
-                          className="w-full py-2 rounded-lg border border-ink/10 text-xs text-muted hover:bg-ink/5 hover:text-ink transition-colors"
-                        >
-                          {profile.plan_type === "elite"
-                            ? "Downgrade"
-                            : "Upgrade to Pro"}
-                        </button>
-                      )
-                    )}
-                  </div>
-
-                  {/* Elite Plan */}
-                  <div
-                    className={`p-5 rounded-xl border relative transition-colors ${
-                      profile.plan_type === "elite"
-                        ? "border-ink/20 bg-ink/[0.03]"
-                        : "border-ink/[0.05] bg-transparent"
-                    }`}
-                  >
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h4 className="text-ink/90 font-medium mb-1 flex items-center gap-2">
-                          Elite
-                          {profile.plan_type !== "elite" && (
-                            <span className="text-[9px] border border-purple-500/30 bg-purple-500/10 text-accent-violet px-1.5 py-0.5 rounded font-bold tracking-widest uppercase">
-                              High Capacity
-                            </span>
-                          )}
-                        </h4>
-                        <p className="text-xs font-light text-muted">
-                          50M tokens/mo
-                        </p>
-                      </div>
-                      {profile.plan_type === "elite" && (
-                        <span className="text-[10px] font-mono text-muted border border-ink/10 px-2 py-0.5 rounded tracking-widest">
-                          CURRENT
-                        </span>
-                      )}
-                    </div>
-                    {profile.plan_type !== "elite" ? (
-                      <button
-                        onClick={() => router.push("/pricing")}
-                        className="w-full py-2 rounded-lg bg-white text-black text-xs font-medium hover:bg-surface transition-colors shadow-[0_0_15px_rgba(255,255,255,0.1)]"
-                      >
-                        Upgrade to Elite
-                      </button>
-                    ) : null}
-                  </div>
-                </div>
+              </div>
+              {usage.kind === "ready" ? <UsageCard usageData={usage.data} timePeriod={period} /> : (
+                usage.kind === "loading" ? <p role="status" className={styles.empty}>Loading token usage…</p> : (
+                  <div><p role="alert" className={styles.error}>Token usage is temporarily unavailable.</p><button className={styles.textLink} onClick={refreshUsage}>Try again</button></div>
+                )
               )}
-            </div>
-          </motion.div>
-
-          {/* Telemetry Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-6 rounded-lg border border-ink/[0.05] bg-ink/[0.01] p-6 backdrop-blur-sm"
-          >
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 pb-6 border-b border-ink/[0.05]">
-              <div className="flex items-center gap-3">
-                <Activity className="w-4 h-4 text-muted" />
-                <div>
-                  <h3 className="text-sm font-medium tracking-wide text-ink/80">
-                    System Telemetry
-                  </h3>
-                  <p className="text-xs font-light text-muted mt-1">
-                    Real-time token usage analytics
-                  </p>
+            </section>
+            <div className={styles.accountRail}>
+              <section className={styles.panel} aria-labelledby="plan-heading">
+                <h2 id="plan-heading">Current plan</h2>
+                {plan.kind === "ready" ? <p><strong>{allowances[plan.data].name}</strong><br />{allowances[plan.data].allowance}</p> :
+                  <p role="status">{plan.kind === "loading" ? "Loading plan…" : "Plan information is unavailable."}</p>}
+                <Link href="/pricing" className={styles.textLink}>Compare plans <ArrowUpRight size={15} aria-hidden="true" /></Link>
+              </section>
+              <section className={styles.panel} aria-labelledby="account-heading">
+                <h2 id="account-heading">Account</h2>
+                <dl>
+                  <div><dt>Name</dt><dd>{user?.user_metadata?.name || "Not set"}</dd></div>
+                  <div><dt>Email</dt><dd>{user?.email || "Not set"}</dd></div>
+                </dl>
+              </section>
+              <section className={styles.panel} aria-labelledby="client-heading">
+                <h2 id="client-heading">Install Aetheria</h2>
+                <div className={styles.clientLinks}>
+                  {downloads.map((platform) => <a href={platform.href} key={platform.id}>{platform.name} <ArrowDown size={15} aria-hidden="true" /></a>)}
                 </div>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="flex bg-ink/[0.02] p-1 rounded-lg border border-ink/[0.05]">
-                  {(["7days", "30days", "90days", "all"] as TimePeriod[]).map(
-                    (period) => (
-                      <button
-                        key={period}
-                        onClick={() => setTimePeriod(period)}
-                        className={`px-3 py-1.5 text-[10px] font-mono tracking-widest uppercase rounded transition-all ${
-                          timePeriod === period
-                            ? "bg-ink/10 text-ink/90 shadow-sm"
-                            : "text-muted hover:text-muted"
-                        }`}
-                      >
-                        {period === "all"
-                          ? "All"
-                          : period === "7days"
-                            ? "7D"
-                            : period === "30days"
-                              ? "30D"
-                              : "90D"}
-                      </button>
-                    ),
-                  )}
-                </div>
-                <button
-                  onClick={fetchConvexUsage}
-                  disabled={usageLoading}
-                  className="p-2 rounded-lg border border-ink/10 text-muted hover:text-ink/80 hover:bg-ink/5 transition-all disabled:opacity-50"
-                  title="Refresh data"
-                >
-                  <Activity
-                    className={`w-3 h-3 ${usageLoading ? "animate-pulse" : ""}`}
-                  />
-                </button>
-              </div>
+                <Link href="/download" className={styles.textLink}>Installation details <ArrowUpRight size={15} aria-hidden="true" /></Link>
+              </section>
             </div>
-
-            {usageError ? (
-              <div className="p-8 text-center border border-red-500/10 bg-red-500/5 rounded-xl">
-                <p className="text-red-700/80 text-sm mb-4">{usageError}</p>
-                <button
-                  onClick={fetchConvexUsage}
-                  className="px-4 py-2 bg-red-500/10 text-red-700 text-xs font-mono tracking-widest uppercase rounded-lg border border-red-500/20 hover:bg-red-500/20 transition-colors"
-                >
-                  Retry Connection
-                </button>
-              </div>
-            ) : (
-              <div className="opacity-80 hover:opacity-100 transition-opacity duration-500">
-                <UsageCard
-                  usageData={usageData}
-                  isLoading={usageLoading}
-                  timePeriod={timePeriod}
-                />
-              </div>
-            )}
-          </motion.div>
-        </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
