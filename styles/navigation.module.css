@@ -1,0 +1,91 @@
+.legacyMenu { display: contents; }
+
+.clear:global(.site-header) {
+  --nav-gutter: clamp(1rem, 4.5vw, 5rem);
+  position: fixed;
+  inset: 0 0 auto;
+  padding-inline: var(--nav-gutter);
+  min-height: clamp(4rem, 7vw, 5rem);
+  background: transparent;
+  border: 0;
+  pointer-events: none;
+}
+
+.clear :global(.brand),
+.clear :global(.skip-link:focus),
+.clear .menuArea { pointer-events: auto; }
+.clear :global(.brand) { text-shadow: 0 2px 12px #060713, 0 1px 3px #060713; }
+.clear :global(.brand-icon) { color: var(--exp-accent); }
+
+.clear :global(.desktop-nav),
+.clear :global(.header-actions) { display: none; }
+
+.menuArea { position: relative; margin-inline-start: auto; }
+.clear :global(.menu-toggle) {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  color: var(--ink);
+  filter: drop-shadow(0 1px 4px #060713);
+}
+.clear :global(.menu-toggle:hover),
+.clear :global(.menu-toggle[aria-expanded="true"]) { color: var(--exp-accent); }
+
+.clear :global(.mobile-nav) {
+  inset: 100% 0 auto auto;
+  display: grid;
+  justify-items: end;
+  padding: .35rem 0;
+  width: max-content;
+  max-width: min(75vw, 260px);
+  max-height: calc(100dvh - 5rem);
+  overflow-y: auto;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--ink);
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-5px);
+  transition: opacity 150ms, transform 150ms var(--exp-ease), visibility 0s 150ms;
+}
+
+.clear :global(.mobile-nav.is-open) {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition: opacity 220ms, transform 220ms var(--exp-ease);
+}
+
+.clear :global(.mobile-nav) > :is(a, button) {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 46px;
+  padding: .5rem .4rem .5rem 1.25rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: end;
+  text-shadow: 0 0 14px #050610, 0 1px 4px #050610, 0 0 5px #050610;
+  font: 500 clamp(.95rem, 1.35vw, 1.22rem)/1.2 var(--font-body), sans-serif;
+}
+.clear :global(.mobile-nav) > :is(a, button):is(:hover, [aria-current="page"]) {
+  color: var(--exp-accent);
+}
+.clear :global(.mobile-nav) > :is(a, button):focus-visible { outline-offset: -2px; }
+
+@media (max-width: 600px) {
+  .clear:has(:global(.mobile-nav.is-open)) + main {
+    opacity: .29;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .clear :global(.mobile-nav),
+  .clear :global(.mobile-nav.is-open) { transition: none; }
+  .clear :global(.mobile-nav) > :global(.nav-motion-toggle) { display: none; }
+}
