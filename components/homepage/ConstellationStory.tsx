@@ -172,20 +172,21 @@ export default function ConstellationStory({
         </div>
       </section>
 
-      <section className={`${styles.chapter} ${styles.reverse}`} id="workspace-story" aria-labelledby="workspace-story-title">
+      <section className={`${styles.chapter} ${styles.reverse}`} id="workspaces" aria-labelledby="workspace-story-title">
+        <span id="workspace-story" className={styles.anchorAlias} aria-hidden="true" />
         <div className={styles.fallback} aria-hidden="true"><CodeXml /></div>
         <div className={styles.copy}>
           <h2 id="workspace-story-title">All your work.<br /><em>In view.</em></h2>
           <p>Keep the conversation, files, and tools together as the work moves from an idea to a result.</p>
-          <a className={`${styles.follow} t-learn`} href="#workspaces">
-            See what’s inside
+          <Link className={`${styles.follow} t-learn`} href="/for-you">
+            Explore connected tools
             <span className="t-learn-chevron" aria-hidden="true">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                 <path className="t-learn-arm t-learn-arm-top" d="M6 4L10 8" />
                 <path className="t-learn-arm t-learn-arm-bot" d="M10 8L6 12" />
               </svg>
             </span>
-          </a>
+          </Link>
         </div>
       </section>
 
