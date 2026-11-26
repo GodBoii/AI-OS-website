@@ -74,6 +74,8 @@
 .pet-companion.is-guiding { right: 20px; }
 .companion:has(.companion-panel) { bottom: 228px; }
 .companion-panel { margin-bottom: 0; max-height: calc(100dvh - 320px); overflow-y: auto; }
+.companion.companion-inline-guide:has(.companion-panel) { bottom: 20px; }
+.companion-inline-guide .companion-panel { max-height: calc(100dvh - 40px); }
 @keyframes pet-speech-enter { from { opacity: 0; transform: translateX(6px) scale(.96); } }
 @media (max-width: 1100px) and (min-width: 701px) {
   .pet-companion { right: 8px; width: 128px; }
