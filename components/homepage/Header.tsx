@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { supabase } from "../../lib/supabaseClient";
+import { notifyGuide } from "../../lib/experience";
+import StarMark from "../experience/StarMark";
 
 export function BrandMark() {
   return (
@@ -27,6 +29,11 @@ const links = [
 
 export default function Header() {
   const router = useRouter();
+  const isHome = router.pathname === "/";
+  const inlineGuide = isHome || router.pathname === "/download";
+  const navigation = isHome
+    ? links.filter((link) => link.href !== "/#compare" && link.href !== "/download")
+    : links;
   const [user, setUser] = useState<User | null>(null);
   const [open, setOpen] = useState(false);
   const [authError, setAuthError] = useState("");
@@ -83,7 +90,7 @@ export default function Header() {
         Skip to content
       </a>
       <Link href="/" className="brand" aria-label="Aetheria AI home">
-        <BrandMark />
+        {isHome ? <StarMark className="brand-icon" /> : <BrandMark />}
         <span>
           aetheria
           <span className="brand-dot" aria-hidden="true">
@@ -92,7 +99,7 @@ export default function Header() {
         </span>
       </Link>
       <nav className="desktop-nav" aria-label="Main navigation">
-        {links.map((link) => (
+        {navigation.map((link) => (
           <Link
             key={link.href}
             href={link.href}
@@ -103,6 +110,12 @@ export default function Header() {
         ))}
       </nav>
       <div className="header-actions">
+        {inlineGuide && (
+          <button type="button" className="login-link" onClick={(event) => {
+            event.currentTarget.focus();
+            notifyGuide({ kind: "guide" });
+          }}>Guide</button>
+        )}
         <Link href={user ? "/dashboard" : "/auth/login"} className="login-link">
           {user ? "Dashboard" : "Log in"}
         </Link>
@@ -132,7 +145,7 @@ export default function Header() {
           className="mobile-nav"
           aria-label="Mobile navigation"
         >
-          {links.map((link) => (
+          {navigation.map((link) => (
             <Link
               href={link.href}
               key={link.href}
@@ -147,6 +160,13 @@ export default function Header() {
             {user ? "Dashboard" : "Log in"}
             <ArrowUpRight size={20} />
           </Link>
+          {inlineGuide && (
+            <button type="button" onClick={() => {
+              setOpen(false);
+              menuRef.current?.focus();
+              notifyGuide({ kind: "guide" });
+            }}>Guide <ArrowUpRight size={20} aria-hidden="true" /></button>
+          )}
           <Link href="/download" className="mobile-download">
             Get Aetheria <ArrowUpRight size={20} />
           </Link>
