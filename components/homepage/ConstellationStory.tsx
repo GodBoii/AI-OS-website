@@ -4,9 +4,22 @@ import { ArrowDown, ArrowUpRight, CodeXml, FileCheck } from "lucide-react";
 import StarMark from "../experience/StarMark";
 import styles from "../../styles/constellation.module.css";
 
-export default function ConstellationStory() {
+export default function ConstellationStory({
+  paused,
+  onReady,
+}: {
+  paused: boolean;
+  onReady: () => void;
+}) {
   const story = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
+  const ambientPaused = useRef(paused);
+  const refresh = useRef<() => void>();
+
+  useEffect(() => {
+    ambientPaused.current = paused;
+    refresh.current?.();
+  }, [paused]);
 
   useEffect(() => {
     const root = story.current;
@@ -23,19 +36,36 @@ export default function ConstellationStory() {
     let nearby = false;
     let disposed = false;
     let loading = false;
+    let lastFrame = 0;
+    let lastPaint = -Infinity;
+    let lastOffset = -1;
+    let time = 0;
     let renderer: ReturnType<typeof import("../../lib/constellation").createConstellationRenderer> = null;
 
-    function render() {
+    function render(now: number) {
       frame = 0;
       if (!renderer || !root || !surface || delivery <= workspace || !workspace) return;
       const offset = Math.min(delivery, Math.max(0, -root.getBoundingClientRect().top));
-      const chapter = offset < workspace ? 0 : 1;
-      const progress = chapter === 0 ? offset / workspace : (offset - workspace) / (delivery - workspace);
-      const center = renderer.draw({ offset, chapter, progress });
-      if (center === null) return;
-      surface.style.transform = `translate3d(0, ${offset}px, 0)`;
-      surface.style.setProperty("--star-light", `${center.toFixed(1)}%`);
-      root.dataset.particles = "active";
+      if (!ambientPaused.current && lastFrame) time += Math.min(now - lastFrame, 80) / 1000;
+      lastFrame = now;
+
+      if (offset !== lastOffset || now - lastPaint >= 32) {
+        const chapter = offset < workspace ? 0 : 1;
+        const progress = chapter === 0 ? offset / workspace : (offset - workspace) / (delivery - workspace);
+        const center = renderer.draw({ offset, chapter, progress, elapsed: time });
+        if (center === null) return;
+        if (offset !== lastOffset) {
+          surface.style.transform = `translate3d(0, ${offset}px, 0)`;
+          surface.style.setProperty("--star-light", `${center.toFixed(1)}%`);
+        }
+        lastOffset = offset;
+        lastPaint = now;
+        if (root.dataset.particles !== "active") {
+          root.dataset.particles = "active";
+          onReady();
+        }
+      }
+      if (!ambientPaused.current) schedule();
     }
 
     function schedule() {
@@ -53,6 +83,7 @@ export default function ConstellationStory() {
         height = surface.clientHeight;
         renderer?.resize(width, height, compact.matches);
       }
+      lastPaint = -Infinity;
       schedule();
     }
 
@@ -61,10 +92,15 @@ export default function ConstellationStory() {
       if (!nearby || reducedMotion.matches || document.hidden) {
         window.cancelAnimationFrame(frame);
         frame = 0;
-        if (reducedMotion.matches) delete root.dataset.particles;
+        lastFrame = 0;
+        if (reducedMotion.matches) {
+          delete root.dataset.particles;
+          onReady();
+        }
         return;
       }
       if (renderer) {
+        lastPaint = -Infinity;
         schedule();
         return;
       }
@@ -74,11 +110,14 @@ export default function ConstellationStory() {
         .then(({ createConstellationRenderer }) => {
           if (disposed || reducedMotion.matches) return;
           renderer = createConstellationRenderer(surface);
+          if (!renderer) onReady();
           renderer?.resize(width, height, compact.matches);
           schedule();
         })
         .catch(() => {
+          if (disposed) return;
           delete root.dataset.particles;
+          onReady();
         })
         .finally(() => {
           loading = false;
@@ -93,6 +132,10 @@ export default function ConstellationStory() {
     visibility.observe(root);
     layout.observe(root);
     layout.observe(surface);
+    refresh.current = () => {
+      lastFrame = 0;
+      schedule();
+    };
     window.addEventListener("scroll", schedule, { passive: true });
     reducedMotion.addEventListener("change", syncMotion);
     document.addEventListener("visibilitychange", syncMotion);
@@ -105,9 +148,10 @@ export default function ConstellationStory() {
       window.removeEventListener("scroll", schedule);
       reducedMotion.removeEventListener("change", syncMotion);
       document.removeEventListener("visibilitychange", syncMotion);
+      refresh.current = undefined;
       delete root.dataset.particles;
     };
-  }, []);
+  }, [onReady]);
 
   return (
     <div className={styles.story} ref={story}>
