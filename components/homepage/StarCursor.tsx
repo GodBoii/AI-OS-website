@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import type { RefObject } from "react";
-import StarMark from "../experience/StarMark";
 import styles from "../../styles/constellation.module.css";
 
 const nativePointer = "input, textarea, select, iframe, video[controls], [contenteditable]:not([contenteditable='false']), [data-intro]";
@@ -102,8 +101,19 @@ export default function StarCursor({ page }: { page: RefObject<HTMLDivElement> }
   return (
     <div className={styles.starCursor} ref={cursor} aria-hidden="true">
       <div className={styles.cursorArt}>
-        <StarMark />
-        <span className={styles.cursorOrbit} />
+        <svg viewBox="0 0 100 100" fill="none">
+          <defs>
+            <linearGradient id="cursor-crystal-lit" x1="5" y1="12" x2="87" y2="89" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#fffaff" /><stop offset=".48" stopColor="#e3ccff" /><stop offset="1" stopColor="#6e5abb" />
+            </linearGradient>
+            <linearGradient id="cursor-crystal-shadow" x1="46" y1="29" x2="87" y2="93" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#bda9f4" /><stop offset="1" stopColor="#453779" />
+            </linearGradient>
+          </defs>
+          <path d="M50 2C48 38 38 48 2 50C38 52 48 62 50 98C52 62 62 52 98 50C62 48 52 38 50 2Z" fill="url(#cursor-crystal-lit)" />
+          <path d="M50 2C52 38 62 48 98 50H50V2ZM50 50H2C38 52 48 62 50 98V50Z" fill="url(#cursor-crystal-shadow)" />
+          <path d="M50 21V49L22 50M79 50H50V79" stroke="#f9efff" strokeWidth="1.6" strokeOpacity=".65" />
+        </svg>
       </div>
     </div>
   );
