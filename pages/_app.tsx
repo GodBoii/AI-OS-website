@@ -8,6 +8,7 @@ import "../pets/aetheria/animations.css";
 import "../styles/pet-companion.css";
 import { MotionConfig } from "framer-motion";
 import Companion from "../components/experience/Companion";
+import CookiePreferences from "../components/CookiePreferences";
 
 const display = Outfit({
   subsets: ["latin"],
@@ -30,6 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <MotionConfig reducedMotion="user">
         <Component {...pageProps} />
         <Companion />
+        <CookiePreferences />
       </MotionConfig>
     </div>
   );
