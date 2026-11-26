@@ -14,6 +14,7 @@
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.39.7",
     "@types/cors": "^2.8.19",
+    "@vercel/speed-insights": "^2.1.1",
     "chart.js": "^4.4.9",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
