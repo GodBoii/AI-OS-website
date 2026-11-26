@@ -20,6 +20,8 @@ const pageGuidance: Readonly<Record<string, string>> = {
     "Choose the client for your platform. The download rows show versions, package formats, and requirements. macOS is listed as coming soon.",
   "/pricing":
     "Core has a daily token allowance. Pro and Elite list monthly allowances. Paid-plan buttons put you in touch with the team about availability.",
+  "/dashboard":
+    "Your dashboard shows token usage and your current plan. Use the date filters to inspect activity over time.",
   "/for-you":
     "Select a tool to explore its workflow example. These illustrations explain how connected context can fit into your work.",
   "/auth/login":
@@ -41,31 +43,25 @@ const pageGuidance: Readonly<Record<string, string>> = {
 };
 const tour = [
   {
-    id: "playground",
-    message:
-      "Start here. Pick an example and run it. You can pause, inspect the source, and download the finished file.",
-  },
-  {
     id: "workspaces",
     message:
-      "These are the different places your work can happen. Select a panel to explore conversation, code, computer tasks, or connected tools.",
+      "Aetheria brings conversation, files, and connected tools into one workspace.",
   },
   {
-    id: "compare",
+    id: "playground",
     message:
-      "Choose an assistant to read about its approach. The source links explain its documented capabilities.",
+      "Pick an example and run it. You can pause, inspect the source, and download the finished file.",
   },
   {
     id: "get-started",
-    message:
-      "Your next step is a download. Choose your platform, or open the download page for requirements.",
+    message: "Open Downloads to choose your platform and review the installation requirements.",
   },
 ];
 
 export default function Companion() {
   const router = useRouter();
   const isHome = router.pathname === "/";
-  const inlineGuide = isHome || router.pathname === "/download";
+  const inlineGuide = isHome || ["/download", "/pricing", "/dashboard"].includes(router.pathname);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState(welcome);
   const [tourStep, setTourStep] = useState<number | null>(null);
@@ -260,7 +256,7 @@ export default function Companion() {
                   <button type="button" onClick={() => visit(0)}>
                     Show me around <ArrowRight size={15} />
                   </button>
-                  <a href="#playground" onClick={() => visit(0)}>
+                  <a href="#playground" onClick={() => visit(1)}>
                     Take me to the demo <ArrowUpRight size={14} />
                   </a>
                 </>
