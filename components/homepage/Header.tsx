@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, Pause, Play, X } from "lucide-react";
 import { supabase } from "../../lib/supabaseClient";
 import { notifyGuide } from "../../lib/experience";
 import StarMark from "../experience/StarMark";
@@ -27,7 +27,11 @@ const links = [
   { href: "/pricing", label: "Pricing" },
 ];
 
-export default function Header() {
+type HeaderProps = {
+  motionControl?: { paused: boolean; toggle: () => void };
+};
+
+export default function Header({ motionControl }: HeaderProps) {
   const router = useRouter();
   const isHome = router.pathname === "/";
   const inlineGuide = isHome || router.pathname === "/download";
@@ -139,11 +143,14 @@ export default function Header() {
       >
         {open ? <X /> : <Menu />}
       </button>
-      {open && (
+      {(open || isHome) && (
         <nav
           id="mobile-navigation"
-          className="mobile-nav"
-          aria-label="Mobile navigation"
+          className={`mobile-nav${isHome ? " t-dropdown" : ""}${open ? " is-open" : ""}`}
+          data-origin={isHome ? "top-right" : undefined}
+          aria-label={isHome ? "Main navigation" : "Mobile navigation"}
+          aria-hidden={isHome && !open ? true : undefined}
+          ref={(element) => { if (element && isHome) element.inert = !open; }}
         >
           {navigation.map((link) => (
             <Link
@@ -166,6 +173,12 @@ export default function Header() {
               menuRef.current?.focus();
               notifyGuide({ kind: "guide" });
             }}>Guide <ArrowUpRight size={20} aria-hidden="true" /></button>
+          )}
+          {motionControl && (
+            <button type="button" className="nav-motion-toggle" onClick={motionControl.toggle}>
+              {motionControl.paused ? "Resume ambient motion" : "Pause ambient motion"}
+              {motionControl.paused ? <Play size={16} aria-hidden="true" /> : <Pause size={16} aria-hidden="true" />}
+            </button>
           )}
           <Link href="/download" className="mobile-download">
             Get Aetheria <ArrowUpRight size={20} />
