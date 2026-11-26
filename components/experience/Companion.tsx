@@ -65,6 +65,7 @@ const tour = [
 export default function Companion() {
   const router = useRouter();
   const isHome = router.pathname === "/";
+  const inlineGuide = isHome || router.pathname === "/download";
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState(welcome);
   const [tourStep, setTourStep] = useState<number | null>(null);
@@ -72,7 +73,9 @@ export default function Companion() {
   const [speechAvailable, setSpeechAvailable] = useState(false);
   const [speechError, setSpeechError] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
+  const guideOrigin = useRef<HTMLElement | null>(null);
   const root = useRef<HTMLDivElement>(null);
+  const panel = useRef<HTMLElement>(null);
 
   useEffect(() => {
     setMessage(pageGuidance[router.pathname] ?? welcome);
@@ -91,8 +94,11 @@ export default function Companion() {
       const detail: unknown = event.detail;
       if (!isGuideEvent(detail)) return;
       if (detail.kind === "guide") {
+        guideOrigin.current = document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
         setOpen(true);
-        setMessage(welcome);
+        setMessage(pageGuidance[router.pathname] ?? welcome);
         setTourStep(null);
         return;
       }
@@ -124,14 +130,14 @@ export default function Companion() {
         ?.classList.remove("is-guide-target");
       if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     };
-  }, []);
+  }, [router.pathname]);
 
   useEffect(() => {
     if (!open) return;
     function key(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setOpen(false);
-        trigger.current?.focus();
+        (trigger.current ?? guideOrigin.current)?.focus();
       }
     }
     function outside(event: PointerEvent) {
@@ -172,6 +178,10 @@ export default function Companion() {
   }, [message, voice, open, speechAvailable]);
 
   useEffect(() => {
+    if (open && inlineGuide) panel.current?.focus();
+  }, [inlineGuide, open]);
+
+  useEffect(() => {
     if (!open)
       document
         .querySelector(".is-guide-target")
@@ -181,7 +191,7 @@ export default function Companion() {
   function dismiss() {
     setOpen(false);
     setTourStep(null);
-    trigger.current?.focus();
+    (trigger.current ?? guideOrigin.current)?.focus();
   }
   function visit(index: number) {
     const step = tour[index];
@@ -192,6 +202,8 @@ export default function Companion() {
       .querySelector(".is-guide-target")
       ?.classList.remove("is-guide-target");
     const section = document.getElementById(step.id);
+    const disclosure = section?.closest("details");
+    if (disclosure) disclosure.open = true;
     section?.classList.add("is-guide-target");
     section?.scrollIntoView({
       behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -202,9 +214,11 @@ export default function Companion() {
   }
 
   return (
-    <div className="companion" ref={root}>
+    <div className={`companion${inlineGuide ? " companion-inline-guide" : ""}`} ref={root}>
       {open && (
         <aside
+          ref={panel}
+          tabIndex={-1}
           id="aetheria-guide-panel"
           className="companion-panel"
           aria-label="Aetheria wayfinder"
@@ -299,15 +313,17 @@ export default function Companion() {
           </span>
         </aside>
       )}
-      <PetCompanion
-        pathname={router.pathname}
-        guideOpen={open}
-        guideTrigger={trigger}
-        onGuide={() => {
-          if (open) dismiss();
-          else setOpen(true);
-        }}
-      />
+      {!inlineGuide && (
+        <PetCompanion
+          pathname={router.pathname}
+          guideOpen={open}
+          guideTrigger={trigger}
+          onGuide={() => {
+            if (open) dismiss();
+            else setOpen(true);
+          }}
+        />
+      )}
     </div>
   );
 }
