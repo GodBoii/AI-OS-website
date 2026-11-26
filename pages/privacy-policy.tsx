@@ -19,7 +19,7 @@ export default function Privacy() {
               Privacy Protocol
             </h1>
             <p className="font-mono text-sm bg-ink/10 text-muted inline-flex px-3 py-1 rounded-full border border-ink/10">
-              Last Updated: DEC 2025
+              Last updated: November 2026
             </p>
           </header>
 
@@ -64,9 +64,7 @@ export default function Privacy() {
                 </span>
                 Data Collection
               </h2>
-              <p className="text-muted mb-6 text-lg">
-                We only collect telemetry necessary for system health:
-              </p>
+              <p className="text-muted mb-6 text-lg">Aetheria uses account data for sign-in and app telemetry for usage reporting.</p>
               <ul className="space-y-4 font-mono text-sm text-muted">
                 <li className="flex items-start gap-3 bg-ink/5 p-4 rounded-xl border border-ink/5">
                   <div className="mt-0.5 w-2 h-2 rounded-full bg-accent"></div>
@@ -90,6 +88,12 @@ export default function Privacy() {
                   </div>
                 </li>
               </ul>
+            </section>
+
+            <section className="p-4 md:p-8" aria-labelledby="cookies-heading">
+              <h2 id="cookies-heading" className="text-2xl md:text-3xl font-bold mb-4 text-ink">Cookies and website performance</h2>
+              <p className="text-muted mb-4">Essential storage supports sign-in and saves your cookie choice for up to 180 days.</p>
+              <p className="text-muted">If you opt in, Vercel Speed Insights measures a sample of page-load and responsiveness metrics on the homepage, Downloads, and Pricing. You can change your choice at any time through Cookie settings in the footer.</p>
             </section>
 
             <section className="bg-surface border border-ink/10 rounded-lg p-5 md:p-8 relative overflow-hidden">
