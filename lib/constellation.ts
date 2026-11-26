@@ -117,7 +117,7 @@ function createSprite(color: string, bright: boolean) {
   return sprite;
 }
 
-type Frame = { offset: number; chapter: 0 | 1; progress: number };
+type Frame = { offset: number; chapter: 0 | 1; progress: number; elapsed: number };
 
 export function createConstellationRenderer(canvas: HTMLCanvasElement) {
   const context = canvas.getContext("2d");
@@ -143,7 +143,7 @@ export function createConstellationRenderer(canvas: HTMLCanvasElement) {
     context?.setTransform(density, 0, 0, density, 0, 0);
   }
 
-  function draw({ offset, chapter, progress }: Frame) {
+  function draw({ offset, chapter, progress, elapsed }: Frame) {
     if (!context || !width || !height) return null;
     const next: Shape = chapter === 0 ? 1 : 2;
     const phase = clamp((progress - .12) / .73);
@@ -151,12 +151,12 @@ export function createConstellationRenderer(canvas: HTMLCanvasElement) {
     const dispersal = Math.pow(Math.sin(Math.PI * mix), 1.7);
     const center = mobile ? .5 : lerp(centers[chapter], centers[next], mix);
     const centerX = width * center;
-    const centerY = mobile ? 148 : height * .48;
+    const centerY = (mobile ? 148 : height * .48) + Math.sin(elapsed * .95) * (mobile ? 4 : 8);
     const scale = mobile ? Math.min(width * .34, 137) : Math.min(width * .205, height * .34);
-    const yaw = lerp(tilts[chapter], tilts[next], mix) + Math.sin(offset * .0017) * .13;
+    const yaw = lerp(tilts[chapter], tilts[next], mix) + Math.sin(offset * .0017) * .13 + Math.sin(elapsed * .7) * .19;
     const cosine = Math.cos(yaw);
     const sine = Math.sin(yaw);
-    const roll = lerp(turns[chapter], turns[next], mix) + dispersal * .36;
+    const roll = lerp(turns[chapter], turns[next], mix) + dispersal * .36 + Math.sin(elapsed * .83) * .075;
     const rollCos = Math.cos(roll);
     const rollSin = Math.sin(roll);
 
@@ -164,14 +164,17 @@ export function createConstellationRenderer(canvas: HTMLCanvasElement) {
     const starCount = mobile ? 480 : stars.length;
     for (let index = 0; index < starCount; index++) {
       const star = stars[index];
-      const x = star.x * width;
-      const drift = offset * (.05 + star.depth * .13);
-      const y = ((star.y * height - drift) % height + height) % height;
+      const driftX = elapsed * (3 + star.depth * 23);
+      const driftY = elapsed * (2 + star.depth * 16) + offset * (.05 + star.depth * .13);
+      const x = ((star.x * width - driftX) % width + width) % width;
+      const y = ((star.y * height - driftY) % height + height) % height;
       const size = 1.2 + star.flare * star.flare * 2.6;
-      context.globalAlpha = .13 + star.depth * .47;
+      const edge = clamp(Math.min(x, width - x, y, height - y) / 18);
+      const twinkle = .86 + Math.sin(elapsed * (1 + star.flare) + star.x * TAU) * .14;
+      context.globalAlpha = (.16 + star.depth * .54) * twinkle * edge;
       context.drawImage(dots[star.color], x - size / 2, y - size / 2, size, size);
       if (star.flare > .992) {
-        context.globalAlpha = .58;
+        context.globalAlpha = .58 * twinkle * edge;
         context.drawImage(sparks[star.color], x - 3.5, y - 3.5, 7, 7);
       }
     }
@@ -181,7 +184,7 @@ export function createConstellationRenderer(canvas: HTMLCanvasElement) {
       const point = particles[index];
       const [fromX, fromY, fromZ] = point.points[chapter];
       const [toX, toY, toZ] = point.points[next];
-      const angle = point.angle + dispersal * (1.8 + point.phase) + offset * .0006;
+      const angle = point.angle + dispersal * (1.8 + point.phase + Math.sin(elapsed * .5) * .22) + offset * .0006;
       const spread = point.distance * dispersal;
       const x = lerp(fromX, toX, mix) * (1 - dispersal * .30) + Math.cos(angle) * spread;
       const y = lerp(fromY, toY, mix) * (1 - dispersal * .30) + Math.sin(angle) * spread * .70;
@@ -189,9 +192,11 @@ export function createConstellationRenderer(canvas: HTMLCanvasElement) {
       const rotatedX = x * cosine + z * sine;
       const rotatedZ = z * cosine - x * sine;
       const perspective = 1 / (1 - rotatedZ * .27);
-      const px = centerX + (rotatedX * rollCos - y * rollSin) * scale * perspective;
-      const py = centerY + (rotatedX * rollSin + y * rollCos) * scale * perspective;
-      const band = Math.sin(x * 4.3 - y * 2.7 + rotatedZ * 5);
+      // Local drift and a traveling highlight keep settled forms alive.
+      const drift = Math.sin(elapsed * (1.15 + point.size) + point.phase * TAU) * (mobile ? 1 : 1.6);
+      const px = centerX + (rotatedX * rollCos - y * rollSin) * scale * perspective + drift;
+      const py = centerY + (rotatedX * rollSin + y * rollCos) * scale * perspective + drift * (point.depth - .5);
+      const band = Math.sin(x * 4.3 - y * 2.7 + rotatedZ * 5 - elapsed * .72);
       const light = clamp(.56 + band * .24 + rotatedZ * .4);
       const hue = band > .69 ? 4 : band < -.35 ? (point.color % 2 === 0 ? 0 : 5) : point.color;
       const bright = point.size > .96 && light > .47;
