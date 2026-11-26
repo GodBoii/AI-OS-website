@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import StarMark from "../experience/StarMark";
-export default function Footer() {
+import { COOKIE_SETTINGS_EVENT } from "../CookiePreferences";
+import styles from "../../styles/surface.module.css";
+export default function Footer({ compact = false }: { compact?: boolean }) {
   return (
-    <footer className="exp-footer">
-      <div className="exp-footer-call exp-container">
+    <footer className={`exp-footer${compact ? " " + styles.footer : ""}`}>
+      {!compact && <div className="exp-footer-call exp-container">
         <span className="exp-kicker">Got something in mind?</span>
         <Link href="/download" className="footer-main-link">
           <span>
@@ -15,7 +17,7 @@ export default function Footer() {
           </span>
         </Link>
         <p>Give it a workspace.</p>
-      </div>
+      </div>}
       <div className="exp-footer-nav exp-container">
         <Link href="/" className="footer-new-brand">
           <StarMark />
@@ -54,10 +56,14 @@ export default function Footer() {
       </div>
       <div className="exp-footer-legal exp-container">
         <span>© {new Date().getFullYear()} Aetheria AI</span>
-        <span>Human direction. A little mechanical help.</span>
+        {!compact && <span>Human direction. A little mechanical help.</span>}
         <div>
           <Link href="/privacy-policy">Privacy</Link>
           <Link href="/terms">Terms</Link>
+          <button type="button" onClick={(event) => {
+            event.currentTarget.focus();
+            window.dispatchEvent(new Event(COOKIE_SETTINGS_EVENT));
+          }}>Cookie settings</button>
         </div>
       </div>
     </footer>
