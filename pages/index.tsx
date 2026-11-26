@@ -1,34 +1,23 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router";
-import { Plus } from "lucide-react";
+import { useCallback, useRef, useState } from "react";
+import Link from "next/link";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import SEO from "../components/SEO";
 import Header from "../components/homepage/Header";
 import ConstellationStory from "../components/homepage/ConstellationStory";
 import LandingIntro from "../components/homepage/LandingIntro";
 import StarCursor from "../components/homepage/StarCursor";
 import ExecutionScene from "../components/homepage/ExecutionScene";
-import OrchestrationScene from "../components/homepage/OrchestrationScene";
-import WorkspaceTheatre from "../components/experience/WorkspaceTheatre";
-import ComparisonScene from "../components/experience/ComparisonScene";
+import StarMark from "../components/experience/StarMark";
 import Footer from "../components/homepage/Footer";
-import StartScene from "../components/homepage/StartScene";
 import styles from "../styles/constellation.module.css";
+import surface from "../styles/surface.module.css";
 
 export default function Home() {
-  const { asPath } = useRouter();
-  const more = useRef<HTMLDetailsElement>(null);
   const page = useRef<HTMLDivElement>(null);
   const content = useRef<HTMLDivElement>(null);
   const [artReady, setArtReady] = useState(false);
   const [motionPaused, setMotionPaused] = useState(false);
   const onArtReady = useCallback(() => setArtReady(true), []);
-
-  useEffect(() => {
-    const details = more.current;
-    if (!details || !asPath.endsWith("#compare")) return;
-    details.open = true;
-    details.querySelector("#compare")?.scrollIntoView({ block: "start" });
-  }, [asPath]);
 
   return (
     <div className={`aetheria-home experience-home ${styles.home}`} ref={page}>
@@ -39,19 +28,21 @@ export default function Home() {
       />
       <LandingIntro content={content} artReady={artReady} />
       <div ref={content}>
-        <Header motionControl={{ paused: motionPaused, toggle: () => setMotionPaused((paused) => !paused) }} />
+        <Header streamlined motionControl={{ paused: motionPaused, toggle: () => setMotionPaused((paused) => !paused) }} />
         <main id="main-content">
           <ConstellationStory paused={motionPaused} onReady={onArtReady} />
           <ExecutionScene />
-          <WorkspaceTheatre />
-          <StartScene />
-          <details className={styles.more} ref={more}>
-            <summary>Compare approaches and explore integrations <Plus size={18} aria-hidden="true" /></summary>
-            <ComparisonScene />
-            <OrchestrationScene />
-          </details>
+          <section id="get-started" className={surface.finale} aria-labelledby="download-finale" data-paused={motionPaused}>
+            <StarMark />
+            <h2 id="download-finale">Make it <em>yours.</em></h2>
+            <p>Aetheria is available for Windows, Linux, and Android.</p>
+            <div className={surface.finaleActions}>
+              <Link href="/download" className={surface.action}>Choose your platform <ArrowDown size={16} aria-hidden="true" /></Link>
+              <Link href="/pricing" className={surface.textLink}>See plans <ArrowUpRight size={16} aria-hidden="true" /></Link>
+            </div>
+          </section>
         </main>
-        <Footer />
+        <Footer compact />
       </div>
       <StarCursor page={page} />
     </div>
