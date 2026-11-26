@@ -90,17 +90,14 @@ export default function ExecutionScene() {
     >
       <div className="exp-section-heading">
         <div>
-          <span className="exp-kicker">A little direction goes a long way</span>
           <h2 id="playground-title">
-            From “what if”
+            Try a
             <br />
-            to <em>there it is.</em>
+            <em>workflow.</em>
           </h2>
         </div>
         <p>
-          Pick a task. Watch the pieces come together.
-          <br />
-          Then take the result with you.
+          Choose an example to see how a request becomes a file you can inspect and download.
         </p>
       </div>
       <div className="demo-shell">
@@ -321,33 +318,21 @@ export default function ExecutionScene() {
                   playing ? "artifact-await is-playing" : "artifact-await"
                 }
               >
-                <div className="paper-stack">
-                  <span />
-                  <span />
-                  <div>
-                    <StarMark />
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                </div>
+                <div className="artifact-signal" aria-hidden="true"><StarMark /></div>
                 <p>
                   {playing
                     ? workflow.steps[playback.step]?.action
                     : paused
                       ? "Right where you left it."
-                      : "A thought goes in."}
+                      : "Ready to run."}
                   <em>
                     {playing
-                      ? "Watch it take shape."
+                      ? ""
                       : paused
                         ? "Resume when you’re ready."
-                        : "Something useful comes out."}
+                        : "The preview appears here."}
                   </em>
                 </p>
-                <span className="artifact-await-format">
-                  {workflow.format} / YOUR NEXT DELIVERABLE
-                </span>
               </div>
             )}
             <div className="artifact-bottom">
@@ -391,9 +376,6 @@ export default function ExecutionScene() {
         <span>
           Illustrative workflow. Sample data. Files created in your browser.
         </span>
-        <a href="#workspaces">
-          Meet the actual workspace <ArrowUpRight size={14} />
-        </a>
       </div>
     </section>
   );
