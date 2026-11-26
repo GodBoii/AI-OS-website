@@ -1,104 +1,44 @@
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
-import Link from "next/link";
-import { ArrowUpRight, Check } from "lucide-react";
+import styles from "../styles/surface.module.css";
 
 const plans = [
-  {
-    name: "Core",
-    price: "0",
-    budget: "50,000",
-    interval: "tokens every day",
-    description: "For a first idea and a little daily help.",
-    cta: "Start with Core",
-    href: "/auth/signup",
-    tag: "A GOOD PLACE TO START",
-  },
-  {
-    name: "Pro",
-    price: "428",
-    budget: "5 million",
-    interval: "tokens every month",
-    description: "For the projects you keep coming back to.",
-    cta: "Ask about Pro",
-    href: "mailto:aetheria.ai28@gmail.com?subject=Aetheria%20Pro%20plan",
-    tag: "ROOM TO BUILD",
-  },
-  {
-    name: "Elite",
-    price: "4,428",
-    budget: "50 million",
-    interval: "tokens every month",
-    description: "For work that needs a bigger runway.",
-    cta: "Ask about Elite",
-    href: "mailto:aetheria.ai28@gmail.com?subject=Aetheria%20Elite%20plan",
-    tag: "KEEP GOING",
-  },
+  { name: "Core", price: "0", allowance: "50,000 tokens per day", summary: "Start with Aetheria.", href: "/auth/signup", action: "Start with Core" },
+  { name: "Pro", price: "428", allowance: "5 million tokens per month", summary: "More room for ongoing projects.", href: "mailto:aetheria.ai28@gmail.com?subject=Aetheria%20Pro%20plan", action: "Ask about Pro" },
+  { name: "Elite", price: "4,428", allowance: "50 million tokens per month", summary: "For higher-volume work.", href: "mailto:aetheria.ai28@gmail.com?subject=Aetheria%20Elite%20plan", action: "Ask about Elite" },
 ];
+
 export default function Pricing() {
   return (
-    <Layout>
-      <SEO
-        title="Pricing | Aetheria AI"
-        description="Compare Core, Pro, and Elite token allowances and monthly pricing for Aetheria AI."
-      />
-      <div className="pricing-page section-pad">
-        <div className="pricing-intro">
-          <span className="eyebrow">SMALL STARTS. BIG POSSIBILITIES.</span>
-          <h1>
-            Find your
-            <br />
-            <span className="serif-word">working rhythm.</span>
-          </h1>
-          <p>
-            Start with Core. Give bigger projects more room when you need it.
-          </p>
-        </div>
-        <div className="plan-grid">
+    <Layout surface>
+      <SEO title="Pricing | Aetheria AI" description="Compare Core, Pro, and Elite token allowances and monthly pricing." />
+      <div className={styles.page}>
+        <header className={styles.intro}>
+          <h1>Room for <em>your work.</em></h1>
+          <p>Start free with Core, or ask about a larger monthly token allowance.</p>
+        </header>
+        <section className={styles.plans} aria-label="Aetheria plans">
           {plans.map((plan) => (
-            <article
-              className={`plan-panel ${plan.name === "Pro" ? "plan-featured" : ""}`}
-              key={plan.name}
-            >
-              <span className="eyebrow">{plan.tag}</span>
+            <article className={styles.plan} key={plan.name}>
               <h2>{plan.name}</h2>
-              <p className="plan-description">{plan.description}</p>
-              <div className="plan-price">
-                <span>₹</span>
-                {plan.price}
-                <small>/ month</small>
-              </div>
-              <div className="plan-allowance">
-                <Check size={18} />
-                <div>
-                  <strong>{plan.budget}</strong>
-                  <span>{plan.interval}</span>
-                </div>
-              </div>
-              {plan.href.startsWith("/") ? (
-                <Link className="plan-cta" href={plan.href}>
-                  {plan.cta}
-                  <ArrowUpRight size={19} />
-                </Link>
+              <p>{plan.summary}</p>
+              <div className={styles.price}>₹{plan.price}<small>/ month</small></div>
+              <div className={styles.allowance}>{plan.allowance}</div>
+              {plan.name === "Core" ? (
+                <Link className={styles.action} href={plan.href}>{plan.action} <ArrowUpRight size={16} aria-hidden="true" /></Link>
               ) : (
-                <a className="plan-cta" href={plan.href}>
-                  {plan.cta}
-                  <ArrowUpRight size={19} />
-                </a>
+                <a className={styles.textLink} href={plan.href}>{plan.action} <ArrowUpRight size={16} aria-hidden="true" /></a>
               )}
             </article>
           ))}
-        </div>
-        <div className="pricing-note">
-          <span>THE DETAILS</span>
-          <p>
-            Contact the Aetheria team about paid plan availability and billing.
-            Your account shows your active plan and token usage.
-          </p>
-          <Link href="/contact" className="text-cta">
-            Talk to a human <ArrowUpRight size={17} />
-          </Link>
-        </div>
+        </section>
+        <section className={styles.support} aria-labelledby="billing-title">
+          <h2 id="billing-title">Availability and billing</h2>
+          <p>Contact Aetheria about paid-plan availability and billing. See your active plan and usage in your dashboard.</p>
+          <Link href="/contact" className={styles.textLink}>Contact Aetheria <ArrowUpRight size={16} aria-hidden="true" /></Link>
+        </section>
       </div>
     </Layout>
   );
