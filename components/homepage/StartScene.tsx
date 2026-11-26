@@ -38,13 +38,8 @@ export default function StartScene() {
     >
       <div className="start-layout">
         <div>
-          <span className="exp-kicker">Your device. Your next move.</span>
-          <h2 id="start-title">
-            A little download.
-            <br />
-            <em>A lot of possibility.</em>
-          </h2>
-          <p>A workspace for the ideas you keep coming back to.</p>
+          <h2 id="start-title">Get Aetheria.</h2>
+          <p>Choose the installer for your platform.</p>
           <Link className="exp-text-link" href="/pricing">
             Find your plan <ArrowUpRight size={15} />
           </Link>
