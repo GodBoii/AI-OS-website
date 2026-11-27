@@ -107,7 +107,7 @@ export default function Changelog() {
         <SurfaceIntro>
           <h1>Change<em>log.</em></h1>
           <p>Release notes, improvements, and fixes from Aetheria.</p>
-          <a href={releasesUrl} className={styles.textLink}>
+          <a href={releasesUrl} className={styles.textLink} data-glass-control>
             All releases on GitHub <FaGithub size={16} aria-hidden="true" />
           </a>
         </SurfaceIntro>
@@ -154,7 +154,7 @@ export default function Changelog() {
                       {release.body ||
                         "Full release details are available on GitHub."}
                     </p>
-                    <a href={release.html_url} className={styles.textLink}>
+                    <a href={release.html_url} className={styles.textLink} data-glass-control>
                       View release on GitHub <FaGithub size={17} aria-hidden="true" />
                     </a>
                   </div>
