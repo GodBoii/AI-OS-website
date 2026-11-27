@@ -1,7 +1,6 @@
 .site-root {
   --glass-ease: cubic-bezier(.2, .64, .24, 1);
   --glass-duration: 580ms;
-  --glass-rim: #e0ecff35;
 }
 
 [data-glass-layer] { isolation: isolate; }
@@ -42,38 +41,34 @@
   box-shadow: inset 0 0 0 1px #ead9ff92, inset 0 0 15px #b495ed48;
 }
 
-.liquid-glass-mark {
+[data-glass-brand] {
   position: relative;
-  display: grid;
-  place-items: center;
-  flex: none;
-  inline-size: 42px;
-  block-size: 42px;
-  border-radius: 13px;
-  border: 1px solid var(--glass-rim);
-  background: #f4f8ff07;
-  box-shadow: inset 0 1px 1px #f3f8ff22;
-  backdrop-filter: blur(2px);
-  transition: box-shadow var(--glass-duration) var(--glass-ease), border-color var(--glass-duration) var(--glass-ease), scale 350ms var(--glass-ease);
 }
 
-.site-root .liquid-glass-mark .brand-icon { width: 27px; height: 27px; }
-.brand:is(:hover, :focus-visible) .liquid-glass-mark {
-  border-color: #e8f3ff75;
-  box-shadow: inset 0 1px 3px #eef5ff38, 0 4px 14px #91b4e721;
-}
-.brand:active .liquid-glass-mark { scale: .94; }
-
-.site-root .site-header .menu-toggle {
-  border-radius: 14px;
-  background: #f0f6ff07;
-  box-shadow: inset 0 0 0 1px var(--glass-rim), inset 0 1px 1px #f4e8ff24;
+[data-glass-brand]::before,
+[data-glass-brand] > .liquid-glass-canvas {
+  z-index: 1;
+  inset: -4px -8px;
+  inline-size: calc(100% + 16px);
+  block-size: calc(100% + 8px);
+  border-radius: 999px;
+  pointer-events: none;
 }
 
-.site-root .site-header .menu-toggle[aria-expanded="true"] {
-  background-color: #e6f2ff0d;
-  box-shadow: inset 0 0 0 1px #e5f3ff50, inset 0 1px 3px #edf5ff29;
+[data-glass-brand]::before {
+  position: absolute;
+  content: "";
+  opacity: 0;
+  box-shadow: inset 0 1px 2px #ecf7ff44, inset 0 -1px 3px #92b7f760;
+  transition: opacity var(--glass-duration) var(--glass-ease);
 }
+
+[data-glass-brand]:not([data-glass-layer]):is(:focus-visible, :active)::before { opacity: 1; }
+@media (hover: hover) {
+  [data-glass-brand]:not([data-glass-layer]):hover::before { opacity: 1; }
+}
+
+.site-root .site-header .menu-toggle { border-radius: 14px; background: transparent; }
 
 .site-root .site-header .liquid-glass-menu {
   inset: calc(100% + 8px) 0 auto auto;
@@ -83,11 +78,10 @@
   max-height: calc(100dvh - 5.5rem);
   padding: .4rem;
   isolation: isolate;
-  border: 1px solid #ebf3ff13;
-  border-radius: 22px;
+  border: 0;
   color: #f8f3ff;
-  background: #090b1529;
-  box-shadow: inset 0 1px 1px #e3efff0f;
+  background: transparent;
+  box-shadow: none;
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
@@ -97,17 +91,6 @@
     opacity 270ms var(--glass-ease),
     transform 410ms var(--glass-ease),
     visibility 0s 410ms;
-}
-
-@supports (backdrop-filter: blur(1px)) {
-  .site-root .site-header .liquid-glass-menu {
-    backdrop-filter: blur(1.5px);
-  }
-}
-
-.site-root .site-header .liquid-glass-menu[data-glass-layer] {
-  border-color: transparent;
-  box-shadow: none;
 }
 
 .site-root .site-header .liquid-glass-menu.is-open {
@@ -161,7 +144,11 @@
     scale 350ms var(--glass-ease);
 }
 
-.site-root .site-header .liquid-glass-items > :is(a, button):is(:focus-visible, :active, [aria-current="page"]) {
+.site-root .site-header .liquid-glass-items > :is(a, button)[aria-current="page"] {
+  color: #dfcdfb;
+}
+
+.site-root .site-header .liquid-glass-items > :is(a, button):is(:focus-visible, :active) {
   border-color: #e1efff2e;
   background-color: #e0edff09;
   box-shadow: inset 0 1px 2px #e9f3ff1c;
@@ -180,15 +167,12 @@
 .site-root .site-header .liquid-glass-menu[data-glass-menu="standard"] { inset-inline-end: max(1rem, 4.5vw); }
 
 @media (max-width: 600px) {
-  .site-root .site-header .liquid-glass-menu {
-    background-color: #090b15b8;
-    backdrop-filter: blur(8px);
-  }
+  .site-header:has(.liquid-glass-menu.is-open) + main { opacity: .25; }
 }
 
 @media (prefers-reduced-motion: reduce), (forced-colors: active) {
   .site-root :where(button, summary, [role="button"], [data-glass-control], .primary-cta, .text-cta, .small-cta, .exp-button, .footer-main-link, .exp-footer-social a),
-  .site-root .liquid-glass-mark,
+  [data-glass-brand]::before,
   .site-root .site-header .liquid-glass-menu,
   .site-root .site-header .liquid-glass-menu.is-open,
   .site-root .site-header .liquid-glass-items > :is(a, button) {
@@ -200,7 +184,6 @@
 
 @media (forced-colors: active) {
   .site-root .site-header .liquid-glass-menu,
-  .site-root .liquid-glass-mark,
   .site-root .site-header .menu-toggle {
     border: 1px solid ButtonText;
     background: Canvas;
