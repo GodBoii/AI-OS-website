@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ArrowUpRight } from "lucide-react";
+import { Check, Mail } from "lucide-react";
 import AuthFrame from "../../components/AuthFrame";
 import SEO from "../../components/SEO";
 import { supabase } from "../../lib/supabaseClient";
@@ -122,13 +122,13 @@ export default function ResetPassword() {
           </p>
         ) : status === "invalid" ? (
           <Link className="primary-cta" href="/auth/forgot-password">
-            Request a new reset link <ArrowUpRight size={18} />
+            Request a new reset link <Mail size={18} aria-hidden="true" />
           </Link>
         ) : status === "saved" ? (
           <div className="signup-success" role="status">
             <p>Your new password is ready to use.</p>
             <Link className="primary-cta" href="/dashboard">
-              Continue to dashboard <ArrowUpRight size={18} />
+              Continue to dashboard
             </Link>
           </div>
         ) : (
@@ -173,7 +173,7 @@ export default function ResetPassword() {
               disabled={status === "saving"}
             >
               {status === "saving" ? "Updating password…" : "Update password"}
-              <ArrowUpRight size={20} />
+              <Check size={20} aria-hidden="true" />
             </button>
           </form>
         )}
