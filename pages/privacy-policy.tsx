@@ -1,139 +1,51 @@
-import SEO from "../components/SEO";
-import Layout from "../components/Layout";
+import { COOKIE_SETTINGS_EVENT } from "../components/CookiePreferences";
+import LegalPage, { LegalContact } from "../components/LegalPage";
+import styles from "../styles/surface.module.css";
+
+const sections = [
+  {
+    id: "data-sovereignty",
+    title: "Data Sovereignty",
+    content: <>
+      <p><strong>Aetheria AI</strong> is architected with a strict privacy-first doctrine. We do NOT monetize your personal data.</p>
+      <p className={styles.legalCallout}><strong>CORE PRINCIPLE:</strong> Your code, your files, and your keys stay on your machine.</p>
+    </>,
+  },
+  {
+    id: "data-collection",
+    title: "Data Collection",
+    content: <>
+      <p>Aetheria uses account data for sign-in and app telemetry for usage reporting.</p>
+      <ul>
+        <li><strong>Authentication:</strong> Email/ID via Supabase.</li>
+        <li><strong>Usage Telemetry:</strong> Anonymized token counts (Inputs/Outputs).</li>
+        <li><strong>Errors:</strong> Stack traces for debugging (only if opted-in).</li>
+      </ul>
+    </>,
+  },
+  {
+    id: "cookies",
+    title: "Cookies and website performance",
+    content: <>
+      <p>Essential storage supports sign-in and saves your cookie choice for up to 180 days.</p>
+      <p>If you opt in, Vercel Speed Insights measures a sample of page-load and responsiveness metrics on the homepage, Downloads, and Pricing. You can change your choice at any time through Cookie settings in the footer.</p>
+      <button type="button" className={styles.textLink} onClick={(event) => {
+        event.currentTarget.focus();
+        window.dispatchEvent(new Event(COOKIE_SETTINGS_EVENT));
+      }}>Open cookie settings</button>
+    </>,
+  },
+  { id: "contact", title: "Contact Officer", content: <LegalContact /> },
+];
 
 export default function Privacy() {
   return (
-    <Layout>
-      <SEO
-        title="Privacy Policy | Aetheria AI"
-        description="Learn how Aetheria AI handles and secures your personal information, local files, and data integrations."
-      />
-      <div className="bg-neo-bg min-h-screen py-20 font-sans relative overflow-hidden pt-24 md:pt-32">
-        {/* Background Effects */}
-        <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
-        <div className="absolute bottom-1/4 right-0 w-[600px] h-[600px] bg-accent/10 blur-[150px] rounded-full pointer-events-none -z-10"></div>
-
-        <div className="container mx-auto px-4 max-w-4xl relative z-10">
-          <header className="mb-16 border-b border-ink/10 pb-8 text-center md:text-left">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-ink mb-4">
-              Privacy Protocol
-            </h1>
-            <p className="font-mono text-sm bg-ink/10 text-muted inline-flex px-3 py-1 rounded-full border border-ink/10">
-              Last updated: November 2026
-            </p>
-          </header>
-
-          <div className="space-y-8 md:space-y-12">
-            <section className="bg-surface-light/50  border border-ink/10 p-5 md:p-8 rounded-lg shadow-none">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6 flex items-center text-ink">
-                <span className="w-10 h-10 bg-primary/20 text-accent-violet rounded-xl flex items-center justify-center text-lg font-semibold mr-4 shadow-glow-sm">
-                  01
-                </span>
-                Data Sovereignty
-              </h2>
-              <p className="text-muted leading-relaxed mb-6 text-lg">
-                <strong className="text-ink">Aetheria AI</strong> is architected
-                with a strict privacy-first doctrine. We do NOT monetize your
-                personal data.
-              </p>
-              <div className="bg-emerald-500/10 p-5 rounded-xl border border-emerald-500/20 text-emerald-800 font-medium flex items-start gap-3">
-                <svg
-                  className="w-6 h-6 flex-shrink-0 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
-                <span>
-                  <strong>CORE PRINCIPLE:</strong> Your code, your files, and
-                  your keys stay on your machine.
-                </span>
-              </div>
-            </section>
-
-            <section className="p-4 md:p-8">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6 flex items-center text-ink">
-                <span className="w-10 h-10 bg-accent/20 text-accent rounded-xl flex items-center justify-center text-lg font-semibold mr-4">
-                  02
-                </span>
-                Data Collection
-              </h2>
-              <p className="text-muted mb-6 text-lg">Aetheria uses account data for sign-in and app telemetry for usage reporting.</p>
-              <ul className="space-y-4 font-mono text-sm text-muted">
-                <li className="flex items-start gap-3 bg-ink/5 p-4 rounded-xl border border-ink/5">
-                  <div className="mt-0.5 w-2 h-2 rounded-full bg-accent"></div>
-                  <div>
-                    <strong className="text-ink">Authentication:</strong>{" "}
-                    Email/ID via Supabase.
-                  </div>
-                </li>
-                <li className="flex items-start gap-3 bg-ink/5 p-4 rounded-xl border border-ink/5">
-                  <div className="mt-0.5 w-2 h-2 rounded-full bg-accent"></div>
-                  <div>
-                    <strong className="text-ink">Usage Telemetry:</strong>{" "}
-                    Anonymized token counts (Inputs/Outputs).
-                  </div>
-                </li>
-                <li className="flex items-start gap-3 bg-ink/5 p-4 rounded-xl border border-ink/5">
-                  <div className="mt-0.5 w-2 h-2 rounded-full bg-accent"></div>
-                  <div>
-                    <strong className="text-ink">Errors:</strong> Stack traces
-                    for debugging (only if opted-in).
-                  </div>
-                </li>
-              </ul>
-            </section>
-
-            <section className="p-4 md:p-8" aria-labelledby="cookies-heading">
-              <h2 id="cookies-heading" className="text-2xl md:text-3xl font-bold mb-4 text-ink">Cookies and website performance</h2>
-              <p className="text-muted mb-4">Essential storage supports sign-in and saves your cookie choice for up to 180 days.</p>
-              <p className="text-muted">If you opt in, Vercel Speed Insights measures a sample of page-load and responsiveness metrics on the homepage, Downloads, and Pricing. You can change your choice at any time through Cookie settings in the footer.</p>
-            </section>
-
-            <section className="bg-surface border border-ink/10 rounded-lg p-5 md:p-8 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[50px] rounded-full pointer-events-none"></div>
-              <h2 className="text-xl font-bold mb-4 text-ink flex items-center gap-2">
-                <svg
-                  className="w-5 h-5 text-muted"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
-                Contact Officer
-              </h2>
-              <div className="font-mono text-sm space-y-3 text-muted">
-                <div className="text-muted">Prajwal Ghadge</div>
-                <a
-                  href="mailto:aetheria.ai28@gmail.com"
-                  className="flex items-center gap-2 hover:text-accent-violet transition-colors"
-                >
-                  <span className="w-4 h-4 text-center">✉</span>{" "}
-                  aetheria.ai28@gmail.com
-                </a>
-                <a
-                  href="tel:9619039912"
-                  className="flex items-center gap-2 hover:text-accent-violet transition-colors"
-                >
-                  <span className="w-4 h-4 text-center">☏</span> 9619039912
-                </a>
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>
-    </Layout>
+    <LegalPage
+      title="Privacy Policy"
+      description="Learn how Aetheria AI handles and secures your personal information, local files, and data integrations."
+      version="Last updated November 2026"
+      related={{ href: "/terms", label: "Terms of Service" }}
+      sections={sections}
+    />
   );
 }
