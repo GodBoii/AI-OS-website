@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import StarMark from "./experience/StarMark";
-import { ArrowLeft } from "lucide-react";
+import { House } from "lucide-react";
 import { BrandMark } from "./homepage/Header";
 
 export default function AuthFrame({
@@ -34,7 +34,7 @@ export default function AuthFrame({
       </aside>
       <section className="auth-form-area">
         <Link href="/" className="auth-back">
-          <ArrowLeft size={16} /> Back to Aetheria
+          <House size={16} aria-hidden="true" /> Back to Aetheria
         </Link>
         <div className="auth-form-content">
           <span className="eyebrow">
