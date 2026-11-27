@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight, CodeXml, FileCheck } from "lucide-react";
+import { CodeXml, FileCheck, PanelsTopLeft, Workflow } from "lucide-react";
 import StarMark from "../experience/StarMark";
 import styles from "../../styles/constellation.module.css";
 
@@ -164,10 +164,10 @@ export default function ConstellationStory({
           <p>A native AI workspace for writing code, working with files, and running desktop tasks you approve.</p>
           <div className={styles.actions}>
             <a className={styles.follow} href="#workspace-story">
-              <span className={styles.arrow}><ArrowDown size={15} aria-hidden="true" /></span>
+              <span className={styles.followIcon}><PanelsTopLeft size={15} aria-hidden="true" /></span>
               Explore the workspace
             </a>
-            <Link className={styles.secondary} href="/download">Get Aetheria <ArrowUpRight size={15} aria-hidden="true" /></Link>
+            <Link className={styles.secondary} href="/download">Get Aetheria</Link>
           </div>
         </div>
       </section>
@@ -178,14 +178,9 @@ export default function ConstellationStory({
         <div className={styles.copy}>
           <h2 id="workspace-story-title">All your work.<br /><em>In view.</em></h2>
           <p>Keep the conversation, files, and tools together as the work moves from an idea to a result.</p>
-          <Link className={`${styles.follow} t-learn`} href="/for-you">
+          <Link className={styles.follow} href="/for-you">
+            <span className={styles.followIcon}><Workflow size={15} aria-hidden="true" /></span>
             Explore connected tools
-            <span className="t-learn-chevron" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                <path className="t-learn-arm t-learn-arm-top" d="M6 4L10 8" />
-                <path className="t-learn-arm t-learn-arm-bot" d="M10 8L6 12" />
-              </svg>
-            </span>
           </Link>
         </div>
       </section>
@@ -195,10 +190,6 @@ export default function ConstellationStory({
         <div className={styles.copy}>
           <h2 id="result-story-title">Take the result<br /><em>with you.</em></h2>
           <p>Review what Aetheria made and carry it into the rest of your work.</p>
-          <a className={styles.follow} href="#playground">
-            <span className={styles.arrow}><ArrowDown size={15} aria-hidden="true" /></span>
-            Try a sample workflow
-          </a>
         </div>
       </section>
     </div>
