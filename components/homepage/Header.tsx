@@ -38,7 +38,6 @@ export default function Header({ motionControl, streamlined = false }: HeaderPro
   const [user, setUser] = useState<User | null>(null);
   const [menu, setMenu] = useState<"closed" | "hover" | "pinned">("closed");
   const open = menu !== "closed";
-  const [authError, setAuthError] = useState("");
   const headerRef = useRef<HTMLElement>(null);
   const menuRef = useRef<HTMLButtonElement>(null);
   const hoverTimer = useRef<number>();
@@ -81,15 +80,6 @@ export default function Header({ motionControl, streamlined = false }: HeaderPro
   }, [router.events]);
   useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
 
-  async function signOut() {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      setAuthError("Could not sign out. Try again.");
-      return;
-    }
-    setMenu("closed");
-    void router.push("/");
-  }
   return (
     <header className={`site-header${streamlined ? " " + styles.clear : ""}`} ref={headerRef}>
       <a className="skip-link" href="#main-content">
@@ -120,9 +110,9 @@ export default function Header({ motionControl, streamlined = false }: HeaderPro
           {user ? "Dashboard" : "Log in"}
         </Link>
         {user ? (
-          <button className="small-cta" onClick={() => void signOut()}>
+          <Link className="small-cta" href="/auth/signout">
             Sign out
-          </button>
+          </Link>
         ) : (
           <Link className="small-cta" href="/download">
             Get Aetheria
@@ -195,15 +185,10 @@ export default function Header({ motionControl, streamlined = false }: HeaderPro
             <Link href="/download" className={streamlined ? undefined : "mobile-download"} aria-current={router.pathname === "/download" ? "page" : undefined} onClick={() => setMenu("closed")}>
               {streamlined ? "Downloads" : "Get Aetheria"}
             </Link>
-            {user && <button onClick={() => void signOut()}>Sign out</button>}
+            {user && <Link href="/auth/signout" onClick={() => setMenu("closed")}>Sign out</Link>}
           </div>
         </nav>
       </div>
-      {authError && (
-        <p className="auth-error" role="alert">
-          {authError}
-        </p>
-      )}
     </header>
   );
 }
