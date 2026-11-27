@@ -81,15 +81,11 @@ html.lenis body {
   color: var(--orange);
   transform: rotate(-10deg);
 }
-.contact-rows {
-  border-top: 1px solid var(--ink);
-}
 .contact-rows a {
   display: flex;
   align-items: center;
   gap: 30px;
-  padding: 32px 0;
-  border-bottom: 1px solid var(--line);
+  padding: 1.5rem 0;
 }
 .contact-rows a > span {
   font-family: monospace;
@@ -130,8 +126,6 @@ html.lenis body {
 .job-opening {
   display: grid;
   grid-template-columns: 0.55fr 1fr;
-  border-top: 1px solid var(--ink);
-  border-bottom: 1px solid var(--line);
   padding: 40px 0;
   gap: 30px;
 }
@@ -333,7 +327,6 @@ html.lenis body {
   grid-template-columns: 1fr 1fr;
   gap: 70px;
   align-items: center;
-  border-top: 1px solid var(--line);
   padding: 70px 0;
 }
 .integration-copy h2 {
@@ -372,6 +365,9 @@ html.lenis body {
   background: var(--ink);
   border-color: var(--ink);
   color: var(--paper);
+}
+.integration-options button[aria-pressed="false"] .integration-selection-mark {
+  visibility: hidden;
 }
 .integration-options button:hover {
   border-color: var(--orange);
@@ -1455,9 +1451,6 @@ input:focus-visible {
 .machine-tag,
 .platform-note,
 .section-footnote,
-.bench-label,
-.agent-status,
-.output-toolbar,
 .map-caption,
 .map-bottom,
 .workspace-caption,
@@ -1692,10 +1685,6 @@ input:focus-visible {
 .section-pad {
   padding: 105px 4.5% 95px;
 }
-.playground {
-  border-top: 1px solid var(--line);
-  background: #edeee7;
-}
 .section-heading {
   display: flex;
   justify-content: space-between;
@@ -1722,238 +1711,6 @@ input:focus-visible {
   font-size: 14px;
   line-height: 1.75;
   color: var(--muted);
-}
-.demo-note {
-  display: block;
-  font-size: 11px;
-  margin-top: 16px;
-}
-.workflow-switch {
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #bfc1b7;
-  gap: 10px;
-  margin-bottom: 24px;
-}
-.workflow-switch button {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 17px 21px;
-  font-size: 13px;
-  border-bottom: 2px solid transparent;
-  transition:
-    background 0.2s,
-    border-color 0.2s;
-}
-.workflow-switch button[aria-pressed="true"] {
-  border-color: var(--orange);
-  background: #e1e3d9;
-}
-.workflow-switch button:hover {
-  background: #e4e6dc;
-}
-.workflow-switch button > svg:last-child {
-  margin-left: 20px;
-}
-.workbench {
-  display: grid;
-  grid-template-columns: 0.85fr 1fr;
-  background: var(--paper);
-  border: 1px solid #c8cbc0;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 12px 0 -6px #d9dbd0;
-}
-.workbench-command {
-  padding: 27px 30px 30px;
-  border-right: 1px solid var(--line);
-}
-.bench-label {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 9px;
-}
-.bench-label > span:last-child {
-  margin-left: auto;
-  font-size: 17px;
-}
-.prompt-bubble {
-  padding: 22px;
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  background: #e9ebe2;
-  margin: 24px 0;
-  transform: rotate(-1deg);
-}
-.prompt-bubble .eyebrow {
-  font-size: 8px;
-  margin-bottom: 10px;
-}
-.prompt-bubble p {
-  font-size: 19px;
-  line-height: 1.4;
-  letter-spacing: -0.5px;
-  max-width: 330px;
-}
-.agent-heading {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 13px;
-  font-weight: 600;
-}
-.agent-avatar {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  background: var(--orange);
-  font-family: var(--font-serif), serif;
-  font-size: 30px;
-  border-radius: 5px;
-}
-.agent-heading small {
-  display: block;
-  font-size: 10px;
-  color: var(--muted);
-  margin-top: 3px;
-  font-weight: 400;
-}
-.agent-status {
-  margin-left: auto;
-  font-size: 8px;
-  color: #4c6653;
-}
-.workflow-steps {
-  list-style: none;
-  margin: 25px 0;
-}
-.workflow-steps li {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  font-size: 11px;
-  line-height: 1.5;
-  margin: 16px 0;
-  color: var(--muted);
-}
-.step-check {
-  display: grid;
-  place-items: center;
-  width: 20px;
-  height: 20px;
-  border: 1px solid #cbcec2;
-  border-radius: 50%;
-  font-family: monospace;
-  font-size: 8px;
-  flex-shrink: 0;
-}
-.step-check.checked {
-  background: #dbe6d9;
-  color: #345239;
-  border-color: #bccbb7;
-}
-.run-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 14px 17px;
-  font-size: 12px;
-  background: var(--ink);
-  color: var(--paper);
-  border-radius: 3px;
-  transition: background 0.2s;
-}
-.run-button:hover {
-  background: #a7361b;
-}
-.run-button:active {
-  transform: translateY(1px);
-}
-.workbench-output {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  background: #f9f9f4;
-}
-.output-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  border-bottom: 1px solid var(--line);
-  gap: 10px;
-  font-size: 9px;
-}
-.output-toolbar > span:first-child {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.preview-badge {
-  font-size: 8px;
-  color: var(--muted);
-  white-space: nowrap;
-}
-.code-preview {
-  padding: 30px 22px 20px;
-  flex: 1;
-  font-size: 12px;
-  line-height: 2.2;
-  overflow: auto;
-}
-.code-preview > div {
-  display: flex;
-  gap: 20px;
-  white-space: pre;
-}
-.code-preview > div > span {
-  color: #777a70;
-  width: 15px;
-  text-align: right;
-  flex-shrink: 0;
-}
-.code-preview code {
-  color: #53634a;
-  font-family: Consolas, monospace;
-}
-.code-preview > div:nth-child(3n + 1) code {
-  color: #a63f2b;
-}
-.output-result {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 24px;
-  margin: 20px;
-  border: 1px dashed #c3c8ba;
-  background: #eff1e8;
-  border-radius: 4px;
-  transition: background 0.25s;
-}
-.output-result.complete {
-  background: #e0eadb;
-  border-style: solid;
-}
-.result-icon {
-  color: #52694a;
-}
-.output-result small {
-  font-family: monospace;
-  font-size: 8px;
-  letter-spacing: 0.5px;
-  color: #4a5b43;
-}
-.output-result p {
-  margin-top: 6px;
-  font-size: 13px;
-}
-.output-result > svg:last-child {
-  margin-left: auto;
-  flex-shrink: 0;
 }
 .section-footnote {
   display: flex;
@@ -2259,15 +2016,6 @@ input:focus-visible {
   .connections {
     gap: 35px;
   }
-  .workbench-command {
-    padding-inline: 22px;
-  }
-  .code-preview {
-    font-size: 10px;
-  }
-  .workflow-switch button {
-    padding-inline: 17px;
-  }
   .map-node {
     width: 112px;
     padding: 12px;
@@ -2276,9 +2024,6 @@ input:focus-visible {
     width: 58px;
     height: 58px;
     padding: 13px;
-  }
-  .output-toolbar {
-    flex-wrap: wrap;
   }
   .issue-label {
     display: none;
@@ -2353,58 +2098,6 @@ input:focus-visible {
   .section-heading p {
     font-size: 12px;
     max-width: 240px;
-  }
-  .workflow-switch {
-    gap: 0;
-  }
-  .workflow-switch button {
-    flex: 1;
-    justify-content: center;
-    font-size: 11px;
-    gap: 8px;
-    padding-inline: 8px;
-  }
-  .workflow-switch button > svg:last-child {
-    display: none;
-  }
-  .workbench {
-    grid-template-columns: 1fr 1fr;
-  }
-  .workbench-command {
-    padding: 20px;
-  }
-  .bench-label {
-    font-size: 7px;
-  }
-  .prompt-bubble {
-    padding: 16px;
-  }
-  .prompt-bubble p {
-    font-size: 16px;
-  }
-  .workflow-steps li {
-    font-size: 10px;
-  }
-  .agent-status {
-    display: none;
-  }
-  .code-preview {
-    font-size: 9px;
-    padding: 20px 12px;
-  }
-  .code-preview > div {
-    gap: 10px;
-  }
-  .output-result {
-    margin: 12px;
-    padding: 16px;
-    gap: 9px;
-  }
-  .output-result p {
-    font-size: 11px;
-  }
-  .result-icon {
-    display: none;
   }
   .connections {
     grid-template-columns: 1fr 1.1fr;
@@ -2539,54 +2232,6 @@ input:focus-visible {
     font-size: 13px;
     margin-top: 22px;
     max-width: 310px;
-  }
-  .demo-note {
-    font-size: 10px;
-    margin-top: 10px;
-  }
-  .workflow-switch {
-    align-items: stretch;
-  }
-  .workflow-switch button {
-    flex-direction: column;
-    padding: 15px 6px;
-    font-size: 10px;
-    text-align: center;
-    gap: 9px;
-  }
-  .workbench {
-    grid-template-columns: 1fr;
-  }
-  .workbench-command {
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-    padding: 24px;
-  }
-  .bench-label {
-    font-size: 8px;
-  }
-  .prompt-bubble p {
-    font-size: 19px;
-  }
-  .agent-status {
-    display: block;
-  }
-  .workflow-steps li {
-    font-size: 11px;
-  }
-  .output-toolbar {
-    font-size: 8px;
-  }
-  .code-preview {
-    font-size: 10px;
-    padding: 20px 15px;
-  }
-  .output-result {
-    margin: 15px;
-    padding: 18px;
-  }
-  .output-result p {
-    font-size: 12px;
   }
   .section-footnote {
     align-items: flex-start;
