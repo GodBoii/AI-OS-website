@@ -2,13 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import {
-  ArrowUpRight,
-  ArrowRight,
   MessageSquare,
   Code2,
   Monitor,
   Check,
-  Maximize2,
+  Maximize,
+  Eye,
+  Workflow,
 } from "lucide-react";
 
 const workspaces = [
@@ -103,7 +103,7 @@ export default function WorkspaceScene() {
               {item.label}
               <small>{item.name}</small>
             </span>
-            <ArrowUpRight size={18} />
+            <Eye size={18} aria-hidden="true" />
           </button>
         ))}
       </div>
@@ -119,7 +119,7 @@ export default function WorkspaceScene() {
             rel="noopener noreferrer"
             aria-label={`Open full-size ${selected.name.toLowerCase()} screenshot in a new tab`}
           >
-            Full-size screenshot <Maximize2 size={14} />
+            Full-size screenshot <Maximize size={14} />
           </a>
         </div>
         <div className="workspace-image">
@@ -147,14 +147,14 @@ export default function WorkspaceScene() {
             ))}
           </ul>
           <Link href="/for-you" aria-label="Explore Aetheria workflows">
-            <ArrowRight size={24} />
+            <Workflow size={24} aria-hidden="true" />
           </Link>
         </div>
       </div>
       <div className="workspace-footnote">
         <span>Real screenshots. Choose a workspace to look inside.</span>
         <Link href="/for-you">
-          Find your kind of work <ArrowUpRight size={16} />
+          Find your kind of work
         </Link>
       </div>
     </section>
