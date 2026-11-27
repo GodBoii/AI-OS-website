@@ -275,7 +275,7 @@
   .chapter .copy { grid-area: 2 / 1; justify-self: start; width: 100%; }
   .chapter h1 { font-size: clamp(3.15rem, 12.4vw, 4.65rem); }
   .copy p { margin-top: .9rem; }
-  .actions { margin-top: .55rem; }
+  .actions { gap: .625rem .75rem; margin-top: .8rem; }
   .chapter .fallback { grid-area: 1 / 1; width: min(100%, 265px); }
 }
 
