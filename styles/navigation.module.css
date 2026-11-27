@@ -80,6 +80,10 @@
 .clear :global(.mobile-nav) > :is(a, button):focus-visible { outline-offset: -2px; }
 
 @media (max-width: 600px) {
+  .clear:global(.site-header) {
+    background: linear-gradient(to bottom, var(--paper) 35%, transparent);
+  }
+
   .clear:has(:global(.mobile-nav.is-open)) + main {
     opacity: .29;
   }
