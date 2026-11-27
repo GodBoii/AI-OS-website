@@ -1,46 +1,42 @@
+import Image from "next/image";
+import { ArrowUpRight, Mail, Phone } from "lucide-react";
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
-import { Mail, MessagesSquare, Phone } from "lucide-react";
+import SurfaceIntro from "../components/SurfaceIntro";
+import styles from "../styles/surface.module.css";
 
 export default function Contact() {
   return (
-    <Layout>
+    <Layout surface>
       <SEO
         title="Say hello | Aetheria AI"
         description="Contact Aetheria AI for product support, partnerships, or a conversation with the founder."
       />
-      <div className="company-page contact-page section-pad">
-        <span className="eyebrow">THE OTHER SIDE OF THE SCREEN.</span>
-        <div className="contact-intro">
-          <h1>
-            Talk to
-            <br />a <span className="serif-word">human.</span>
-          </h1>
-          <span className="contact-symbol" aria-hidden="true">
-            <MessagesSquare size="1em" strokeWidth={1.25} />
-          </span>
-        </div>
-        <p className="company-description">
-          A question, a stubborn bug, a wild idea.
-          <br />
-          We're listening.
-        </p>
-        <div className="contact-rows">
-          <a href="mailto:aetheria.ai28@gmail.com">
-            <span>01 / EMAIL</span>
-            <strong>aetheria.ai28@gmail.com</strong>
-            <Mail aria-hidden="true" />
-          </a>
-          <a href="tel:9619039912">
-            <span>02 / DIRECT LINE</span>
-            <strong>96190 39912</strong>
-            <Phone aria-hidden="true" />
-          </a>
-        </div>
-        <div className="contact-signoff">
-          <span className="eyebrow">THE PERSON BEHIND AETHERIA</span>
-          <p>Prajwal Ghadge</p>
-          <span>Founder & developer</span>
+      <div className={styles.page}>
+        <SurfaceIntro>
+          <h1>Say <em>hello.</em></h1>
+          <p>Get in touch about product support, feedback, or working with Aetheria.</p>
+        </SurfaceIntro>
+        <div className={styles.contactGrid}>
+          <section aria-labelledby="contact-heading">
+            <h2 id="contact-heading" className={styles.sectionTitle}>Get in touch</h2>
+            <div className={styles.contactMethods}>
+              <a href="mailto:aetheria.ai28@gmail.com">
+                <Mail aria-hidden="true" />
+                <span><small>Email</small><strong>aetheria.ai28@gmail.com</strong></span>
+                <ArrowUpRight size={18} aria-hidden="true" />
+              </a>
+              <a href="tel:9619039912">
+                <Phone aria-hidden="true" />
+                <span><small>Phone</small><strong>96190 39912</strong></span>
+                <ArrowUpRight size={18} aria-hidden="true" />
+              </a>
+            </div>
+          </section>
+          <figure className={styles.contactFounder}>
+            <Image src="/Prajwal.jpg" alt="" width={72} height={72} />
+            <figcaption><strong>Prajwal Ghadge</strong><span>Founder &amp; developer</span></figcaption>
+          </figure>
         </div>
       </div>
     </Layout>
