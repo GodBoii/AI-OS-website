@@ -15,7 +15,7 @@
 [![Supabase](https://img.shields.io/badge/Supabase-Auth_%26_DB-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
 [![Convex](https://img.shields.io/badge/Convex-Realtime_Data-EE342F?style=for-the-badge)](https://www.convex.dev/)
 
-[Live Site](https://aetheriaai.online) • [Releases](https://github.com/GodBoii/AI-OS-website/releases) • [Product Playbook](https://aetheriaai.online/playbook) • [Documentation](https://aetheriaai.online/changelog)
+[Live Site](https://aetheriaai.online) • [Releases](https://github.com/GodBoii/AI-OS-website/releases) • [Changelog](https://aetheriaai.online/changelog)
 
 </div>
 
@@ -57,8 +57,6 @@ This repository (`AI-OS-website`) hosts the **official public marketing platform
 - Automated GitHub API release ingestion with dynamic changelog notes (`/changelog`).
 
 ### 5. 💼 Startup Strategy & Investor Portal
-- **Interactive Playbook (`/playbook`)**: Expandable 6-month product roadmap, market landscape, and competitive analyses.
-- **Investor Relations (`/investor`)**: Transparent burn rate models, multi-scenario MRR projections, and founder contact channels.
 - **Transparent Tier Pricing (`/pricing`)**: Clear breakdown of Core (Free), Pro, and Elite tiers with token budgets.
 
 ---
@@ -93,7 +91,6 @@ AI-OS-website/
 │   ├── homepage/                # Landing page scenes (Hero, Execution, Header, Footer)
 │   ├── AccountForm.tsx          # Unified auth entry form (Login & Signup)
 │   ├── AuthFrame.tsx            # Auth layout wrapper
-│   ├── DetailedPlaybook.tsx     # Expandable product roadmap & financials
 │   ├── ForYouSection.tsx        # Workflow use cases & integrations
 │   ├── Layout.tsx               # Global layout wrapper (Header, Footer, Lenis)
 │   ├── SEO.tsx                  # Meta tags, OpenGraph, JSON-LD schemas
@@ -114,7 +111,7 @@ AI-OS-website/
 │   │   ├── log-usage.ts         # Token consumption ingestion
 │   │   ├── profile.ts           # Supabase user profile query
 │   │   └── usage.ts             # Backward-compatible usage proxy
-│   ├── auth/                    # Auth routes: /login, /signup, /callback
+│   ├── auth/                    # Sign-in, signup, password recovery, and sign-out
 │   ├── 404.tsx                  # Custom branded 404 error page
 │   ├── _app.tsx                 # App root with fonts, theme, & global styles
 │   ├── _document.tsx            # Custom HTML document definition
@@ -123,8 +120,6 @@ AI-OS-website/
 │   ├── download.tsx             # Public native client download page
 │   ├── for-you.tsx              # Deep-dive use cases & integrations
 │   ├── index.tsx                # Main product landing page
-│   ├── investor.tsx             # Investor pitch, metrics, & financial model
-│   ├── playbook.tsx             # Product strategy, milestones, & deck
 │   ├── pricing.tsx              # Plan comparison (Core, Pro, Elite)
 │   ├── privacy-policy.tsx       # Privacy policy
 │   └── terms.tsx                # Terms of service
