@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ArrowUpRight } from "lucide-react";
+import { Check } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import AuthFrame from "./AuthFrame";
 
@@ -78,7 +78,7 @@ export default function AccountForm({ mode }: { mode: "login" | "signup" }) {
       <p className="auth-switch">
         {mode === "login" ? "New around here? " : "Already have an account? "}
         <Link href={mode === "login" ? "/auth/signup" : "/auth/login"}>
-          {mode === "login" ? "Create an account" : "Log in"} ↗
+          {mode === "login" ? "Create an account" : "Log in"}
         </Link>
       </p>
       {error && (
@@ -167,7 +167,7 @@ export default function AccountForm({ mode }: { mode: "login" | "signup" }) {
               : mode === "login"
                 ? "Log in"
                 : "Create account"}
-            <ArrowUpRight size={20} />
+            <Check size={20} aria-hidden="true" />
           </button>
         </form>
       </>
