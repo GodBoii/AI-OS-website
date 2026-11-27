@@ -8,23 +8,15 @@ The homepage uses a black background, Outfit display type, Instrument Serif acce
 
 Application screenshots and recordings are replaced by code-native marketing illustrations. Expanding panels describe conversation, code, computer tasks, and connected tools. Their interfaces are labelled as illustrations.
 
-The playground contains three browser examples:
-
-- Build a page produces a self-contained HTML document with responsive styles.
-- Make a brief groups six sample updates into completed work, decisions, and next steps.
-- Clean a sheet normalizes six sample contacts and removes duplicate email addresses.
-
-Visitors can pause, resume, cancel, switch tasks, inspect source, and download the result. The site explicitly describes these as illustrative workflows with sample data. They do not call a live agent backend.
-
 ChatGPT, Claude, and Gemini have selectable descriptions with links to their documented capabilities. The comparison explains approaches; it does not claim benchmark results or invent missing competitor features.
 
-The wayfinder offers a contextual tour and reacts to example selection, execution, cancellation, and completion. It offers one inactivity suggestion per page session, suppresses hints while typing, and remembers explicit dismissal in session storage. Voice uses the browser's speech synthesis only after the visitor enables it. It does not use a microphone.
+The wayfinder offers a contextual tour across site pages. It offers one inactivity suggestion per page session, suppresses hints while typing, and remembers explicit dismissal in session storage. Voice uses the browser's speech synthesis only after the visitor enables it. It does not use a microphone.
 
 ## Motion and fallbacks
 
 The wayfinder is available across shared pages, with contextual explanations for downloads, pricing, integrations, account forms, and policy pages. Page changes close its panel and stop voice playback.
 
-GSAP connects the manifesto text and workspace entrance to native scrolling. The tool strip is pausable. Reduced-motion preferences disable decorative movement while preserving the workflow controls and output.
+GSAP connects the manifesto text and workspace entrance to native scrolling. The tool strip is pausable. Reduced-motion preferences disable decorative movement while preserving site navigation.
 
 The 3D scene renders on demand and pauses offscreen or in a hidden tab. A vector mark remains available before loading, when WebGL is unavailable, and after context loss.
 
@@ -55,10 +47,8 @@ Browser checks cover:
 - Homepage layouts at 320, 390, 768, 1024, 1440, and 1920 pixels.
 - Visible 3D rendering and the rotation control.
 - Mouse dragging, context-loss fallback and restoration, and operation with WebGL disabled.
-- Pause, resume, cancellation, and switching examples during playback.
-- All three downloaded files, including CSV deduplication and document contents.
 - Workspace and competitor selection.
-- Guide reactions, tour navigation, dismissal, and Escape focus return.
+- Guide tour navigation, dismissal, and Escape focus return.
 - Shared-page guidance, cross-page navigation, an actual inactivity hint, and dismissal after reloading.
 - Mobile navigation and keyboard-operated questions.
 - The tool-strip pause control and reduced-motion mode.
