@@ -34,9 +34,6 @@ export default function Footer({ compact = false }: { compact?: boolean }) {
         <nav aria-label="Footer navigation">
           <Link href="/contact">Say hello</Link>
           <Link href="/changelog">Changelog</Link>
-          <Link href="/investor">The vision</Link>
-          <Link href="/playbook">Playbook</Link>
-          <Link href="/careers">Careers</Link>
         </nav>
         <nav className="exp-footer-social" aria-label="Social media">
           {socialLinks.map(({ name, href, Icon }) => (
