@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight, Play } from "lucide-react";
+import { CircleHelp, PanelsTopLeft } from "lucide-react";
 import StarMark from "../experience/StarMark";
 import { notifyGuide } from "../../lib/experience";
 
@@ -21,7 +21,7 @@ export default function HeroScene() {
           <i /> Your ideas have places to go.
         </span>
         <button type="button" onClick={() => notifyGuide({ kind: "guide" })}>
-          A little help? <ArrowUpRight size={13} />
+          A little help? <CircleHelp size={13} aria-hidden="true" />
         </button>
       </div>
       <div className="hero-stage">
@@ -38,14 +38,9 @@ export default function HeroScene() {
           </p>
           <div className="exp-actions">
             <Link className="exp-button" href="/download">
-              Get Aetheria <ArrowUpRight size={18} />
+              Get Aetheria
             </Link>
-            <a className="exp-text-link" href="#playground">
-              <span className="play-circle">
-                <Play size={11} fill="currentColor" />
-              </span>{" "}
-              See it happen
-            </a>
+            <a className="exp-text-link" href="#workspaces">Explore the workspace</a>
           </div>
           <div className="hero-platforms">
             Windows <span aria-hidden="true">·</span> Linux{" "}
@@ -61,8 +56,8 @@ export default function HeroScene() {
         </div>
       </div>
       <div className="hero-bottom">
-        <a href="#playground">
-          <ArrowDown size={15} /> Keep going. It gets hands-on.
+        <a href="#workspaces">
+          <PanelsTopLeft size={15} aria-hidden="true" /> See the workspace
         </a>
         <span>
           Conversation. Code. Computer.
