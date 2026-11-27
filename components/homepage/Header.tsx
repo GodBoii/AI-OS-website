@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { supabase } from "../../lib/supabaseClient";
 import { notifyGuide } from "../../lib/experience";
 import StarMark from "../experience/StarMark";
@@ -22,7 +22,6 @@ export function BrandMark() {
 }
 const links = [
   { href: "/#workspaces", label: "The workspace" },
-  { href: "/#playground", label: "Playground" },
   { href: "/download", label: "Downloads" },
   { href: "/pricing", label: "Pricing" },
 ];
@@ -122,11 +121,11 @@ export default function Header({ motionControl, streamlined = false }: HeaderPro
         </Link>
         {user ? (
           <button className="small-cta" onClick={() => void signOut()}>
-            Sign out <ArrowUpRight size={16} />
+            Sign out
           </button>
         ) : (
           <Link className="small-cta" href="/download">
-            Get Aetheria <ArrowUpRight size={16} />
+            Get Aetheria
           </Link>
         )}
       </div>
@@ -175,12 +174,10 @@ export default function Header({ motionControl, streamlined = false }: HeaderPro
               onClick={() => setMenu("closed")}
             >
               {link.label}
-              {!streamlined && <ArrowUpRight size={20} aria-hidden="true" />}
             </Link>
           ))}
           <Link href={user ? "/dashboard" : "/auth/login"}>
             {user ? "Dashboard" : "Log in"}
-            {!streamlined && <ArrowUpRight size={20} aria-hidden="true" />}
           </Link>
           {inlineGuide && (
             <button type="button" onClick={() => {
@@ -195,7 +192,7 @@ export default function Header({ motionControl, streamlined = false }: HeaderPro
             </button>
           )}
           <Link href="/download" className={streamlined ? undefined : "mobile-download"} aria-current={router.pathname === "/download" ? "page" : undefined} onClick={() => setMenu("closed")}>
-            {streamlined ? "Downloads" : "Get Aetheria"} {!streamlined && <ArrowUpRight size={20} aria-hidden="true" />}
+            {streamlined ? "Downloads" : "Get Aetheria"}
           </Link>
           {user && <button onClick={() => void signOut()}>Sign out</button>}
         </nav>
