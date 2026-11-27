@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight, Plus } from "lucide-react";
+import { Plus, Package } from "lucide-react";
 import { FaWindows, FaLinux, FaAndroid } from "react-icons/fa6";
 import { downloads } from "../../lib/downloads";
 const questions = [
@@ -7,11 +7,6 @@ const questions = [
     question: "What exactly is Aetheria?",
     answer:
       "Aetheria is a native AI workspace for conversation, coding, and computer tasks. Bring connected tools and project context into the same place.",
-  },
-  {
-    question: "Is this demo running a real agent?",
-    answer:
-      "The playground is an illustrative workflow using sample data. It creates real downloadable files in your browser. Agent work with your own projects happens in the Aetheria application.",
   },
   {
     question: "How do I get started?",
@@ -41,7 +36,7 @@ export default function StartScene() {
           <h2 id="start-title">Get Aetheria.</h2>
           <p>Choose the installer for your platform.</p>
           <Link className="exp-text-link" href="/pricing">
-            Find your plan <ArrowUpRight size={15} />
+            Find your plan
           </Link>
         </div>
         <div className="exp-downloads">
@@ -71,11 +66,11 @@ export default function StartScene() {
                   {platform.version} · {platform.format}
                 </span>
               </div>
-              <ArrowDown size={19} />
+              <Package size={19} aria-hidden="true" />
             </a>
           ))}
           <Link className="download-details" href="/download">
-            Requirements & all downloads <ArrowUpRight size={14} />
+            Requirements & all downloads
           </Link>
         </div>
       </div>
@@ -88,7 +83,7 @@ export default function StartScene() {
             <em>questions.</em>
           </h3>
           <Link href="/contact">
-            Ask us something else <ArrowUpRight size={14} />
+            Ask us something else
           </Link>
         </div>
         <div>
