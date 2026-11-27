@@ -1,8 +1,7 @@
 .site-root {
   --glass-ease: cubic-bezier(.2, .64, .24, 1);
   --glass-duration: 580ms;
-  --glass-rim: #c4abf443;
-  --glass-surface: #151125;
+  --glass-rim: #e0ecff35;
 }
 
 [data-glass-layer] { isolation: isolate; }
@@ -52,41 +51,43 @@
   block-size: 42px;
   border-radius: 13px;
   border: 1px solid var(--glass-rim);
-  background: linear-gradient(146deg, #ad86ea31, #674b940f 55%, #a389d81e), #100d1fc7;
-  box-shadow: inset 0 1px 1px #f3e8ff35, 0 5px 14px #08061052;
-  backdrop-filter: blur(9px) saturate(135%);
+  background: #f4f8ff07;
+  box-shadow: inset 0 1px 1px #f3f8ff22;
+  backdrop-filter: blur(2px);
   transition: box-shadow var(--glass-duration) var(--glass-ease), border-color var(--glass-duration) var(--glass-ease), scale 350ms var(--glass-ease);
 }
 
 .site-root .liquid-glass-mark .brand-icon { width: 27px; height: 27px; }
 .brand:is(:hover, :focus-visible) .liquid-glass-mark {
-  border-color: #ebd7ff86;
-  box-shadow: inset 0 1px 4px #f0dcff5c, 0 4px 19px #9662d44a;
+  border-color: #e8f3ff75;
+  box-shadow: inset 0 1px 3px #eef5ff38, 0 4px 14px #91b4e721;
 }
 .brand:active .liquid-glass-mark { scale: .94; }
 
 .site-root .site-header .menu-toggle {
   border-radius: 14px;
-  background: #1813288f;
+  background: #f0f6ff07;
   box-shadow: inset 0 0 0 1px var(--glass-rim), inset 0 1px 1px #f4e8ff24;
 }
 
 .site-root .site-header .menu-toggle[aria-expanded="true"] {
-  background-color: #302248cf;
-  box-shadow: inset 0 0 0 1px #ddcaff7d, inset 0 0 13px #c4a0f63d;
+  background-color: #e6f2ff0d;
+  box-shadow: inset 0 0 0 1px #e5f3ff50, inset 0 1px 3px #edf5ff29;
 }
 
 .site-root .site-header .liquid-glass-menu {
   inset: calc(100% + 8px) 0 auto auto;
-  width: min(280px, calc(100vw - 2rem));
+  width: max-content;
+  min-width: min(13rem, calc(100vw - 2rem));
+  max-width: min(23rem, calc(100vw - 2rem));
   max-height: calc(100dvh - 5.5rem);
-  padding: 7px;
+  padding: .4rem;
   isolation: isolate;
-  border: 1px solid var(--glass-rim);
-  border-radius: 21px;
+  border: 1px solid #ebf3ff13;
+  border-radius: 22px;
   color: #f8f3ff;
-  background: linear-gradient(155deg, #bca0e62d, transparent 52%, #9279d423), var(--glass-surface);
-  box-shadow: inset 0 1px 2px #f2deff39, inset 0 -1px 3px #ae8ddd31, 0 19px 50px #05030bc7;
+  background: #090b1529;
+  box-shadow: inset 0 1px 1px #e3efff0f;
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
@@ -100,9 +101,13 @@
 
 @supports (backdrop-filter: blur(1px)) {
   .site-root .site-header .liquid-glass-menu {
-    --glass-surface: #120e21db;
-    backdrop-filter: blur(16px) saturate(153%);
+    backdrop-filter: blur(1.5px);
   }
+}
+
+.site-root .site-header .liquid-glass-menu[data-glass-layer] {
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .site-root .site-header .liquid-glass-menu.is-open {
@@ -125,6 +130,7 @@
 
 .liquid-glass-items {
   display: grid;
+  justify-items: end;
   gap: 2px;
   max-height: calc(100dvh - 6.5rem);
   overflow-y: auto;
@@ -135,17 +141,19 @@
 .site-root .site-header .liquid-glass-items > :is(a, button) {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  min-height: 44px;
+  justify-content: flex-end;
+  max-width: 100%;
+  min-height: clamp(44px, 3vw, 56px);
   margin: 0;
-  padding: .55rem .85rem;
+  padding: .45rem .75rem;
   border: 1px solid transparent;
-  border-radius: 13px;
+  border-radius: 999px;
   background: transparent;
   color: inherit;
-  text-align: start;
+  text-align: end;
+  text-shadow: 0 1px 8px #05060e, 0 1px 2px #05060e;
   white-space: normal;
-  font: 550 .97rem/1.25 var(--font-body), sans-serif;
+  font: 550 clamp(1rem, 1.35vw, 1.4rem)/1.25 var(--font-body), sans-serif;
   transition:
     background-color var(--glass-duration) var(--glass-ease),
     border-color var(--glass-duration) var(--glass-ease),
@@ -154,24 +162,29 @@
 }
 
 .site-root .site-header .liquid-glass-items > :is(a, button):is(:focus-visible, :active, [aria-current="page"]) {
-  border-color: #c4abf457;
-  background-color: #a281cf39;
-  box-shadow: inset 0 1px 1px #e4cfff45;
+  border-color: #e1efff2e;
+  background-color: #e0edff09;
+  box-shadow: inset 0 1px 2px #e9f3ff1c;
 }
 
 @media (hover: hover) {
   .site-root .site-header .liquid-glass-items > :is(a, button):hover {
-    border-color: #c4abf457;
-    background-color: #a281cf39;
-    box-shadow: inset 0 1px 1px #e4cfff45;
+    border-color: #e1efff2e;
+    background-color: #e0edff0d;
+    box-shadow: inset 0 1px 2px #e9f3ff23;
   }
 }
 
 .site-root .site-header .liquid-glass-items > :focus-visible { outline-offset: -3px; }
 .site-root .site-header .liquid-glass-items > :is(a, button):active { scale: .98; }
-.site-root .site-header .liquid-glass-items > a[href="/download"] { color: #e1ceff; }
-
 .site-root .site-header .liquid-glass-menu[data-glass-menu="standard"] { inset-inline-end: max(1rem, 4.5vw); }
+
+@media (max-width: 600px) {
+  .site-root .site-header .liquid-glass-menu {
+    background-color: #090b15b8;
+    backdrop-filter: blur(8px);
+  }
+}
 
 @media (prefers-reduced-motion: reduce), (forced-colors: active) {
   .site-root :where(button, summary, [role="button"], [data-glass-control], .primary-cta, .text-cta, .small-cta, .exp-button, .footer-main-link, .exp-footer-social a),
