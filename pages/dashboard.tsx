@@ -99,12 +99,12 @@ export default function Dashboard() {
             <h1>Dashboard</h1>
             {name && <p>Welcome back, {name}.</p>}
           </div>
-          {user && <Link href="/auth/signout" className={styles.textLink}>Sign out <LogOut size={17} aria-hidden="true" /></Link>}
+          {user && <Link href="/auth/signout" className={styles.textLink} data-glass-control>Sign out <LogOut size={17} aria-hidden="true" /></Link>}
         </header>
         {session.kind !== "ready" ? (
           <div className={styles.panel}>
             {session.kind === "error" ? (
-              <><p role="alert">We couldn’t load your session.</p><Link href="/auth/login" className={styles.textLink}>Open sign-in <UserRound size={15} aria-hidden="true" /></Link></>
+              <><p role="alert">We couldn’t load your session.</p><Link href="/auth/login" className={styles.textLink} data-glass-control>Open sign-in <UserRound size={15} aria-hidden="true" /></Link></>
             ) : <p role="status">Checking your session…</p>}
           </div>
         ) : (
@@ -132,7 +132,7 @@ export default function Dashboard() {
                 <h2 id="plan-heading">Current plan</h2>
                 {plan.kind === "ready" ? <p><strong>{allowances[plan.data].name}</strong><br />{allowances[plan.data].allowance}</p> :
                   <p role="status">{plan.kind === "loading" ? "Loading plan…" : "Plan information is unavailable."}</p>}
-                <Link href="/pricing" className={styles.textLink}>Compare plans</Link>
+                <Link href="/pricing" className={styles.textLink} data-glass-control>Compare plans</Link>
               </section>
               <section className={styles.panel} aria-labelledby="account-heading">
                 <h2 id="account-heading">Account</h2>
@@ -144,9 +144,9 @@ export default function Dashboard() {
               <section className={styles.panel} aria-labelledby="client-heading">
                 <h2 id="client-heading">Install Aetheria</h2>
                 <div className={styles.clientLinks}>
-                  {downloads.map((platform) => <a href={platform.href} key={platform.id}>{platform.name} <Package size={15} aria-hidden="true" /></a>)}
+                  {downloads.map((platform) => <a href={platform.href} key={platform.id} data-glass-control>{platform.name} <Package size={15} aria-hidden="true" /></a>)}
                 </div>
-                <Link href="/download" className={styles.textLink}>Installation details</Link>
+                <Link href="/download" className={styles.textLink} data-glass-control>Installation details</Link>
               </section>
             </div>
           </div>
