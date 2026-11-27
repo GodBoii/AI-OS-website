@@ -101,7 +101,7 @@ export default function CookiePreferences() {
         </div>
         <div className={styles.cookieActions}>
           <button type="button" className={styles.action} onClick={() => save(performance ? "performance" : "essential")}>Save preferences</button>
-          <Link href="/privacy-policy" className={styles.textLink} onClick={() => dialog.current?.close()}>Privacy policy</Link>
+          <Link href="/privacy-policy" className={styles.textLink} data-glass-control onClick={() => dialog.current?.close()}>Privacy policy</Link>
         </div>
       </dialog>
     </>
