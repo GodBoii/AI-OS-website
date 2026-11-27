@@ -28,7 +28,7 @@ export async function createLiquidGlassRenderer() {
   const backdrop = document.createElement("canvas");
   backdrop.width = sceneWidth;
   backdrop.height = sceneHeight;
-  const backdropContext = backdrop.getContext("2d", { alpha: false });
+  const backdropContext = backdrop.getContext("2d");
   if (!backdropContext) return null;
 
   const device = await adapter.requestDevice();
@@ -48,28 +48,21 @@ export async function createLiquidGlassRenderer() {
       usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT,
     });
     const textureView = texture.createView();
-    const field = backdropContext.createLinearGradient(0, sceneHeight, sceneWidth, 0);
-    field.addColorStop(0, "#191038");
-    field.addColorStop(0.35, "#101227");
-    field.addColorStop(0.68, "#322450");
-    field.addColorStop(1, "#635286");
-    const glow = backdropContext.createRadialGradient(380, 65, 0, 380, 65, 245);
-    glow.addColorStop(0, "#b694f671");
-    glow.addColorStop(1, "#60478900");
     const uniformData = new Float32Array(16);
 
     const capture = (scene: HTMLCanvasElement | null) => {
-      backdropContext.fillStyle = field;
-      backdropContext.fillRect(0, 0, sceneWidth, sceneHeight);
-      backdropContext.fillStyle = glow;
-      backdropContext.fillRect(0, 0, sceneWidth, sceneHeight);
+      backdropContext.clearRect(0, 0, sceneWidth, sceneHeight);
       if (scene?.width && scene.height) {
         const rect = scene.getBoundingClientRect();
         const scaleX = sceneWidth / window.innerWidth;
         const scaleY = sceneHeight / window.innerHeight;
         backdropContext.drawImage(scene, rect.left * scaleX, rect.top * scaleY, rect.width * scaleX, rect.height * scaleY);
       }
-      device.queue.copyExternalImageToTexture({ source: backdrop }, { texture }, [sceneWidth, sceneHeight]);
+      device.queue.copyExternalImageToTexture(
+        { source: backdrop },
+        { texture, premultipliedAlpha: true },
+        [sceneWidth, sceneHeight],
+      );
     };
 
     const createSurface = (): GlassSurface | null => {
@@ -104,8 +97,8 @@ export async function createLiquidGlassRenderer() {
       uniformData.set([
         rect.left, rect.top, rect.width, rect.height,
         window.innerWidth, window.innerHeight, width, height,
-        radius, Math.min(19, rect.height * 0.24), strength, intensity,
-        pointer.x, pointer.y, intensity, press,
+        radius, Math.min(30, rect.height * 0.30), strength, intensity,
+        pointer.x, pointer.y, press, 0,
       ]);
       device.queue.writeBuffer(uniforms, 0, uniformData);
       const encoder = device.createCommandEncoder();
