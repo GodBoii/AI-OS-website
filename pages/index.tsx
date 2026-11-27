@@ -8,6 +8,7 @@ import LandingIntro from "../components/homepage/LandingIntro";
 import StarCursor from "../components/homepage/StarCursor";
 import StarMark from "../components/experience/StarMark";
 import Footer from "../components/homepage/Footer";
+import ProductShowcase from "../components/homepage/ProductShowcase";
 import styles from "../styles/constellation.module.css";
 import surface from "../styles/surface.module.css";
 
@@ -30,6 +31,7 @@ export default function Home() {
         <Header streamlined motionControl={{ paused: motionPaused, toggle: () => setMotionPaused((paused) => !paused) }} />
         <main id="main-content">
           <ConstellationStory paused={motionPaused} onReady={onArtReady} />
+          <ProductShowcase />
           <section id="get-started" className={surface.finale} aria-labelledby="download-finale" data-paused={motionPaused}>
             <StarMark />
             <h2 id="download-finale">Make it <em>yours.</em></h2>
