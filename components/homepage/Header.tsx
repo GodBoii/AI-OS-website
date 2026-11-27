@@ -96,7 +96,9 @@ export default function Header({ motionControl, streamlined = false }: HeaderPro
         Skip to content
       </a>
       <Link href="/" className="brand" aria-label="Aetheria AI home">
-        {streamlined ? <StarMark className="brand-icon" /> : <BrandMark />}
+        <span className="liquid-glass-mark" data-glass-logo>
+          {streamlined ? <StarMark className="brand-icon" /> : <BrandMark />}
+        </span>
         <span>
           aetheria
           <span className="brand-dot" aria-hidden="true">
@@ -144,59 +146,60 @@ export default function Header({ motionControl, streamlined = false }: HeaderPro
           setMenu((state) => state === "hover" ? "closed" : state);
         }}
       >
-      <button
-        className="menu-toggle"
-        ref={menuRef}
-        aria-label={open ? "Close navigation" : "Open navigation"}
-        aria-expanded={open}
-        aria-controls="mobile-navigation"
-        onPointerEnter={(event) => {
-          if (!streamlined || event.pointerType !== "mouse" || !window.matchMedia("(any-hover: hover)").matches) return;
-          setMenu((state) => state === "closed" ? "hover" : state);
-        }}
-        onClick={() => setMenu((state) => state === "pinned" ? "closed" : "pinned")}
-      >
-        {open ? <X /> : <Menu />}
-      </button>
-      {(open || streamlined) && (
+        <button
+          className="menu-toggle"
+          ref={menuRef}
+          aria-label={open ? "Close navigation" : "Open navigation"}
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
+          onPointerEnter={(event) => {
+            if (!streamlined || event.pointerType !== "mouse" || !window.matchMedia("(any-hover: hover)").matches) return;
+            setMenu((state) => state === "closed" ? "hover" : state);
+          }}
+          onClick={() => setMenu((state) => state === "pinned" ? "closed" : "pinned")}
+        >
+          {open ? <X /> : <Menu />}
+        </button>
         <nav
           id="mobile-navigation"
-          className={`mobile-nav${open ? " is-open" : ""}`}
+          className={`mobile-nav liquid-glass-menu${open ? " is-open" : ""}`}
+          data-glass-menu={streamlined ? "compact" : "standard"}
           aria-label={streamlined ? "Main navigation" : "Mobile navigation"}
-          aria-hidden={streamlined && !open ? true : undefined}
-          ref={(element) => { if (element && streamlined) element.inert = !open; }}
+          aria-hidden={!open}
+          ref={(element) => { if (element) element.inert = !open; }}
         >
-          {navigation.map((link) => (
-            <Link
-              href={link.href}
-              key={link.href}
-              aria-current={router.pathname === link.href ? "page" : undefined}
-              onClick={() => setMenu("closed")}
-            >
-              {link.label}
+          <div className="liquid-glass-items">
+            {navigation.map((link) => (
+              <Link
+                href={link.href}
+                key={link.href}
+                aria-current={router.pathname === link.href ? "page" : undefined}
+                onClick={() => setMenu("closed")}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link href={user ? "/dashboard" : "/auth/login"} onClick={() => setMenu("closed")}>
+              {user ? "Dashboard" : "Log in"}
             </Link>
-          ))}
-          <Link href={user ? "/dashboard" : "/auth/login"}>
-            {user ? "Dashboard" : "Log in"}
-          </Link>
-          {inlineGuide && (
-            <button type="button" onClick={() => {
-              setMenu("closed");
-              menuRef.current?.focus();
-              notifyGuide({ kind: "guide" });
-            }}>Guide</button>
-          )}
-          {motionControl && (
-            <button type="button" className="nav-motion-toggle" onClick={motionControl.toggle}>
-              {motionControl.paused ? "Resume ambient motion" : "Pause ambient motion"}
-            </button>
-          )}
-          <Link href="/download" className={streamlined ? undefined : "mobile-download"} aria-current={router.pathname === "/download" ? "page" : undefined} onClick={() => setMenu("closed")}>
-            {streamlined ? "Downloads" : "Get Aetheria"}
-          </Link>
-          {user && <button onClick={() => void signOut()}>Sign out</button>}
+            {inlineGuide && (
+              <button type="button" onClick={() => {
+                setMenu("closed");
+                menuRef.current?.focus();
+                notifyGuide({ kind: "guide" });
+              }}>Guide</button>
+            )}
+            {motionControl && (
+              <button type="button" className="nav-motion-toggle" onClick={motionControl.toggle}>
+                {motionControl.paused ? "Resume ambient motion" : "Pause ambient motion"}
+              </button>
+            )}
+            <Link href="/download" className={streamlined ? undefined : "mobile-download"} aria-current={router.pathname === "/download" ? "page" : undefined} onClick={() => setMenu("closed")}>
+              {streamlined ? "Downloads" : "Get Aetheria"}
+            </Link>
+            {user && <button onClick={() => void signOut()}>Sign out</button>}
+          </div>
         </nav>
-      )}
       </div>
       {authError && (
         <p className="auth-error" role="alert">
