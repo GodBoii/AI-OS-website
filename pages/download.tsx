@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { FaAndroid, FaLinux, FaWindows } from "react-icons/fa6";
+import { Package, Plus } from "lucide-react";
+import { FaAndroid, FaGithub, FaLinux, FaWindows } from "react-icons/fa6";
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
 import { androidDownload, downloads } from "../lib/downloads";
@@ -25,14 +25,14 @@ export default function DownloadPage() {
                 <span className={styles.platformIcon}><Icon aria-hidden="true" /></span>
                 <div><h2>{platform.name}</h2><p>{platform.requirement}</p></div>
                 <span className={styles.version}><strong>{platform.version}</strong>{platform.format}</span>
-                <a href={platform.href} className={styles.action}>Download<span className="sr-only"> for {platform.name}</span> <ArrowDown size={16} aria-hidden="true" /></a>
+                <a href={platform.href} className={styles.action}>Download<span className="sr-only"> for {platform.name}</span> <Package size={16} aria-hidden="true" /></a>
               </li>
             );
           })}
         </ul>
         <section className={styles.support} aria-label="Installation help">
           <details>
-            <summary>Install on Android</summary>
+            <summary>Install on Android <Plus size={16} aria-hidden="true" /></summary>
             <div>
               <p>Download and open the APK. If Android asks, enable “Allow from this source” for your browser or file manager, then return to the installer. Turn the permission off afterward and keep Google Play Protect enabled.</p>
               <p>The universal APK supports all listed architectures. Smaller builds, checksums, and signing fingerprints are available in the <a href={androidDownload.releaseHref}>Android release files</a>.</p>
@@ -40,9 +40,9 @@ export default function DownloadPage() {
             </div>
           </details>
           <nav aria-label="Release information">
-            <a className={styles.textLink} href="https://github.com/GodBoii/AI-OS-website/releases">Browse releases <ArrowUpRight size={15} aria-hidden="true" /></a>
-            <Link className={styles.textLink} href="/changelog">Follow macOS progress <ArrowUpRight size={15} aria-hidden="true" /></Link>
-            <Link className={styles.textLink} href="/auth/login">Sign in <ArrowUpRight size={15} aria-hidden="true" /></Link>
+            <a className={styles.textLink} href="https://github.com/GodBoii/AI-OS-website/releases">Browse releases <FaGithub size={15} aria-hidden="true" /></a>
+            <Link className={styles.textLink} href="/changelog">Follow macOS progress</Link>
+            <Link className={styles.textLink} href="/auth/login">Sign in</Link>
           </nav>
         </section>
       </div>
