@@ -1,6 +1,6 @@
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
-import { ArrowUpRight } from "lucide-react";
+import { Mail, MessagesSquare, Phone } from "lucide-react";
 
 export default function Contact() {
   return (
@@ -17,7 +17,7 @@ export default function Contact() {
             <br />a <span className="serif-word">human.</span>
           </h1>
           <span className="contact-symbol" aria-hidden="true">
-            ↗
+            <MessagesSquare size="1em" strokeWidth={1.25} />
           </span>
         </div>
         <p className="company-description">
@@ -29,12 +29,12 @@ export default function Contact() {
           <a href="mailto:aetheria.ai28@gmail.com">
             <span>01 / EMAIL</span>
             <strong>aetheria.ai28@gmail.com</strong>
-            <ArrowUpRight />
+            <Mail aria-hidden="true" />
           </a>
           <a href="tel:9619039912">
             <span>02 / DIRECT LINE</span>
             <strong>96190 39912</strong>
-            <ArrowUpRight />
+            <Phone aria-hidden="true" />
           </a>
         </div>
         <div className="contact-signoff">
