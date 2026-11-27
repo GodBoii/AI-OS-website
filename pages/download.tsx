@@ -25,7 +25,7 @@ export default function DownloadPage() {
                 <span className={styles.platformIcon}><Icon aria-hidden="true" /></span>
                 <div><h2>{platform.name}</h2><p>{platform.requirement}</p></div>
                 <span className={styles.version}><strong>{platform.version}</strong>{platform.format}</span>
-                <a href={platform.href} className={styles.action}>Download<span className="sr-only"> for {platform.name}</span> <Package size={16} aria-hidden="true" /></a>
+                <a href={platform.href} className={styles.action} data-glass-control>Download<span className="sr-only"> for {platform.name}</span> <Package size={16} aria-hidden="true" /></a>
               </li>
             );
           })}
@@ -40,9 +40,9 @@ export default function DownloadPage() {
             </div>
           </details>
           <nav aria-label="Release information">
-            <a className={styles.textLink} href="https://github.com/GodBoii/AI-OS-website/releases">Browse releases <FaGithub size={15} aria-hidden="true" /></a>
-            <Link className={styles.textLink} href="/changelog">Follow macOS progress</Link>
-            <Link className={styles.textLink} href="/auth/login">Sign in</Link>
+            <a className={styles.textLink} data-glass-control href="https://github.com/GodBoii/AI-OS-website/releases">Browse releases <FaGithub size={15} aria-hidden="true" /></a>
+            <Link className={styles.textLink} data-glass-control href="/changelog">Follow macOS progress</Link>
+            <Link className={styles.textLink} data-glass-control href="/auth/login">Sign in</Link>
           </nav>
         </section>
       </div>
