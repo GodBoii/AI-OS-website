@@ -1,17 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
-import { ArrowUpRight, Moon, Sun } from "lucide-react";
+import { Compass, Moon, Sun, X } from "lucide-react";
 import AetheriaPet from "../../pets/aetheria/AetheriaPet";
 import type { AetheriaPetHandle } from "../../pets/aetheria/AetheriaPet";
 import { getPetScrollPath, stepPetSpring } from "../../pets/aetheria/dynamics";
 import type { SpringState } from "../../pets/aetheria/dynamics";
 import { boopReaction, motion, scrollEmotion } from "../../pets/aetheria/emotions";
 import type { PetEmotion } from "../../pets/aetheria/emotions";
-import { GUIDE_EVENT, isGuideEvent } from "../../lib/experience";
 
 const chapters = [
   { selector: ".exp-hero", line: "Hey, I'm Aetheria. You scroll. I'll come along." },
-  { selector: "#playground", line: "Press play. I want to see what we make." },
   { selector: ".exp-manifesto", line: "Less talking. More tiny star supervision." },
   { selector: "#workspaces", line: "A whole workspace. I call dibs on the window seat." },
   { selector: "#compare", line: "The competition? Let me put on my serious face." },
@@ -162,14 +160,6 @@ export default function PetCompanion({ pathname, guideOpen, onGuide, guideTrigge
       if (document.hidden) { cancelAnimationFrame(frame); frame = 0; clearTimeout(sleepTimer.current); }
       else { frameTime = 0; wake(); schedule(); }
     }
-    function receive(event: Event) {
-      if (!(event instanceof CustomEvent) || napping) return;
-      const detail: unknown = event.detail;
-      if (!isGuideEvent(detail)) return;
-      if (detail.kind === "completed") react("proud", "We made a thing! Extremely proud star moment.", 2600);
-      if (detail.kind === "started") react("excited", "It's happening. Nobody panic. Especially me.", 2200);
-      if (detail.kind === "cancelled") react("curious", "A tactical pause. Even stars need those.", 1600);
-    }
     clearTimeout(reactionTimer.current);
     clearTimeout(bubbleTimer.current);
     reacting.current = false;
@@ -182,7 +172,6 @@ export default function PetCompanion({ pathname, guideOpen, onGuide, guideTrigge
     window.addEventListener("resize", resize);
     window.addEventListener("pointerdown", wake, { passive: true });
     window.addEventListener("keydown", wake);
-    window.addEventListener(GUIDE_EVENT, receive);
     document.addEventListener("visibilitychange", visibility);
     reduced.addEventListener("change", schedule);
     compact.addEventListener("change", schedule);
@@ -195,7 +184,6 @@ export default function PetCompanion({ pathname, guideOpen, onGuide, guideTrigge
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointerdown", wake);
       window.removeEventListener("keydown", wake);
-      window.removeEventListener(GUIDE_EVENT, receive);
       document.removeEventListener("visibilitychange", visibility);
       reduced.removeEventListener("change", schedule);
       compact.removeEventListener("change", schedule);
@@ -213,7 +201,7 @@ export default function PetCompanion({ pathname, guideOpen, onGuide, guideTrigge
           onGreet={() => { if (!reacting.current && !napping && !guideOpen) react("love", "Oh, hi. The orbit ring? Personal space.", 1500); }} />
         <div className="pet-controls">
           <button type="button" ref={guideTrigger} aria-expanded={guideOpen} aria-controls="aetheria-guide-panel" onClick={onGuide}>
-            {guideOpen ? "Close" : "Guide"}<ArrowUpRight size={12} />
+            {guideOpen ? "Close" : "Guide"}{guideOpen ? <X size={12} aria-hidden="true" /> : <Compass size={12} aria-hidden="true" />}
           </button>
           <button type="button" aria-label={napping ? "Wake Aetheria" : "Let Aetheria nap and pause animations"} aria-pressed={napping} onClick={() => setNapping(!napping)}>
             {napping ? <Sun size={14} /> : <Moon size={13} />}
