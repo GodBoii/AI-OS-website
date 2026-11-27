@@ -1,8 +1,16 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { Package } from "lucide-react";
+import { FaGithub, FaXTwitter, FaYoutube } from "react-icons/fa6";
 import StarMark from "../experience/StarMark";
 import { COOKIE_SETTINGS_EVENT } from "../CookiePreferences";
 import styles from "../../styles/surface.module.css";
+
+const socialLinks = [
+  { name: "GitHub", href: "https://github.com/GodBoii/AI-OS-website", Icon: FaGithub },
+  { name: "YouTube", href: "https://youtube.com/@aetheriaai.007", Icon: FaYoutube },
+  { name: "X", href: "https://x.com/Aetheria__ai", Icon: FaXTwitter },
+];
+
 export default function Footer({ compact = false }: { compact?: boolean }) {
   return (
     <footer className={`exp-footer${compact ? " " + styles.footer : ""}`}>
@@ -13,7 +21,7 @@ export default function Footer({ compact = false }: { compact?: boolean }) {
             Over to <em>you.</em>
           </span>
           <span className="footer-go">
-            <ArrowUpRight />
+            <Package aria-hidden="true" />
           </span>
         </Link>
         <p>Give it a workspace.</p>
@@ -24,34 +32,18 @@ export default function Footer({ compact = false }: { compact?: boolean }) {
           aetheria
         </Link>
         <nav aria-label="Footer navigation">
-          <Link href="/contact">
-            Say hello <ArrowUpRight size={12} />
-          </Link>
+          <Link href="/contact">Say hello</Link>
           <Link href="/changelog">Changelog</Link>
           <Link href="/investor">The vision</Link>
           <Link href="/playbook">Playbook</Link>
           <Link href="/careers">Careers</Link>
-          <a
-            href="https://github.com/GodBoii/AI-OS-website"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub <ArrowUpRight size={12} />
-          </a>
-          <a
-            href="https://youtube.com/@aetheriaai.007"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            YouTube <ArrowUpRight size={12} />
-          </a>
-          <a
-            href="https://x.com/Aetheria__ai"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            X <ArrowUpRight size={12} />
-          </a>
+        </nav>
+        <nav className="exp-footer-social" aria-label="Social media">
+          {socialLinks.map(({ name, href, Icon }) => (
+            <a key={name} href={href} target="_blank" rel="noopener noreferrer" aria-label={name}>
+              <Icon size={19} aria-hidden="true" />
+            </a>
+          ))}
         </nav>
       </div>
       <div className="exp-footer-legal exp-container">
