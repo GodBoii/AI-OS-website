@@ -62,6 +62,7 @@ function bindGlass(root: HTMLElement, renderer: Renderer) {
   const { signal } = events;
   const pointer = { x: 0, y: 0 };
   const light = { x: 0.28, y: 0.14 };
+  const menuLight = { x: 0.78, y: 0.14 };
   let hovered: HTMLElement | null = null;
   let focused: HTMLElement | null = null;
   let pressed: HTMLElement | null = null;
@@ -114,6 +115,13 @@ function bindGlass(root: HTMLElement, renderer: Renderer) {
     light.x = approach(light.x, nextX, 78);
     light.y = approach(light.y, nextY, 78);
 
+    const menuBounds = menuTarget?.getBoundingClientRect();
+    const tracksMenu = menuBounds && active && pointerLight && menuTarget?.contains(active);
+    const menuX = tracksMenu ? clamp((pointer.x - menuBounds.left) / menuBounds.width) : 0.78;
+    const menuY = tracksMenu ? clamp((pointer.y - menuBounds.top) / menuBounds.height) : 0.14;
+    menuLight.x = approach(menuLight.x, menuX, 170);
+    menuLight.y = approach(menuLight.y, menuY, 170);
+
     const backdrop = root.querySelector<HTMLCanvasElement>("[data-particles=active] [data-glass-backdrop]");
     const backdropBounds = backdrop?.getBoundingClientRect();
     const scene = backdropBounds && backdropBounds.bottom > 0 && backdropBounds.top < window.innerHeight
@@ -125,9 +133,9 @@ function bindGlass(root: HTMLElement, renderer: Renderer) {
     }
 
     for (const [layer, intensity, strength] of [
-      [logoLayer, logoGlass * 0.82, 13],
-      [menuLayer, menuGlass * 0.64, 24],
-      [controlLayer, glass * 0.62, 16],
+      [logoLayer, logoGlass * 0.82, 15],
+      [menuLayer, menuGlass * 0.9, 54],
+      [controlLayer, glass * 0.8, 28],
     ] as const) {
       const target = layer.target;
       if (!target) continue;
@@ -139,13 +147,14 @@ function bindGlass(root: HTMLElement, renderer: Renderer) {
         intensity,
         strength,
         press: target === shown ? compression : 0,
-        pointer: layer === menuLayer && active !== menuTarget ? { x: 0.23, y: 0.10 } : light,
+        pointer: layer === menuLayer ? menuLight : light,
       });
     }
 
     const moving = Math.max(
       Math.abs(glass - goal), Math.abs(compression - pressGoal), Math.abs(menuGlass - menuGoal),
       Math.abs(logoGlass - logoGoal), Math.abs(light.x - nextX), Math.abs(light.y - nextY),
+      Math.abs(menuLight.x - menuX), Math.abs(menuLight.y - menuY),
     ) > 0.02;
     const usesLiveScene = scene && (menuTarget || active) && !root.querySelector('[data-glass-motion="paused"]');
     if (moving || usesLiveScene) schedule();
