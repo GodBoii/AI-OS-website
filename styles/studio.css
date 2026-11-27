@@ -867,61 +867,6 @@
   min-height: 48px;
   padding-inline: 20px;
 }
-.auth-frame .auth-art {
-  background: #121411;
-  color: #f0f0e7;
-  padding: 40px 10%;
-}
-.auth-frame .auth-art-copy {
-  margin-top: 70px;
-}
-.auth-frame .auth-art h2 {
-  font-family: var(--font-poster);
-  font-size: clamp(60px, 6.5vw, 100px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 0.96;
-}
-.auth-frame .auth-art h2 > span {
-  color: #f47c4d;
-}
-.auth-frame .auth-art :is(.eyebrow, .auth-art-note) {
-  color: #a9ada3;
-  font-size: 10px;
-}
-.auth-frame .auth-art p {
-  color: #b6b9b0;
-  max-width: 300px;
-}
-.auth-frame .auth-visual {
-  position: relative;
-  margin: 25px -12% 20px 15%;
-  min-height: 300px;
-  flex: 1;
-}
-.auth-frame .auth-visual > img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  inset: 0;
-  object-fit: contain;
-  object-position: right center;
-  mix-blend-mode: lighten;
-}
-.auth-frame .auth-form-content > .eyebrow {
-  font-size: 10px;
-}
-.auth-frame .auth-field label {
-  font-size: 13px;
-}
-.auth-frame .auth-field input {
-  font-size: 16px;
-  min-height: 52px;
-}
-.auth-frame .auth-submit {
-  min-height: 52px;
-  font-size: 14px;
-}
 .site-shell .integration-options button {
   min-height: 54px;
 }
