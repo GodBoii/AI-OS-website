@@ -1,13 +1,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  ArrowUpRight,
   Check,
   Code2,
   Folder,
   MessageSquare,
   Monitor,
   Terminal,
+  Eye,
 } from "lucide-react";
 import StarMark from "./StarMark";
 
@@ -88,7 +88,7 @@ export default function WorkspaceTheatre() {
                   <Icon size={18} />
                   {space.subtitle}
                 </span>
-                <ArrowUpRight size={18} />
+                <Eye size={18} aria-hidden="true" />
               </button>
               <div
                 className={"workspace-art art-" + space.id}
@@ -139,7 +139,7 @@ export default function WorkspaceTheatre() {
                     <div className="code-art-terminal">
                       <Terminal size={12} />
                       <span>Build complete.</span>
-                      <span>Ready to preview ↗</span>
+                      <span>Ready to preview</span>
                     </div>
                   </div>
                 ) : space.id === "computer" ? (
@@ -203,7 +203,7 @@ export default function WorkspaceTheatre() {
       <div className="exp-footnote">
         <span>Art-directed illustrations of Aetheria workspaces.</span>
         <Link href="/for-you">
-          Find your kind of work <ArrowUpRight size={14} />
+          Find your kind of work
         </Link>
       </div>
     </section>
