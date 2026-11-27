@@ -1,7 +1,7 @@
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { BookOpen, Mail } from "lucide-react";
 
 export default function Investor() {
   return (
@@ -29,7 +29,7 @@ export default function Investor() {
               href="mailto:aetheria.ai28@gmail.com?subject=Aetheria%20investor%20inquiry"
               className="primary-cta"
             >
-              Let's talk <ArrowUpRight size={20} />
+              Let's talk
             </a>
           </div>
         </div>
@@ -46,7 +46,7 @@ export default function Investor() {
             agents can work with the same context.
           </p>
           <Link href="/playbook" className="text-cta">
-            Read the playbook <ArrowUpRight size={18} />
+            Read the playbook <BookOpen size={18} aria-hidden="true" />
           </Link>
         </section>
         <div className="investor-contact">
@@ -62,7 +62,7 @@ export default function Investor() {
             href="mailto:aetheria.ai28@gmail.com?subject=Aetheria%20pitch%20deck"
             className="text-cta"
           >
-            Request the deck <ArrowUpRight size={20} />
+            Request the deck
           </a>
         </div>
       </div>
