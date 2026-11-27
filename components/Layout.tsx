@@ -8,7 +8,7 @@ const Layout = ({ children, surface = false }: { children: ReactNode; surface?: 
     <div className={`site-shell min-h-screen${surface ? " " + styles.shell : " bg-paper text-ink"}`}>
       <Header streamlined={surface} />
 
-      <main id="main-content" className={surface ? undefined : "interior-content"}>
+      <main id="main-content" tabIndex={-1} className={surface ? undefined : "interior-content"}>
         {children}
       </main>
 
