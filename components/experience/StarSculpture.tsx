@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { RotateCw } from "lucide-react";
+import { Orbit } from "lucide-react";
 import StarMark from "./StarMark";
 
 export default function StarSculpture() {
@@ -265,7 +265,7 @@ export default function StarSculpture() {
           onClick={() => spinRef.current?.()}
           aria-label="Rotate the 3D Aetheria star"
         >
-          <RotateCw size={16} />
+          <Orbit size={16} aria-hidden="true" />
           <span>Give it a spin</span>
         </button>
       )}
