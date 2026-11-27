@@ -23,8 +23,7 @@ type Layer = GlassSurface & { target: HTMLElement | null };
 function controlFor(target: EventTarget | null) {
   if (!(target instanceof Element)) return null;
   const control = target.closest<HTMLElement>(controls);
-  if (!control || control.closest(":disabled, [aria-disabled=true], [inert]")) return null;
-  return control.querySelector<HTMLElement>("[data-glass-logo]") ?? control;
+  return control && !control.closest(":disabled, [aria-disabled=true], [inert]") ? control : null;
 }
 
 function attach(layer: Layer, target: HTMLElement | null) {
@@ -47,22 +46,19 @@ function getRadius(element: HTMLElement, rect: DOMRect) {
 }
 
 function bindGlass(root: HTMLElement, renderer: Renderer) {
-  const logo = renderer.createSurface();
-  const menu = renderer.createSurface();
+  const brand = renderer.createSurface("brand");
   const control = renderer.createSurface();
-  if (!logo || !menu || !control) {
+  if (!brand || !control) {
     renderer.dispose();
     return;
   }
 
-  const logoLayer: Layer = { ...logo, target: null };
-  const menuLayer: Layer = { ...menu, target: null };
+  const brandLayer: Layer = { ...brand, target: null };
   const controlLayer: Layer = { ...control, target: null };
   const events = new AbortController();
   const { signal } = events;
   const pointer = { x: 0, y: 0 };
   const light = { x: 0.28, y: 0.14 };
-  const menuLight = { x: 0.78, y: 0.14 };
   let hovered: HTMLElement | null = null;
   let focused: HTMLElement | null = null;
   let pressed: HTMLElement | null = null;
@@ -73,8 +69,6 @@ function bindGlass(root: HTMLElement, renderer: Renderer) {
   let lastCapture = -Infinity;
   let glass = 0;
   let compression = 0;
-  let menuGlass = 0;
-  let logoGlass = 0.65;
 
   function schedule() {
     if (!signal.aborted && !document.hidden && !frame) frame = requestAnimationFrame(draw);
@@ -84,8 +78,6 @@ function bindGlass(root: HTMLElement, renderer: Renderer) {
     frame = 0;
     const delta = lastFrame ? Math.min(now - lastFrame, 64) : 16;
     lastFrame = now;
-    const logoTarget = root.querySelector<HTMLElement>("[data-glass-logo]");
-    const menuTarget = root.querySelector<HTMLElement>("[data-glass-menu].is-open");
     const active = [pressed, hovered, focused].find((element) => element?.isConnected) ?? null;
     if (active && shown !== active) {
       shown = active;
@@ -94,19 +86,21 @@ function bindGlass(root: HTMLElement, renderer: Renderer) {
     }
     const goal = active ? 1 : 0;
     const pressGoal = pressed?.isConnected ? 1 : 0;
-    const menuGoal = menuTarget ? 1 : 0;
-    const logoGoal = active === logoTarget && logoTarget ? 1 : 0.65;
     const approach = (from: number, to: number, speed: number) =>
       from + (to - from) * (1 - Math.exp(-delta / speed));
     glass = approach(glass, goal, goal ? 110 : 165);
     compression = approach(compression, pressGoal, pressGoal ? 70 : 190);
-    menuGlass = approach(menuGlass, menuGoal, menuGoal ? 150 : 100);
-    logoGlass = approach(logoGlass, logoGoal, 140);
     if ((!active && glass <= 0.02) || !shown?.isConnected) shown = null;
 
-    attach(logoLayer, logoTarget);
-    attach(menuLayer, menuTarget ?? (menuGlass > 0.025 && menuLayer.target?.isConnected ? menuLayer.target : null));
-    attach(controlLayer, shown === logoTarget ? null : shown);
+    const isBrand = shown?.hasAttribute("data-glass-brand");
+    const layer = isBrand ? brandLayer : controlLayer;
+    const changedTarget = layer.target !== shown;
+    attach(isBrand ? controlLayer : brandLayer, null);
+    attach(layer, shown);
+    if (!shown) {
+      lastFrame = 0;
+      return;
+    }
 
     const anchor = active?.getBoundingClientRect();
     const clamp = (value: number) => Math.min(1, Math.max(0, value));
@@ -115,48 +109,32 @@ function bindGlass(root: HTMLElement, renderer: Renderer) {
     light.x = approach(light.x, nextX, 78);
     light.y = approach(light.y, nextY, 78);
 
-    const menuBounds = menuTarget?.getBoundingClientRect();
-    const tracksMenu = menuBounds && active && pointerLight && menuTarget?.contains(active);
-    const menuX = tracksMenu ? clamp((pointer.x - menuBounds.left) / menuBounds.width) : 0.78;
-    const menuY = tracksMenu ? clamp((pointer.y - menuBounds.top) / menuBounds.height) : 0.14;
-    menuLight.x = approach(menuLight.x, menuX, 170);
-    menuLight.y = approach(menuLight.y, menuY, 170);
-
     const backdrop = root.querySelector<HTMLCanvasElement>("[data-particles=active] [data-glass-backdrop]");
     const backdropBounds = backdrop?.getBoundingClientRect();
     const scene = backdropBounds && backdropBounds.bottom > 0 && backdropBounds.top < window.innerHeight
       ? backdrop
       : null;
-    if (now - lastCapture >= 32) {
-      renderer.capture(scene);
+    const rect = layer.canvas.getBoundingClientRect();
+    if (!rect.width || !rect.height || rect.bottom < 0 || rect.top > window.innerHeight) return;
+    if (now - lastCapture >= 32 || changedTarget) {
+      renderer.capture(scene, isBrand ? { element: shown, rect } : undefined);
       lastCapture = now;
     }
 
-    for (const [layer, intensity, strength] of [
-      [logoLayer, logoGlass * 0.82, 15],
-      [menuLayer, menuGlass * 0.9, 54],
-      [controlLayer, glass * 0.8, 28],
-    ] as const) {
-      const target = layer.target;
-      if (!target) continue;
-      const rect = target.getBoundingClientRect();
-      if (!rect.width || !rect.height || rect.bottom < 0 || rect.top > window.innerHeight) continue;
-      renderer.draw(layer, {
-        rect,
-        radius: getRadius(target, rect),
-        intensity,
-        strength,
-        press: target === shown ? compression : 0,
-        pointer: layer === menuLayer ? menuLight : light,
-      });
-    }
+    renderer.draw(layer, {
+      rect,
+      radius: getRadius(layer.canvas, rect),
+      intensity: glass * (isBrand ? 0.98 : 0.85),
+      strength: isBrand ? 39 : 28,
+      press: compression,
+      pointer: light,
+    });
 
     const moving = Math.max(
-      Math.abs(glass - goal), Math.abs(compression - pressGoal), Math.abs(menuGlass - menuGoal),
-      Math.abs(logoGlass - logoGoal), Math.abs(light.x - nextX), Math.abs(light.y - nextY),
-      Math.abs(menuLight.x - menuX), Math.abs(menuLight.y - menuY),
+      Math.abs(glass - goal), Math.abs(compression - pressGoal),
+      Math.abs(light.x - nextX), Math.abs(light.y - nextY),
     ) > 0.02;
-    const usesLiveScene = scene && (menuTarget || active) && !root.querySelector('[data-glass-motion="paused"]');
+    const usesLiveScene = scene && active && !root.querySelector('[data-glass-motion="paused"]');
     if (moving || usesLiveScene) schedule();
     else lastFrame = 0;
   }
@@ -240,7 +218,7 @@ function bindGlass(root: HTMLElement, renderer: Renderer) {
     events.abort();
     cancelAnimationFrame(frame);
     observer.disconnect();
-    for (const layer of [logoLayer, menuLayer, controlLayer]) {
+    for (const layer of [brandLayer, controlLayer]) {
       attach(layer, null);
       layer.context.unconfigure();
       layer.uniforms.destroy();
