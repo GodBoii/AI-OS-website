@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { useInView } from "framer-motion";
-import { ArrowUpRight, Pause, Play } from "lucide-react";
+import { Pause, Play } from "lucide-react";
 import {
   SiGithub,
   SiGmail,
@@ -38,7 +38,7 @@ export default function OrchestrationScene() {
           </h2>
         </div>
         <Link href="/for-you">
-          Explore the connections <ArrowUpRight size={16} />
+          Explore the connections
         </Link>
       </div>
       <div
