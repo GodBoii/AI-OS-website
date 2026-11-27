@@ -74,7 +74,7 @@
 .textLink { color: #dfccff; }
 .textLink:hover { text-decoration: underline; text-underline-offset: 4px; }
 
-.platforms { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+.platforms { list-style: none; padding: 0; margin: 0; }
 .platforms li {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) minmax(110px, .6fr) auto;
@@ -105,14 +105,15 @@
 .support p { color: var(--muted); max-width: 70ch; margin: 0 0 .85rem; }
 .support p a { color: #dfccff; text-decoration: underline; text-underline-offset: 3px; }
 .support nav { display: flex; flex-wrap: wrap; gap: 0 1.4rem; margin-top: 1.25rem; }
-.support details { border-block: 1px solid var(--line); }
-.support summary { cursor: pointer; padding-block: .9rem; font-weight: 600; }
+.support summary { display: flex; align-items: center; gap: .65rem; cursor: pointer; padding-block: .9rem; font-weight: 600; list-style: none; }
+.support summary::-webkit-details-marker { display: none; }
+.support summary svg { color: var(--exp-accent); }
+.support details[open] summary svg { transform: rotate(45deg); }
 .support details > div { padding-bottom: 1rem; }
 
 .plans {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-block: 1px solid var(--line);
 }
 .plan {
   display: flex;
@@ -148,7 +149,6 @@
   margin-inline: auto;
   min-height: clamp(350px, 50vw, 660px);
   padding-block: 4.5rem;
-  border-top: 1px solid var(--line);
   overflow: hidden;
 }
 .finale p { margin-bottom: 1.35rem; }
@@ -207,10 +207,7 @@
 .tableBox :is(th, td) { padding: .6rem .35rem; border-bottom: 1px solid var(--line); text-align: end; white-space: nowrap; }
 .tableBox :is(th, td):first-child { text-align: start; }
 
-.footer:global(.exp-footer) { background: #080a16; border-color: #29273d; }
-.footer :global(.exp-footer-nav) { padding-top: 2rem; }
-.footer :global(.exp-footer-legal) button { min-height: 40px; }
-.footer :global(.exp-footer-legal) button:hover { color: #dfccff; text-decoration: underline; }
+.footer:global(.exp-footer) { padding-top: 1.5rem; }
 
 .cookies {
   position: fixed;
@@ -262,6 +259,7 @@
   .accountGrid { grid-template-columns: 1fr; }
 }
 @media (max-width: 670px) {
+  .footer :global(.exp-footer-legal) { padding-bottom: 5rem; }
   .plans { grid-template-columns: 1fr; }
   .plan + .plan { border-inline-start: 0; border-top: 1px solid var(--line); }
   .platforms li { grid-template-columns: auto minmax(0,1fr) auto; row-gap: .3rem; }
