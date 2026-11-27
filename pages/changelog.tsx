@@ -1,5 +1,5 @@
+import { FaGithub } from "react-icons/fa6";
 import { useEffect, useState } from "react";
-import { ArrowUpRight, RefreshCw } from "lucide-react";
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
 
@@ -127,13 +127,13 @@ export default function Changelog() {
               onClick={() => setAttempt(attempt + 1)}
               className="primary-cta"
             >
-              Try again <RefreshCw size={17} />
+              Try again
             </button>
             <a
               href="https://github.com/GodBoii/AI-OS-website/releases"
               className="text-cta"
             >
-              View on GitHub <ArrowUpRight size={17} />
+              View on GitHub <FaGithub size={17} aria-hidden="true" />
             </a>
           </div>
         )}
@@ -148,7 +148,7 @@ export default function Changelog() {
                 href="https://github.com/GodBoii/AI-OS-website/releases"
                 className="text-cta"
               >
-                View on GitHub <ArrowUpRight size={17} />
+                View on GitHub <FaGithub size={17} aria-hidden="true" />
               </a>
             </div>
           ) : (
@@ -168,7 +168,7 @@ export default function Changelog() {
                         "Full release details are available on GitHub."}
                     </p>
                     <a href={release.html_url} className="text-cta">
-                      View release on GitHub <ArrowUpRight size={17} />
+                      View release on GitHub <FaGithub size={17} aria-hidden="true" />
                     </a>
                   </div>
                 </article>
