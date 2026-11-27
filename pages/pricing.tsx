@@ -27,9 +27,9 @@ export default function Pricing() {
               <div className={styles.price}>₹{plan.price}<small>/ month</small></div>
               <div className={styles.allowance}>{plan.allowance}</div>
               {plan.name === "Core" ? (
-                <Link className={styles.action} href={plan.href}>{plan.action}</Link>
+                <Link className={styles.action} data-glass-control href={plan.href}>{plan.action}</Link>
               ) : (
-                <a className={styles.textLink} href={plan.href}>{plan.action}</a>
+                <a className={styles.textLink} data-glass-control href={plan.href}>{plan.action}</a>
               )}
             </article>
           ))}
@@ -37,7 +37,7 @@ export default function Pricing() {
         <section className={styles.support} aria-labelledby="billing-title">
           <h2 id="billing-title">Availability and billing</h2>
           <p>Contact Aetheria about paid-plan availability and billing. See your active plan and usage in your dashboard.</p>
-          <Link href="/contact" className={styles.textLink}>Contact Aetheria <Mail size={16} aria-hidden="true" /></Link>
+          <Link href="/contact" className={styles.textLink} data-glass-control>Contact Aetheria <Mail size={16} aria-hidden="true" /></Link>
         </section>
       </div>
     </Layout>
