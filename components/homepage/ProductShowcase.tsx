@@ -1,25 +1,79 @@
 import Link from "next/link";
-import { useState } from "react";
-import { Code2, FileText, FolderOpen, GitBranch, Globe, LockKeyhole, Mail, Monitor, Plug, Table2 } from "lucide-react";
+import { useRef, useState } from "react";
+import { useInView } from "framer-motion";
+import { Code2, FileText, FolderOpen, GitBranch, LockKeyhole, Mail, Monitor, Pause, Play, Plug } from "lucide-react";
+import { SiGithub, SiGmail, SiGoogledrive, SiGooglesheets, SiSupabase, SiVercel, SiWhatsapp } from "react-icons/si";
 import StarMark from "../experience/StarMark";
 import styles from "../../styles/product-showcase.module.css";
 
 const connections = [
-  { id: "github", name: "GitHub", icon: GitBranch, example: "Review a pull request and explain the changes." },
-  { id: "gmail", name: "Gmail", icon: Mail, example: "Summarize a thread and draft a follow-up." },
-  { id: "sheets", name: "Google Sheets", icon: Table2, example: "Compare sheet data and call out what changed." },
-  { id: "drive", name: "Google Drive", icon: FolderOpen, example: "Find the launch checklist and the latest project notes." },
-  { id: "vercel", name: "Vercel", icon: Globe, example: "Review the build logs for a deployment." },
+  { id: "github", name: "GitHub", icon: SiGithub, color: "#faf7ff", example: "Review a pull request and explain the changes." },
+  { id: "gmail", name: "Gmail", icon: SiGmail, color: "#ff695c", example: "Summarize a thread and draft a follow-up." },
+  { id: "sheets", name: "Google Sheets", icon: SiGooglesheets, color: "#48d898", example: "Compare sheet data and call out what changed." },
+  { id: "drive", name: "Google Drive", icon: SiGoogledrive, color: "#ffc959", example: "Find the launch checklist and the latest project notes." },
+  { id: "vercel", name: "Vercel", icon: SiVercel, color: "#faf7ff", example: "Review the build logs for a deployment." },
 ];
 
-export default function ProductShowcase() {
+const brands = [
+  ...connections,
+  { id: "supabase", name: "Supabase", icon: SiSupabase, color: "#69eba4" },
+  { id: "whatsapp", name: "WhatsApp Business", icon: SiWhatsapp, color: "#67e88c" },
+];
+const brandRows = [0, 3, 5].map((start) => ({
+  start,
+  brands: [...brands.slice(start), ...brands.slice(0, start)],
+}));
+
+export default function ProductShowcase({ paused }: { paused: boolean }) {
   const [selectedConnection, setSelectedConnection] = useState(connections[0]);
+  const [brandsPaused, setBrandsPaused] = useState(false);
+  const marquee = useRef<HTMLDivElement>(null);
+  const brandsInView = useInView(marquee, { amount: .2 });
 
   return (
     <section className={styles.showcase} aria-labelledby="product-showcase-title">
       <h2 id="product-showcase-title">Aetheria <em>at work.</em></h2>
 
       <div className={styles.tiles}>
+        <article className={`${styles.tile} ${styles.brands}`}>
+          <div className={styles.brandHeader}>
+            <h3>Tools you can connect</h3>
+            <button
+              className={styles.pauseBrands}
+              type="button"
+              aria-label={paused || brandsPaused ? "Play integration logos" : "Pause integration logos"}
+              disabled={paused}
+              onClick={() => setBrandsPaused(!brandsPaused)}
+            >
+              {paused || brandsPaused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
+            </button>
+          </div>
+          <ul className={styles.brandList}>
+            {brands.map((brand) => (
+              <li key={brand.id}>
+                <brand.icon size={21} color={brand.color} aria-hidden="true" />
+                {brand.name}
+              </li>
+            ))}
+          </ul>
+          <div className={styles.marquee} ref={marquee} data-running={brandsInView && !paused && !brandsPaused} aria-hidden="true">
+            {brandRows.map((row) => (
+              <div className={styles.brandTrack} key={row.start}>
+                {[0, 1].map((copy) => (
+                  <div className={styles.brandGroup} key={copy}>
+                    {row.brands.map((brand) => (
+                      <span key={brand.id}>
+                        <brand.icon size={24} color={brand.color} />
+                        {brand.name}
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </article>
+
         <article className={`${styles.tile} ${styles.conversation}`}>
           <div className={styles.copy}>
             <h3>From context to a reply</h3>
