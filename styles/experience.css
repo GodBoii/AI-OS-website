@@ -177,10 +177,6 @@ body {
 .site-root .desktop-nav a:hover {
   color: #f0f0ed;
 }
-.site-root .desktop-nav a::after {
-  background: var(--exp-accent, #d5f49d);
-  height: 1px;
-}
 .site-root .header-actions {
   font-size: 12px;
   gap: 25px;
@@ -1205,7 +1201,6 @@ body {
 }
 .footer-main-link:hover .footer-go {
   transform: scale(1.05);
-  background: #e6ffc5;
 }
 .exp-footer-call > p {
   font-size: 13px;
@@ -1257,9 +1252,6 @@ body {
   inline-size: 44px;
   border-radius: 50%;
 }
-.exp-footer-social a:hover {
-  background: var(--soft);
-}
 .exp-footer-legal {
   display: flex;
   align-items: center;
@@ -1281,7 +1273,6 @@ body {
 }
 .exp-footer-legal :is(a, button):hover {
   color: var(--exp-accent);
-  text-decoration: underline;
 }
 .companion {
   position: fixed;
@@ -1381,11 +1372,6 @@ body {
   font-size: 11px;
   min-height: 43px;
 }
-.companion-actions > button {
-  background: var(--exp-accent, #d5f49d);
-  color: #111;
-  border-color: var(--exp-accent, #d5f49d);
-}
 .companion-actions > :is(a, button):hover {
   filter: brightness(1.12);
 }
@@ -1413,10 +1399,6 @@ body {
   padding: 9px 15px;
   border: 1px solid #526445;
   border-radius: 4px;
-}
-.companion-tour button:last-child {
-  background: var(--exp-accent, #d5f49d);
-  color: #111;
 }
 .companion-tour button:disabled {
   opacity: 0.3;
@@ -1515,9 +1497,7 @@ body {
   border-color: #38383f;
 }
 .site-shell .integration-options button[aria-pressed="true"] {
-  background: #242d1b;
-  color: var(--exp-accent, #d5f49d);
-  border-color: #60754a;
+  border-color: #e6efffa6;
 }
 .site-shell .integration-preview {
   background: #111113;
