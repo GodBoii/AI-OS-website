@@ -154,8 +154,8 @@ export default function ConstellationStory({
   }, [onReady]);
 
   return (
-    <div className={styles.story} ref={story}>
-      <canvas className={styles.canvas} ref={canvas} aria-hidden="true" />
+    <div className={styles.story} ref={story} data-glass-motion={paused ? "paused" : undefined}>
+      <canvas className={styles.canvas} ref={canvas} data-glass-backdrop aria-hidden="true" />
 
       <section className={`${styles.chapter} ${styles.hero}`} aria-labelledby="hero-title">
         <div className={styles.fallback} aria-hidden="true"><StarMark /></div>
@@ -163,11 +163,11 @@ export default function ConstellationStory({
           <h1 id="hero-title">Less talk.<br /><em>More doing.</em></h1>
           <p>A native AI workspace for writing code, working with files, and running desktop tasks you approve.</p>
           <div className={styles.actions}>
-            <a className={styles.follow} href="#workspace-story">
+            <a className={styles.follow} data-glass-control href="#workspace-story">
               <span className={styles.followIcon}><PanelsTopLeft size={15} aria-hidden="true" /></span>
               Explore the workspace
             </a>
-            <Link className={styles.secondary} href="/download">Get Aetheria</Link>
+            <Link className={styles.secondary} data-glass-control href="/download">Get Aetheria</Link>
           </div>
         </div>
       </section>
@@ -178,7 +178,7 @@ export default function ConstellationStory({
         <div className={styles.copy}>
           <h2 id="workspace-story-title">All your work.<br /><em>In view.</em></h2>
           <p>Keep the conversation, files, and tools together as the work moves from an idea to a result.</p>
-          <Link className={styles.follow} href="/for-you">
+          <Link className={styles.follow} data-glass-control href="/for-you">
             <span className={styles.followIcon}><Workflow size={15} aria-hidden="true" /></span>
             Explore connected tools
           </Link>
