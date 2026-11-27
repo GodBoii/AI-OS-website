@@ -236,7 +236,7 @@
 .copy > .follow { margin-top: .9rem; }
 .secondary { color: var(--exp-accent); }
 .follow:hover,
-.secondary:hover { text-decoration: underline; text-underline-offset: 5px; }
+.secondary:hover { color: var(--ink); }
 .followIcon {
   display: grid;
   width: 34px;
