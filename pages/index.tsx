@@ -31,7 +31,7 @@ export default function Home() {
         <Header streamlined motionControl={{ paused: motionPaused, toggle: () => setMotionPaused((paused) => !paused) }} />
         <main id="main-content">
           <ConstellationStory paused={motionPaused} onReady={onArtReady} />
-          <ProductShowcase />
+          <ProductShowcase paused={motionPaused} />
           <section id="get-started" className={surface.finale} aria-labelledby="download-finale" data-paused={motionPaused}>
             <StarMark />
             <h2 id="download-finale">Make it <em>yours.</em></h2>
