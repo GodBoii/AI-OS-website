@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { Mail } from "lucide-react";
 import AuthFrame from "../../components/AuthFrame";
 import SEO from "../../components/SEO";
 import { supabase } from "../../lib/supabaseClient";
@@ -80,7 +80,7 @@ export default function ForgotPassword() {
               disabled={status === "sending"}
             >
               {status === "sending" ? "Sending reset link…" : "Send reset link"}
-              <ArrowUpRight size={20} />
+              <Mail size={20} aria-hidden="true" />
             </button>
           </form>
         )}
