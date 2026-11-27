@@ -1,56 +1,48 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { notifyGuide } from "../lib/experience";
+import { COOKIE_SETTINGS_EVENT } from "./CookiePreferences";
 import StarMark from "./experience/StarMark";
-import { House } from "lucide-react";
-import { BrandMark } from "./homepage/Header";
+import { OrbitArtwork } from "./SurfaceIntro";
+import styles from "../styles/surface.module.css";
 
-export default function AuthFrame({
-  children,
-  mode,
-}: {
+const sectionNames = {
+  login: "Account access",
+  signup: "Account access",
+  recovery: "Password recovery",
+  session: "Account session",
+};
+
+export default function AuthFrame({ children, mode }: {
   children: ReactNode;
-  mode: "login" | "signup" | "recovery";
+  mode: keyof typeof sectionNames;
 }) {
   return (
-    <main className="auth-frame">
-      <aside className="auth-art">
-        <Link href="/" className="brand">
-          <BrandMark />
-          <span>aetheria</span>
+    <main id="main-content" tabIndex={-1} className={styles.authShell}>
+      <div className={styles.authBody}>
+        <Link href="/" className={styles.authBrand} aria-label="Aetheria AI home">
+          <StarMark /> aetheria
         </Link>
-        <div className="auth-art-copy">
-          <span className="eyebrow">YOUR NEXT WORKSPACE</span>
-          <h2>
-            A place to
-            <br />
-            <span>pick things up.</span>
-          </h2>
-          <p>Your ideas and your tools, together in one workspace.</p>
-        </div>
-        <div className="auth-visual" aria-hidden="true">
-          <StarMark className="auth-star" />
-        </div>
-        <span className="auth-art-note">HUMAN DIRECTION / AETHERIA AI</span>
-      </aside>
-      <section className="auth-form-area">
-        <Link href="/" className="auth-back">
-          <House size={16} aria-hidden="true" /> Back to Aetheria
-        </Link>
-        <div className="auth-form-content">
-          <span className="eyebrow">
-            {mode === "login"
-              ? "PICK UP WHERE YOU LEFT OFF."
-              : mode === "signup"
-                ? "MAKE ROOM FOR YOUR NEXT IDEA."
-                : "GET BACK TO YOUR WORKSPACE."}
-          </span>
+        <div className={styles.authContent}>
+          <p className={styles.surfaceLabel}>{sectionNames[mode]}</p>
           {children}
         </div>
-        <div className="auth-legal">
+        <nav className={styles.authLegal} aria-label="Policies">
           <Link href="/privacy-policy">Privacy</Link>
           <Link href="/terms">Terms</Link>
-        </div>
-      </section>
+          <button type="button" onClick={(event) => {
+            event.currentTarget.focus();
+            window.dispatchEvent(new Event(COOKIE_SETTINGS_EVENT));
+          }}>Cookie settings</button>
+          <button type="button" onClick={(event) => {
+            event.currentTarget.focus();
+            notifyGuide({ kind: "guide" });
+          }}>Guide</button>
+        </nav>
+      </div>
+      <div className={styles.authBackdrop} aria-hidden="true">
+        <OrbitArtwork />
+      </div>
     </main>
   );
 }
