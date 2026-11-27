@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import {
-  ArrowUpRight,
   Check,
   Database,
   GitBranch,
@@ -12,6 +11,7 @@ import {
   FolderOpen,
   Table2,
   MessageCircle,
+  Workflow,
 } from "lucide-react";
 import { BrandMark } from "./homepage/Header";
 
@@ -29,7 +29,7 @@ const developerTools: [Integration, ...Integration[]] = [
     title: "GitHub",
     desc: "Review pull requests, work through issues, and commit code from the same workspace.",
     prompt: "Review the open pull request and explain what changed.",
-    output: "Repository context → code review → your next decision",
+    output: "Repository context · code review · your next decision",
     icon: <GitBranch />,
   },
   {
@@ -37,7 +37,7 @@ const developerTools: [Integration, ...Integration[]] = [
     title: "Vercel",
     desc: "Move from a code change to a deployment and keep the build logs with the conversation.",
     prompt: "Deploy this project and show me the build logs.",
-    output: "Project → build → deployment preview",
+    output: "Project · build · deployment preview",
     icon: <Globe />,
   },
   {
@@ -45,7 +45,7 @@ const developerTools: [Integration, ...Integration[]] = [
     title: "Supabase",
     desc: "Inspect tables, read records, and work on database schemas through the workspace.",
     prompt: "Show me how the tables in this project fit together.",
-    output: "Database context → schema overview → a clearer picture",
+    output: "Database context · schema overview · a clearer picture",
     icon: <Database />,
   },
 ];
@@ -55,7 +55,7 @@ const everydayTools: [Integration, ...Integration[]] = [
     title: "Gmail",
     desc: "Summarize email threads and prepare replies with the relevant context in view.",
     prompt: "Summarize this thread and draft a short reply.",
-    output: "Long thread → key decisions → draft reply",
+    output: "Long thread · key decisions · draft reply",
     icon: <Mail />,
   },
   {
@@ -63,7 +63,7 @@ const everydayTools: [Integration, ...Integration[]] = [
     title: "Google Drive",
     desc: "Find project documents and organize files using the way you describe them.",
     prompt: "Find the project notes we were working on last week.",
-    output: "Connected files → relevant documents → project context",
+    output: "Connected files · relevant documents · project context",
     icon: <FolderOpen />,
   },
   {
@@ -71,7 +71,7 @@ const everydayTools: [Integration, ...Integration[]] = [
     title: "Google Sheets",
     desc: "Work through spreadsheet data, prepare charts, and reduce repetitive data entry.",
     prompt: "Look through this spreadsheet and summarize the changes.",
-    output: "Spreadsheet → analysis → useful summary",
+    output: "Spreadsheet · analysis · useful summary",
     icon: <Table2 />,
   },
   {
@@ -79,7 +79,7 @@ const everydayTools: [Integration, ...Integration[]] = [
     title: "WhatsApp Business",
     desc: "Bring business conversations into your workflow to summarize messages and prepare responses.",
     prompt: "Collect the open questions from my business messages.",
-    output: "Conversation context → open questions → response draft",
+    output: "Conversation context · open questions · response draft",
     icon: <MessageCircle />,
   },
 ];
@@ -205,7 +205,7 @@ function IntegrationGroup({
             >
               {item.icon}
               <span>{item.title}</span>
-              <ArrowUpRight size={18} />
+              <Check size={18} aria-hidden="true" className="integration-selection-mark" />
             </button>
           ))}
         </div>
@@ -216,7 +216,7 @@ function IntegrationGroup({
       <div className="integration-preview">
         <div className="integration-preview-label">
           <span>WORKFLOW EXAMPLE</span>
-          <span>↗</span>
+          <Workflow size={14} aria-hidden="true" />
         </div>
         <div className="integration-diagram" aria-hidden="true">
           <IntegrationMachine integration={selected} />
@@ -273,7 +273,7 @@ export default function ForYouSection() {
         number="02"
       />
       <Link href="/download" className="primary-cta">
-        Make it your workspace <ArrowUpRight size={22} />
+        Make it your workspace
       </Link>
     </div>
   );
