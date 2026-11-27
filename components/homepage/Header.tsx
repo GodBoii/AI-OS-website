@@ -95,11 +95,9 @@ export default function Header({ motionControl, streamlined = false }: HeaderPro
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
-      <Link href="/" className="brand" aria-label="Aetheria AI home">
-        <span className="liquid-glass-mark" data-glass-logo>
-          {streamlined ? <StarMark className="brand-icon" /> : <BrandMark />}
-        </span>
-        <span>
+      <Link href="/" className="brand" data-glass-brand aria-label="Aetheria AI home">
+        {streamlined ? <StarMark className="brand-icon" /> : <BrandMark />}
+        <span data-brand-name>
           aetheria
           <span className="brand-dot" aria-hidden="true">
             ✳
