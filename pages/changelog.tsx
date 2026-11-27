@@ -2,6 +2,10 @@ import { FaGithub } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
+import SurfaceIntro from "../components/SurfaceIntro";
+import styles from "../styles/surface.module.css";
+
+const releasesUrl = "https://github.com/GodBoii/AI-OS-website/releases";
 
 type Release = {
   id: number;
@@ -29,9 +33,7 @@ function isRelease(value: unknown): value is Release {
     (typeof value.body === "string" || value.body === null) &&
     "html_url" in value &&
     typeof value.html_url === "string" &&
-    value.html_url.startsWith(
-      "https://github.com/GodBoii/AI-OS-website/releases/",
-    ) &&
+    value.html_url.startsWith(releasesUrl + "/") &&
     "published_at" in value &&
     (typeof value.published_at === "string" || value.published_at === null)
   );
@@ -96,78 +98,63 @@ export default function Changelog() {
     };
   }, [attempt]);
   return (
-    <Layout>
+    <Layout surface>
       <SEO
         title="What's new | Aetheria AI"
         description="Release notes, improvements, and updates from Aetheria AI."
       />
-      <div className="company-page releases-page section-pad">
-        <span className="eyebrow">ALWAYS A WORK IN PROGRESS.</span>
-        <h1>
-          Fresh off
-          <br />
-          the <span className="serif-word">workbench.</span>
-        </h1>
-        <p className="company-description">
-          The latest Aetheria releases, straight from GitHub.
-        </p>
+      <div className={styles.page}>
+        <SurfaceIntro>
+          <h1>Change<em>log.</em></h1>
+          <p>Release notes, improvements, and fixes from Aetheria.</p>
+          <a href={releasesUrl} className={styles.textLink}>
+            All releases on GitHub <FaGithub size={16} aria-hidden="true" />
+          </a>
+        </SurfaceIntro>
         {state.kind === "loading" && (
-          <div className="release-loading" role="status">
+          <div className={styles.releaseState} role="status">
             <span>Loading releases…</span>
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="release-skeleton" />
-            ))}
+            <div className={styles.releaseSkeleton} aria-hidden="true" />
           </div>
         )}
         {state.kind === "error" && (
-          <div className="release-error" role="alert">
-            <h2>The update needs a minute.</h2>
-            <p>{state.message}</p>
+          <div className={styles.releaseState}>
+            <h2 className={styles.sectionTitle}>Releases unavailable</h2>
+            <p role="alert">{state.message}</p>
             <button
-              onClick={() => setAttempt(attempt + 1)}
-              className="primary-cta"
+              type="button"
+              onClick={() => setAttempt((previous) => previous + 1)}
+              className={styles.action}
             >
               Try again
             </button>
-            <a
-              href="https://github.com/GodBoii/AI-OS-website/releases"
-              className="text-cta"
-            >
-              View on GitHub <FaGithub size={17} aria-hidden="true" />
-            </a>
           </div>
         )}
         {state.kind === "ready" &&
           (state.releases.length === 0 ? (
-            <div className="release-error">
-              <h2>Nothing published yet.</h2>
+            <div className={styles.releaseState}>
+              <h2 className={styles.sectionTitle}>No releases published yet</h2>
               <p>
                 The next release will appear here when it's available on GitHub.
               </p>
-              <a
-                href="https://github.com/GodBoii/AI-OS-website/releases"
-                className="text-cta"
-              >
-                View on GitHub <FaGithub size={17} aria-hidden="true" />
-              </a>
             </div>
           ) : (
-            <div className="release-list">
+            <div className={styles.releaseList}>
               {state.releases.map((release) => (
-                <article className="release-row" key={release.id}>
-                  <div>
-                    <span className="release-tag">{release.tag_name}</span>
-                    <p className="release-date">
+                <article className={styles.releaseRow} key={release.id}>
+                  <div className={styles.releaseMeta}>
+                    <span>{release.tag_name}</span>
+                    <p>
                       {releaseDate(release.published_at)}
                     </p>
                   </div>
-                  <div className="release-content">
-                    <h2>{release.name || release.tag_name}</h2>
-                    <p className="release-notes">
+                  <div>
+                    <h2 className={styles.sectionTitle}>{release.name || release.tag_name}</h2>
+                    <p className={styles.releaseNotes}>
                       {release.body ||
                         "Full release details are available on GitHub."}
                     </p>
-                    <a href={release.html_url} className="text-cta">
+                    <a href={release.html_url} className={styles.textLink}>
                       View release on GitHub <FaGithub size={17} aria-hidden="true" />
                     </a>
                   </div>
