@@ -21,12 +21,12 @@ export default function Contact() {
           <section aria-labelledby="contact-heading">
             <h2 id="contact-heading" className={styles.sectionTitle}>Get in touch</h2>
             <div className={styles.contactMethods}>
-              <a href="mailto:aetheria.ai28@gmail.com">
+              <a href="mailto:aetheria.ai28@gmail.com" data-glass-control>
                 <Mail aria-hidden="true" />
                 <span><small>Email</small><strong>aetheria.ai28@gmail.com</strong></span>
                 <ArrowUpRight size={18} aria-hidden="true" />
               </a>
-              <a href="tel:9619039912">
+              <a href="tel:9619039912" data-glass-control>
                 <Phone aria-hidden="true" />
                 <span><small>Phone</small><strong>96190 39912</strong></span>
                 <ArrowUpRight size={18} aria-hidden="true" />
