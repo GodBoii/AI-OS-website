@@ -64,7 +64,7 @@ function paintBrand(context: CanvasRenderingContext2D, brand: BrandBackdrop) {
 }
 
 export async function createLiquidGlassRenderer() {
-  const adapter = await navigator.gpu?.requestAdapter({ powerPreference: "low-power" });
+  const adapter = await navigator.gpu?.requestAdapter();
   if (!adapter) return null;
 
   const backdrop = document.createElement("canvas");
