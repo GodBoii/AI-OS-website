@@ -107,7 +107,7 @@ export default function AuthCallback() {
           <>
             <p className="form-error" role="alert">{errorMsg}</p>
             <div className={styles.authActions}>
-              <Link className={styles.action} href="/auth/login">Back to login</Link>
+              <Link className={styles.action} data-glass-control href="/auth/login">Back to login</Link>
             </div>
           </>
         ) : <p className="auth-switch" role="status">Connecting to your account.</p>}
