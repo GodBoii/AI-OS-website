@@ -1,12 +1,11 @@
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { Package } from "lucide-react";
 import SEO from "../components/SEO";
 import Header from "../components/homepage/Header";
 import ConstellationStory from "../components/homepage/ConstellationStory";
 import LandingIntro from "../components/homepage/LandingIntro";
 import StarCursor from "../components/homepage/StarCursor";
-import ExecutionScene from "../components/homepage/ExecutionScene";
 import StarMark from "../components/experience/StarMark";
 import Footer from "../components/homepage/Footer";
 import styles from "../styles/constellation.module.css";
@@ -31,14 +30,13 @@ export default function Home() {
         <Header streamlined motionControl={{ paused: motionPaused, toggle: () => setMotionPaused((paused) => !paused) }} />
         <main id="main-content">
           <ConstellationStory paused={motionPaused} onReady={onArtReady} />
-          <ExecutionScene />
           <section id="get-started" className={surface.finale} aria-labelledby="download-finale" data-paused={motionPaused}>
             <StarMark />
             <h2 id="download-finale">Make it <em>yours.</em></h2>
             <p>Aetheria is available for Windows, Linux, and Android.</p>
             <div className={surface.finaleActions}>
-              <Link href="/download" className={surface.action}>Choose your platform <ArrowDown size={16} aria-hidden="true" /></Link>
-              <Link href="/pricing" className={surface.textLink}>See plans <ArrowUpRight size={16} aria-hidden="true" /></Link>
+              <Link href="/download" className={surface.action}>Choose your platform <Package size={16} aria-hidden="true" /></Link>
+              <Link href="/pricing" className={surface.textLink}>See plans</Link>
             </div>
           </section>
         </main>
