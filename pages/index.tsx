@@ -35,8 +35,8 @@ export default function Home() {
             <h2 id="download-finale">Make it <em>yours.</em></h2>
             <p>Aetheria is available for Windows, Linux, and Android.</p>
             <div className={surface.finaleActions}>
-              <Link href="/download" className={surface.action}>Choose your platform <Package size={16} aria-hidden="true" /></Link>
-              <Link href="/pricing" className={surface.textLink}>See plans</Link>
+              <Link href="/download" className={surface.action} data-glass-control>Choose your platform <Package size={16} aria-hidden="true" /></Link>
+              <Link href="/pricing" className={surface.textLink} data-glass-control>See plans</Link>
             </div>
           </section>
         </main>
