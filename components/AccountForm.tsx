@@ -74,9 +74,9 @@ export default function AccountForm({ mode }: { mode: "login" | "signup" }) {
   }
   return (
     <AuthFrame mode={mode}>
-      <h1>{mode === "login" ? "Welcome back." : "Make yourself at home."}</h1>
+      <h1>{mode === "login" ? "Log in." : "Create an account."}</h1>
       <p className="auth-switch">
-        {mode === "login" ? "New around here? " : "Already have an account? "}
+        {mode === "login" ? "New to Aetheria? " : "Already have an account? "}
         <Link href={mode === "login" ? "/auth/signup" : "/auth/login"}>
           {mode === "login" ? "Create an account" : "Log in"}
         </Link>
@@ -116,7 +116,7 @@ export default function AccountForm({ mode }: { mode: "login" | "signup" }) {
                 required
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                placeholder="How should we call you?"
+                placeholder="Your name"
                 disabled={pending}
               />
             </div>
