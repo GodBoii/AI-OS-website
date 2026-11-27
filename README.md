@@ -25,7 +25,7 @@
 
 **Aetheria AI** is an advanced cross-platform agentic AI assistant designed to operate across desktop and mobile operating systems (Windows, Linux, macOS, and Android). Unlike traditional conversational chatbots, Aetheria functions as an autonomous system operator—coordinating multi-agent workflows, integrating developer and productivity tools, managing memory, and executing complex tasks locally and in the cloud.
 
-This repository (`AI-OS-website`) hosts the **official public marketing platform, interactive playground, release distribution center, and authenticated account usage portal** for Aetheria AI.
+This repository (`AI-OS-website`) hosts the **official public marketing platform, release distribution center, and authenticated account usage portal** for Aetheria AI.
 
 ---
 
@@ -33,10 +33,6 @@ This repository (`AI-OS-website`) hosts the **official public marketing platform
 
 ### 1. 🌟 Interactive Experience & Product Showcase
 - **Three.js 3D Star Sculpture (`StarSculpture.tsx`)**: Real-time rendering of Aetheria's brand mark with mouse tilt, 3D inertia dragging, keyboard rotation controls, and graceful SVG fallback for systems without WebGL or on GPU context loss.
-- **Workflow Execution Playground**: Hands-on simulated playground letting visitors inspect and test real agentic tasks:
-  - *Build a page*: Generates responsive, self-contained HTML documents.
-  - *Make a brief*: Synthesizes project updates into categorized decisions and action items.
-  - *Clean a sheet*: Normalizes contact tables and strips duplicate entries with instant CSV export.
 - **GSAP & Lenis Smooth Motion**: Smooth scroll orchestrations, pinned manifesto sections, and full WCAG reduced-motion preference compliance.
 - **Contextual Wayfinder Companion**: In-app guide offering audio tours (via browser Web Speech API), proactive walkthrough tips, and dismissible hints.
 
@@ -108,8 +104,7 @@ AI-OS-website/
 │   └── usage.ts                 # Aggregation & query endpoints
 ├── lib/                         # Client utilities & shared logic
 │   ├── downloads.ts             # Installer release metadata & targets
-│   ├── experience.ts            # Simulation workflow data & actions
-│   ├── showcase.ts              # Product showcase specifications
+│   ├── experience.ts            # Shared events for opening the site guide
 │   ├── supabaseClient.ts        # Supabase client instantiation & helpers
 │   └── utils.ts                 # Classname merge helpers (clsx & tw-merge)
 ├── pages/                       # Next.js Pages Router
@@ -135,7 +130,7 @@ AI-OS-website/
 │   └── terms.tsx                # Terms of service
 ├── public/                      # Static assets, branding, and images
 ├── styles/                      # Global and component styles
-│   ├── experience.css           # 3D, animations, & playground aesthetics
+│   ├── experience.css           # Public pages and interactive illustrations
 │   ├── globals.css              # Core tokens, Tailwind base, resets
 │   └── studio.css               # Marketing components & typography
 ├── middleware.ts                # Next.js Supabase session middleware
