@@ -1,18 +1,21 @@
 import { useState } from "react";
 import {
-  BarElement, CategoryScale, Chart as ChartJS, Filler, Legend,
-  LinearScale, LineElement, PointElement, Tooltip,
+  BarController, BarElement, CategoryScale, Chart as ChartJS, Legend,
+  LinearScale, LineController, LineElement, PointElement, Tooltip,
   type ChartData, type ChartOptions,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
 import styles from "../styles/surface.module.css";
 
-ChartJS.register(BarElement, CategoryScale, Filler, Legend, LinearScale, LineElement, PointElement, Tooltip);
+ChartJS.register(
+  BarController, BarElement, CategoryScale, Legend, LinearScale,
+  LineController, LineElement, PointElement, Tooltip,
+);
 
 const metrics = [
-  { key: "input_tokens", label: "Input", color: "#a5baff" },
-  { key: "output_tokens", label: "Output", color: "#c893ff" },
-  { key: "total_tokens", label: "Total", color: "#ebe0ff" },
+  { key: "input_tokens", label: "Input", color: "#aebfff" },
+  { key: "output_tokens", label: "Output", color: "#d6adff" },
+  { key: "total_tokens", label: "Total", color: "#f1e8ff" },
 ] as const;
 
 type Tokens = Record<(typeof metrics)[number]["key"], number>;
