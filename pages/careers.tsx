@@ -1,7 +1,7 @@
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
 import Link from "next/link";
-import { ArrowUpRight, Film } from "lucide-react";
+import { Film } from "lucide-react";
 
 export default function Careers() {
   return (
@@ -42,13 +42,13 @@ export default function Careers() {
               Premiere Pro / DaVinci Resolve · Motion graphics
             </div>
             <Link href="/contact" className="primary-cta">
-              Show us your work <ArrowUpRight size={20} />
+              Show us your work <Film size={20} aria-hidden="true" />
             </Link>
           </div>
         </article>
         <p className="careers-note">
           Something else you do exceptionally well?{" "}
-          <Link href="/contact">Tell us about it ↗</Link>
+          <Link href="/contact">Tell us about it</Link>
         </p>
       </div>
     </Layout>
