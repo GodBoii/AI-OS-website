@@ -8,13 +8,10 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const siteUrl = 'https://aetheria.ai';
   const pages = [
     '',
-    '/careers',
     '/changelog',
     '/contact',
     '/download',
     '/for-you',
-    '/investor',
-    '/playbook',
     '/pricing',
     '/privacy-policy',
     '/terms',
