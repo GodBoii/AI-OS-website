@@ -64,15 +64,10 @@
 
 .action {
   padding: .6rem 1rem;
-  border: 1px solid #c8b4ed;
-  border-radius: 8px;
-  background: #d6c0ff;
-  color: #171026;
 }
 
-.action:hover { background: #ece1ff; }
-.textLink { color: #dfccff; }
-.textLink:hover { text-decoration: underline; text-underline-offset: 4px; }
+.textLink { padding-inline: .85rem; color: #dfccff; }
+.textLink:hover { color: var(--ink); }
 
 .platforms { list-style: none; padding: 0; margin: 0; }
 .platforms li {
@@ -103,7 +98,7 @@
 .support { margin-top: 3.5rem; }
 .support h2 { margin: 0 0 .7rem; font: 500 1.4rem var(--font-display), sans-serif; }
 .support p { color: var(--muted); max-width: 70ch; margin: 0 0 .85rem; }
-.support p a { color: #dfccff; text-decoration: underline; text-underline-offset: 3px; }
+.support p a { color: #dfccff; }
 .support nav { display: flex; flex-wrap: wrap; gap: 0 1.4rem; margin-top: 1.25rem; }
 .support summary { display: flex; align-items: center; gap: .65rem; cursor: pointer; padding-block: .9rem; font-weight: 600; list-style: none; }
 .support summary::-webkit-details-marker { display: none; }
@@ -186,10 +181,10 @@
   color: var(--muted);
   font-size: .82rem;
 }
-.filters button[aria-pressed="true"] { background: #d6c0ff; color: #171026; }
+.filters button[aria-pressed="true"] { border-color: #e6efffa6; color: var(--glass-ink); }
 .filters button:disabled { opacity: .5; }
-.clientLinks { display: grid; }
-.clientLinks a { display: flex; align-items: center; justify-content: space-between; gap: .8rem; min-height: 44px; border-bottom: 1px solid var(--line); }
+.clientLinks { display: grid; gap: .45rem; }
+.clientLinks a { display: flex; align-items: center; justify-content: space-between; gap: .8rem; min-height: 44px; }
 .clientLinks a:hover { color: var(--exp-accent); }
 .error { color: #ffc9d6; padding: .65rem 0; }
 
@@ -375,7 +370,7 @@
 .legalNav h2 { font-weight: 600; }
 .legalNav ul { display: grid; margin-block: .65rem; }
 .legalNav li a { display: flex; align-items: center; min-height: 44px; color: var(--muted); font-size: .9rem; }
-.legalNav li a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.legalNav li a:hover { color: var(--ink); }
 .legalBody { display: grid; gap: 2.5rem; }
 .legalBody section { scroll-margin-top: 6rem; border-bottom: 1px solid var(--line); padding-bottom: 1.6rem; }
 .legalBody section h2 { font: 500 clamp(1.55rem, 3vw, 2.3rem)/1.15 var(--font-display), sans-serif; letter-spacing: -.04em; }
@@ -385,7 +380,7 @@
 .legalBody strong { color: var(--ink); }
 .legalBody .legalCallout { padding: .9rem 1rem; border-inline-start: 2px solid var(--exp-accent); background: #d6c0ff0d; }
 .legalContact { display: grid; justify-items: start; font-style: normal; overflow-wrap: anywhere; }
-.legalContact a { padding-block: .25rem; color: var(--exp-accent); text-decoration: underline; text-underline-offset: 3px; }
+.legalContact a { padding-block: .25rem; color: var(--exp-accent); }
 
 .surfaceLabel,
 .dashboardHeader .intro .surfaceLabel {
@@ -456,13 +451,12 @@
 .authContent :global(.auth-field) input::placeholder { color: #9a97af; }
 .authContent :global(.google-button) { margin-top: 1.5rem; border-color: var(--line); border-radius: 8px; font-size: .9rem; }
 .authContent :global(.google-g) { color: #aebfff; }
-.authContent :global(.auth-submit) { border-radius: 8px; background: var(--exp-accent); color: #171026; font-size: .9rem; font-weight: 600; }
-.authContent :global(.auth-submit):hover { background: #ece1ff; }
+.authContent :global(.auth-submit) { font-size: .9rem; font-weight: 600; }
 .authContent :global(.form-error) { background: #29192b; border-color: #eea9c2; color: #ffc9d6; overflow-wrap: anywhere; }
 .authLegal, .authActions { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem 1rem; }
 .authLegal { color: var(--muted); font-size: .82rem; }
 .authLegal :is(a, button) { display: inline-flex; align-items: center; min-height: 44px; }
-.authLegal :is(a, button):hover { color: var(--ink); text-decoration: underline; }
+.authLegal :is(a, button):hover { color: var(--ink); }
 .authActions { margin-top: 1.5rem; }
 .authActions button:disabled { cursor: wait; opacity: .65; }
 .authBackdrop {
