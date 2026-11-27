@@ -27,8 +27,13 @@ fn fresnel(facing: f32) -> f32 {
   return 0.04 + 0.96 * pow(1.0 - facing, 5.0);
 }
 
-fn scene(pixel: vec2f) -> vec3f {
-  return textureSampleLevel(backdrop, backdropSampler, pixel / glass.viewport.xy, 0.0).rgb;
+fn scene(pixel: vec2f) -> vec4f {
+  return textureSampleLevel(backdrop, backdropSampler, pixel / glass.viewport.xy, 0.0);
+}
+
+fn lensOffset(normal: vec3f, index: f32, thickness: f32) -> vec2f {
+  let ray = refract(vec3f(0.0, 0.0, -1.0), normal, 1.0 / index);
+  return ray.xy * (thickness / max(0.1, -ray.z));
 }
 
 @fragment
@@ -47,26 +52,41 @@ fn fragment(@builtin(position) coord: vec4f) -> @location(0) vec4f {
          - roundedBoxDistance(point - vec2f(1.0, 0.0), halfSize, radius);
   let dy = roundedBoxDistance(point + vec2f(0.0, 1.0), halfSize, radius)
          - roundedBoxDistance(point - vec2f(0.0, 1.0), halfSize, radius);
-  let normal = normalize(vec3f(vec2f(dx, dy) * shoulder, 0.7));
+  // An elliptical shoulder rises quickly near the rim and levels into a flat face.
+  let bevelDepth = clamp(depth / glass.surface.y, 0.012, 1.0);
+  let slope = 0.58 * (1.0 - bevelDepth) * inverseSqrt(bevelDepth * (2.0 - bevelDepth));
+  let normal = normalize(vec3f(vec2f(dx, dy) * (0.5 * slope), 1.0));
   let facing = normal.z;
-  let rim = exp(-abs(distance + 1.0) * 0.65);
-  let bend = normal.xy * glass.surface.z * (1.0 + glass.light.w * 0.32);
-  let dispersion = normal.xy * shoulder * 2.8;
-  let pixel = glass.rect.xy + local - bend;
-  let refracted = vec3f(
-    scene(pixel - dispersion).r,
-    scene(pixel).g,
-    scene(pixel + dispersion).b
-  );
+  let rim = exp(-abs(distance + 1.5) * 0.92);
+  let bevel = exp(-abs(distance + 4.4) * 0.66);
+  let thickness = glass.surface.z * (1.0 + glass.light.z * 0.30);
+  let pixel = glass.rect.xy + local;
+  let red = scene(pixel + lensOffset(normal, 1.41, thickness));
+  let green = scene(pixel + lensOffset(normal, 1.50, thickness));
+  let blue = scene(pixel + lensOffset(normal, 1.63, thickness));
+  let optics = shoulder * 0.92;
+  let sampleAlpha = max(red.a, max(green.a, blue.a)) * optics;
+  let refraction = vec3f(red.r, green.g, blue.b) * optics;
 
-  let key = normalize(vec3f((glass.light.xy - 0.5) * 2.1 + vec2f(-0.38, -0.75), 0.78));
-  let shine = pow(max(dot(normal, normalize(key + vec3f(0.0, 0.0, 1.0))), 0.0), 13.0);
-  let glint = rim * (0.19 + shine * 0.94 + fresnel(facing) * 0.6);
-  let halo = exp(-length((local / glass.rect.zw - glass.light.xy) * vec2f(2.1, 1.25)) * 2.8);
-  let light = clamp(glint + halo * glass.light.z * 0.16 + shoulder * 0.10, 0.0, 1.0);
-  let tint = mix(refracted, vec3f(0.34, 0.23, 0.62), 0.19);
-  let color = mix(tint, vec3f(0.91, 0.84, 1.0), light);
-  let opacity = coverage * glass.surface.w * (0.42 + shoulder * 0.20 + light * 0.38);
-  return vec4f(color * opacity, opacity);
+  let key = normalize(vec3f((glass.light.xy - 0.5) * 2.4 + vec2f(-0.25, -0.6), 0.55));
+  let shine = pow(max(dot(normal, normalize(key + vec3f(0.0, 0.0, 1.0))), 0.0), 17.0);
+  let falloff = 0.25 + 0.75 * exp(-length((local / glass.rect.zw - glass.light.xy) * vec2f(1.8, 0.7)) * 1.7);
+  let rimAlpha = saturate(rim * (0.09 + shine * 1.08 + fresnel(facing) * 0.42) * falloff);
+  let reflection = bevel * (0.04 + shine * 0.22) * falloff;
+  // Offset the inner reflections by wavelength, even against a dark backdrop.
+  let split = vec3f(
+    exp(-abs(depth - 2.8) * 1.8),
+    exp(-abs(depth - 4.0) * 1.8),
+    exp(-abs(depth - 5.3) * 1.8)
+  ) * (0.06 + shine * 0.25) * falloff;
+  let edgeAlpha = saturate(rimAlpha + reflection + max(split.r, max(split.g, split.b)));
+  let edgeColor = min(vec3f(edgeAlpha),
+    vec3f(0.96, 0.99, 1.0) * rimAlpha + vec3f(0.71, 0.83, 1.0) * reflection + split
+  );
+  let opacity = coverage * glass.surface.w;
+  return vec4f(
+    (edgeColor + refraction * (1.0 - edgeAlpha)) * opacity,
+    (edgeAlpha + sampleAlpha * (1.0 - edgeAlpha)) * opacity
+  );
 }
 `;
