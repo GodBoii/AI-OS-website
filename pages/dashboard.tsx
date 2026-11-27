@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ArrowDown, ArrowUpRight, RefreshCw } from "lucide-react";
+import { Package, UserRound } from "lucide-react";
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
 import UsageCard, { type ConvexUsageData, type TimePeriod } from "../components/UsageCard";
@@ -99,7 +99,7 @@ export default function Dashboard() {
         {session.kind !== "ready" ? (
           <div className={styles.panel}>
             {session.kind === "error" ? (
-              <><p role="alert">We couldn’t load your session.</p><Link href="/auth/login" className={styles.textLink}>Open sign-in <ArrowUpRight size={15} aria-hidden="true" /></Link></>
+              <><p role="alert">We couldn’t load your session.</p><Link href="/auth/login" className={styles.textLink}>Open sign-in <UserRound size={15} aria-hidden="true" /></Link></>
             ) : <p role="status">Checking your session…</p>}
           </div>
         ) : (
@@ -112,7 +112,6 @@ export default function Dashboard() {
                     <button type="button" key={id} aria-pressed={period === id} onClick={() => setPeriod(id)}>{label}</button>
                   ))}
                   <button type="button" onClick={refreshUsage} disabled={usage.kind === "loading"} aria-label="Refresh token usage">
-                    <RefreshCw size={15} aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -127,7 +126,7 @@ export default function Dashboard() {
                 <h2 id="plan-heading">Current plan</h2>
                 {plan.kind === "ready" ? <p><strong>{allowances[plan.data].name}</strong><br />{allowances[plan.data].allowance}</p> :
                   <p role="status">{plan.kind === "loading" ? "Loading plan…" : "Plan information is unavailable."}</p>}
-                <Link href="/pricing" className={styles.textLink}>Compare plans <ArrowUpRight size={15} aria-hidden="true" /></Link>
+                <Link href="/pricing" className={styles.textLink}>Compare plans</Link>
               </section>
               <section className={styles.panel} aria-labelledby="account-heading">
                 <h2 id="account-heading">Account</h2>
@@ -139,9 +138,9 @@ export default function Dashboard() {
               <section className={styles.panel} aria-labelledby="client-heading">
                 <h2 id="client-heading">Install Aetheria</h2>
                 <div className={styles.clientLinks}>
-                  {downloads.map((platform) => <a href={platform.href} key={platform.id}>{platform.name} <ArrowDown size={15} aria-hidden="true" /></a>)}
+                  {downloads.map((platform) => <a href={platform.href} key={platform.id}>{platform.name} <Package size={15} aria-hidden="true" /></a>)}
                 </div>
-                <Link href="/download" className={styles.textLink}>Installation details <ArrowUpRight size={15} aria-hidden="true" /></Link>
+                <Link href="/download" className={styles.textLink}>Installation details</Link>
               </section>
             </div>
           </div>
