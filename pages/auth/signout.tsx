@@ -30,8 +30,8 @@ export default function SignOut() {
           <div>
             <h1 ref={(node) => node?.focus()} tabIndex={-1}>You’re signed out.</h1>
             <div className={styles.authActions}>
-              <Link href="/auth/login" className={styles.action}>Log in <ArrowRight size={16} aria-hidden="true" /></Link>
-              <Link href="/" className={styles.textLink}>Back to Aetheria</Link>
+              <Link href="/auth/login" className={styles.action} data-glass-control>Log in <ArrowRight size={16} aria-hidden="true" /></Link>
+              <Link href="/" className={styles.textLink} data-glass-control>Back to Aetheria</Link>
             </div>
           </div>
         ) : (
@@ -43,7 +43,7 @@ export default function SignOut() {
               <button type="button" className={styles.action} disabled={state === "pending"} onClick={() => void signOut()}>
                 {state === "pending" ? "Signing out…" : "Sign out"} <LogOut size={16} aria-hidden="true" />
               </button>
-              <Link href="/dashboard" className={styles.textLink}>Back to dashboard</Link>
+              <Link href="/dashboard" className={styles.textLink} data-glass-control>Back to dashboard</Link>
             </div>
           </>
         )}
