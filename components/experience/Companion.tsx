@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
-  ArrowRight,
-  ArrowUpRight,
-  ChevronLeft,
+  Check,
+  Compass,
+  Package,
   Volume2,
   VolumeX,
   X,
@@ -14,7 +14,7 @@ import StarMark from "./StarMark";
 import PetCompanion from "./PetCompanion";
 
 const welcome =
-  "I’m your little wayfinder. Want to watch a task take shape, explore the workspace, or find your download?";
+  "I’m your little wayfinder. Want to explore the workspace or find your download?";
 const pageGuidance: Readonly<Record<string, string>> = {
   "/download":
     "Choose the client for your platform. The download rows show versions, package formats, and requirements. macOS is listed as coming soon.",
@@ -33,7 +33,7 @@ const pageGuidance: Readonly<Record<string, string>> = {
   "/auth/reset-password":
     "Choose a new password for your account, then follow the form to return to your workspace.",
   "/contact":
-    "Use the contact links on this page to reach the Aetheria team. I can also take you back to the product examples.",
+    "Use the contact links on this page to reach the Aetheria team. I can also take you back to the workspace overview.",
   "/changelog":
     "Browse the published release notes here. For installers and requirements, open the download page.",
   "/privacy-policy":
@@ -46,11 +46,6 @@ const tour = [
     id: "workspaces",
     message:
       "Aetheria brings conversation, files, and connected tools into one workspace.",
-  },
-  {
-    id: "playground",
-    message:
-      "Pick an example and run it. You can pause, inspect the source, and download the finished file.",
   },
   {
     id: "get-started",
@@ -89,34 +84,12 @@ export default function Companion() {
       if (!(event instanceof CustomEvent)) return;
       const detail: unknown = event.detail;
       if (!isGuideEvent(detail)) return;
-      if (detail.kind === "guide") {
-        guideOrigin.current = document.activeElement instanceof HTMLElement
-          ? document.activeElement
-          : null;
-        setOpen(true);
-        setMessage(pageGuidance[router.pathname] ?? welcome);
-        setTourStep(null);
-        return;
-      }
-      if (detail.kind === "selected")
-        setMessage(
-          detail.name +
-            " is ready. Press play to see the example. Its output is created locally in your browser.",
-        );
-      if (detail.kind === "started")
-        setMessage(
-          "Watch the timeline as " +
-            detail.name.toLowerCase() +
-            " runs. You can pause it or cancel at any time.",
-        );
-      if (detail.kind === "completed")
-        setMessage(
-          "There it is. Your " +
-            detail.name.toLowerCase() +
-            " example is complete. Open the source or download the file using the controls below the preview.",
-        );
-      if (detail.kind === "cancelled")
-        setMessage("Stopped. Pick another example whenever you’re ready.");
+      guideOrigin.current = document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+      setOpen(true);
+      setMessage(pageGuidance[router.pathname] ?? welcome);
+      setTourStep(null);
     }
     window.addEventListener(GUIDE_EVENT, receive);
     return () => {
@@ -252,21 +225,16 @@ export default function Companion() {
           {tourStep === null ? (
             <div className="companion-actions">
               {isHome ? (
-                <>
-                  <button type="button" onClick={() => visit(0)}>
-                    Show me around <ArrowRight size={15} />
-                  </button>
-                  <a href="#playground" onClick={() => visit(1)}>
-                    Take me to the demo <ArrowUpRight size={14} />
-                  </a>
-                </>
+                <button type="button" onClick={() => visit(0)}>
+                  Show me around <Compass size={15} aria-hidden="true" />
+                </button>
               ) : (
-                <Link href="/#playground">
-                  Explore the homepage <ArrowUpRight size={14} />
+                <Link href="/#workspaces">
+                  Explore the workspace <Compass size={14} aria-hidden="true" />
                 </Link>
               )}
               <Link href="/download">
-                Find my download <ArrowUpRight size={14} />
+                Find my download <Package size={14} aria-hidden="true" />
               </Link>
             </div>
           ) : (
@@ -277,7 +245,7 @@ export default function Companion() {
                 onClick={() => visit(tourStep - 1)}
                 aria-label="Previous tour stop"
               >
-                <ChevronLeft size={17} />
+                Back
               </button>
               <span>
                 {tourStep + 1} / {tour.length}
@@ -293,11 +261,11 @@ export default function Companion() {
                       ?.classList.remove("is-guide-target");
                   }}
                 >
-                  Finish <ArrowUpRight size={15} />
+                  Finish <Check size={15} aria-hidden="true" />
                 </button>
               ) : (
                 <button type="button" onClick={() => visit(tourStep + 1)}>
-                  Next <ArrowRight size={15} />
+                  Next
                 </button>
               )}
             </div>
