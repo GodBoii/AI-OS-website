@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { House } from "lucide-react";
 import Layout from "../components/Layout";
 import SEO from "../components/SEO";
 
@@ -18,7 +18,7 @@ export default function NotFound() {
           This page doesn't exist. Your next idea still can.
         </p>
         <Link href="/" className="primary-cta">
-          Back to Aetheria <ArrowUpRight size={22} />
+          Back to Aetheria <House size={22} aria-hidden="true" />
         </Link>
       </div>
     </Layout>
