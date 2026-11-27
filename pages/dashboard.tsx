@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Package, UserRound } from "lucide-react";
+import { LogOut, Package, RefreshCw, UserRound } from "lucide-react";
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
+import StarMark from "../components/experience/StarMark";
 import UsageCard, { type ConvexUsageData, type TimePeriod } from "../components/UsageCard";
 import { downloads } from "../lib/downloads";
 import { getCurrentSession, type Session } from "../lib/supabaseClient";
@@ -92,9 +93,13 @@ export default function Dashboard() {
     <Layout surface>
       <SEO title="Dashboard | Aetheria AI" description="View Aetheria usage, your plan, and client downloads." noIndex />
       <div className={`${styles.page} ${styles.dashboard}`}>
-        <header className={styles.intro}>
-          <h1>Your dashboard.</h1>
-          {name && <p>Welcome back, {name}.</p>}
+        <header className={styles.dashboardHeader}>
+          <div className={styles.intro}>
+            <p className={styles.surfaceLabel}><StarMark /> Aetheria account</p>
+            <h1>Dashboard</h1>
+            {name && <p>Welcome back, {name}.</p>}
+          </div>
+          {user && <Link href="/auth/signout" className={styles.textLink}>Sign out <LogOut size={17} aria-hidden="true" /></Link>}
         </header>
         {session.kind !== "ready" ? (
           <div className={styles.panel}>
@@ -112,6 +117,7 @@ export default function Dashboard() {
                     <button type="button" key={id} aria-pressed={period === id} onClick={() => setPeriod(id)}>{label}</button>
                   ))}
                   <button type="button" onClick={refreshUsage} disabled={usage.kind === "loading"} aria-label="Refresh token usage">
+                    <RefreshCw size={15} aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -122,7 +128,7 @@ export default function Dashboard() {
               )}
             </section>
             <div className={styles.accountRail}>
-              <section className={styles.panel} aria-labelledby="plan-heading">
+              <section className={`${styles.panel} ${styles.planPanel}`} aria-labelledby="plan-heading">
                 <h2 id="plan-heading">Current plan</h2>
                 {plan.kind === "ready" ? <p><strong>{allowances[plan.data].name}</strong><br />{allowances[plan.data].allowance}</p> :
                   <p role="status">{plan.kind === "loading" ? "Loading plan…" : "Plan information is unavailable."}</p>}
