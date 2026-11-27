@@ -140,21 +140,21 @@ const DetailedPlaybook = () => {
             </p>
             <ul className="space-y-3 text-sm text-muted">
               <li className="flex gap-3">
-                <span className="text-accent-violet mt-1">→</span>{" "}
+                <span className="text-accent-violet mt-1" aria-hidden="true">•</span>{" "}
                 <div>
                   <span className="font-semibold text-ink">Architecture:</span>{" "}
                   Responsive PWA frontend communicating with Python backend.
                 </div>
               </li>
               <li className="flex gap-3">
-                <span className="text-accent-violet mt-1">→</span>{" "}
+                <span className="text-accent-violet mt-1" aria-hidden="true">•</span>{" "}
                 <div>
                   <span className="font-semibold text-ink">Integration:</span>{" "}
                   Heavy reliance on secure third-party API calls.
                 </div>
               </li>
               <li className="flex gap-3">
-                <span className="text-accent-violet mt-1">→</span>{" "}
+                <span className="text-accent-violet mt-1" aria-hidden="true">•</span>{" "}
                 <div>
                   <span className="font-semibold text-ink">Status:</span>{" "}
                   MVP/Proof-of-Concept. Priority hardening.
@@ -174,21 +174,21 @@ const DetailedPlaybook = () => {
             </p>
             <ul className="space-y-3 text-sm text-muted">
               <li className="flex gap-3">
-                <span className="text-accent mt-1">→</span>{" "}
+                <span className="text-accent mt-1" aria-hidden="true">•</span>{" "}
                 <div>
                   <span className="font-semibold text-ink">Core Backend:</span>{" "}
                   Python 3.10+ Flask server using Agno framework.
                 </div>
               </li>
               <li className="flex gap-3">
-                <span className="text-accent mt-1">→</span>{" "}
+                <span className="text-accent mt-1" aria-hidden="true">•</span>{" "}
                 <div>
                   <span className="font-semibold text-ink">Frontend:</span>{" "}
                   Electron + Node.js for deep OS integration.
                 </div>
               </li>
               <li className="flex gap-3">
-                <span className="text-accent mt-1">→</span>{" "}
+                <span className="text-accent mt-1" aria-hidden="true">•</span>{" "}
                 <div>
                   <span className="font-semibold text-ink">Security:</span>{" "}
                   Stateful Docker Sandbox for code execution.
