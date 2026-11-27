@@ -9,6 +9,8 @@ const controls = [
   ".text-cta",
   ".small-cta",
   ".exp-button",
+  ".auth-back",
+  ".companion-actions > a",
   ".footer-main-link",
   ".exp-footer-social a",
   ".liquid-glass-items a",
