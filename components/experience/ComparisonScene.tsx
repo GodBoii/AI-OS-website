@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight, Check, ChevronRight } from "lucide-react";
+import { BookOpen, Check } from "lucide-react";
 import { SiAnthropic, SiGooglegemini, SiOpenai } from "react-icons/si";
 import StarMark from "./StarMark";
 
@@ -96,7 +96,7 @@ export default function ComparisonScene() {
               rel="noopener noreferrer"
               aria-label={"Read " + competitor.label}
             >
-              <ArrowUpRight size={18} />
+              <BookOpen size={18} aria-hidden="true" />
             </a>
           </div>
           <p className="competitor-strength">{competitor.strength}</p>
@@ -116,7 +116,7 @@ export default function ComparisonScene() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            See the documented capabilities <ArrowUpRight size={13} />
+            See the documented capabilities
           </a>
         </article>
         <article className="aetheria-panel">
@@ -135,12 +135,12 @@ export default function ComparisonScene() {
               <span>Conversation</span>
               <span>Bring the idea</span>
             </div>
-            <ChevronRight size={16} />
+            <span className="compare-flow-dot" aria-hidden="true" />
             <div>
               <span>Code & tools</span>
               <span>Work through it</span>
             </div>
-            <ChevronRight size={16} />
+            <span className="compare-flow-dot" aria-hidden="true" />
             <div>
               <span>Computer</span>
               <span>Direct the next step</span>
@@ -150,10 +150,9 @@ export default function ComparisonScene() {
             <span>
               <Check size={14} /> Keep the result with the work.
             </span>
-            <ArrowDown size={16} />
           </div>
           <Link className="exp-text-link" href="/for-you">
-            Explore Aetheria’s workflows <ArrowUpRight size={16} />
+            Explore Aetheria’s workflows
           </Link>
         </article>
       </div>
