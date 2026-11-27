@@ -15,6 +15,7 @@ import PetCompanion from "./PetCompanion";
 
 const welcome =
   "I’m your little wayfinder. Want to explore the workspace or find your download?";
+const inlineGuidePages = new Set(["/", "/download", "/pricing", "/dashboard", "/contact", "/changelog", "/privacy-policy", "/terms"]);
 const pageGuidance: Readonly<Record<string, string>> = {
   "/download":
     "Choose the client for your platform. The download rows show versions, package formats, and requirements. macOS is listed as coming soon.",
@@ -56,7 +57,7 @@ const tour = [
 export default function Companion() {
   const router = useRouter();
   const isHome = router.pathname === "/";
-  const inlineGuide = isHome || ["/download", "/pricing", "/dashboard"].includes(router.pathname);
+  const inlineGuide = inlineGuidePages.has(router.pathname) || router.pathname.startsWith("/auth/");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState(welcome);
   const [tourStep, setTourStep] = useState<number | null>(null);
